@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "868151553440",
+    "firebase_url": "https://comunidad-river.firebaseio.com",
+    "project_id": "comunidad-river",
+    "storage_bucket": "comunidad-river.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:868151553440:android:b9de6b268bd1a01f",
+        "android_client_info": {
+          "package_name": "com.river.comunidad.comunidadriver"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "868151553440-tcanqo6dtldq19fpus5enrjep4kdg2gg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCEptwXPN1u1gRti44CRpvOZaoa1Z-IqIE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

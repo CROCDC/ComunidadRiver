@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Comunidad River</string>
+
+
+    <string name="facebook_app_id">245256096094012</string>
+    <string name="fb_login_protocol_scheme">fb245256096094012</string>
 </resources>
