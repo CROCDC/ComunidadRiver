@@ -1,11 +1,10 @@
-package com.river.comunidad.comunidadriver;
+package com.river.comunidad.comunidadriver.View;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Toast;
 
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -25,6 +24,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.river.comunidad.comunidadriver.CircleMenu.MainCircleActivity;
+import com.river.comunidad.comunidadriver.R;
 import com.shashank.sony.fancytoastlib.FancyToast;
 
 
@@ -164,7 +165,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
     public void loginExitoso() {
         FancyToast.makeText(this, "Login exitoso", FancyToast.LENGTH_LONG, FancyToast.SUCCESS, false).show();
-        startActivity(new Intent(LoginActivity.this, MainActivity.class));
+        startActivity(new Intent(LoginActivity.this, MainCircleActivity.class));
         finish();
 
     }

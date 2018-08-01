@@ -4,4 +4,12 @@
 
     <string name="facebook_app_id">245256096094012</string>
     <string name="fb_login_protocol_scheme">fb245256096094012</string>
+    <string name="continuar_como_invitado">Continuar como invitado</string>
+    <string name="nombre_de_usuario">Nombre de usuario</string>
+    <string name="contrase_a">Contraseña</string>
+    <string name="iniciar_sesi_n">Iniciar sesión</string>
+    <string name="registrarse">Registrarse</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

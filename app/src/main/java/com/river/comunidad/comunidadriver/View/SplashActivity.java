@@ -1,4 +1,4 @@
-package com.river.comunidad.comunidadriver;
+package com.river.comunidad.comunidadriver.View;
 
 import android.content.Intent;
 import android.os.Handler;
@@ -6,7 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+import com.river.comunidad.comunidadriver.CircleMenu.MainCircleActivity;
+import com.river.comunidad.comunidadriver.R;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -21,7 +22,7 @@ public class SplashActivity extends AppCompatActivity {
                 if (FirebaseAuth.getInstance().getCurrentUser() == null){
                     startActivity(new Intent(SplashActivity.this, LoginActivity.class));
                 }else{
-                    startActivity(new Intent(SplashActivity.this, MainActivity.class));
+                    startActivity(new Intent(SplashActivity.this, MainCircleActivity.class));
                 }
                 finish();
 
