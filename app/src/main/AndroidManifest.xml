@@ -11,20 +11,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".View.SplashActivity">
+        <activity android:name=".View.Activitys.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".View.LoginActivity">
-
-        </activity>
-
-        <activity android:name=".CircleMenu.MainCircleActivity">
-
-        </activity>
+        <activity android:name=".View.Activitys.LoginActivity"></activity>
+        <activity android:name=".CircleMenu.MainCircleActivity"></activity>
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
@@ -46,7 +41,7 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
-
+        <activity android:name=".View.Activitys.NoticiasActivity"></activity>
     </application>
 
 </manifest>

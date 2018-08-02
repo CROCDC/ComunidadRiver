@@ -1,14 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".View.VPNoticiaFragment">
+    android:orientation="vertical"
+    tools:context=".View.Fragments.FragmentsViewPager.VPNoticiaFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <android.support.v7.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content"
+        app:cardElevation="10dp">
 
-</FrameLayout>
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/imageViewDeLaNoticia_fragmentvpnoticia"
+                android:layout_width="match_parent"
+                android:layout_height="320dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/prueba150x150" />
+
+            <TextView
+                android:id="@+id/textViewTituloDeLaNoticia_fragmentvpnoticia"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@id/imageViewDeLaNoticia_fragmentvpnoticia"
+                android:background="@color/rojoTrasparente"
+                android:padding="10dp"
+                android:textColor="@color/blanco"
+                android:textSize="20sp" />
+
+            <TextView
+                android:layout_margin="10dp"
+                android:id="@+id/textViewCopeteDeLaNoticia_fragmentvpnoticia"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_below="@id/textViewTituloDeLaNoticia_fragmentvpnoticia"
+                android:textColor="@color/negro"
+                android:textSize="15sp" />
+
+        </RelativeLayout>
+
+
+    </android.support.v7.widget.CardView>
+
+
+</RelativeLayout>

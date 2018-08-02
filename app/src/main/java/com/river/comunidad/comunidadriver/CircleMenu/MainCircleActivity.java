@@ -1,12 +1,14 @@
 package com.river.comunidad.comunidadriver.CircleMenu;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Toast;
 
 import com.river.comunidad.comunidadriver.R;
+import com.river.comunidad.comunidadriver.View.Activitys.NoticiasActivity;
 
 
 public class MainCircleActivity extends AppCompatActivity {
@@ -35,9 +37,8 @@ public class MainCircleActivity extends AppCompatActivity {
 			}
 
 			@Override
-			public void itemCenterClick(View view)
-			{
-				Toast.makeText(MainCircleActivity.this,"you can do something just like ccb  ",Toast.LENGTH_SHORT).show();
+			public void itemCenterClick(View view){
+				startActivity(new Intent(MainCircleActivity.this, NoticiasActivity.class));
 			}
 		});
 	}
