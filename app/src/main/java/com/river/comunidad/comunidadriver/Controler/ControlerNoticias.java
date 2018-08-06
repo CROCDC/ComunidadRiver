@@ -21,8 +21,8 @@ public class ControlerNoticias {
         paginaActual = 1;
     }
 
-    public void pedirListaDeNoticias(final ResultListener<List<Noticia>> escuchadorDeLaVista) {
-        new DAONoticiaRetrofit().pedirListaDeNoticias(new ResultListener<List<Noticia>>() {
+    public void pedirListaDeNoticias(Integer cantResultado,final ResultListener<List<Noticia>> escuchadorDeLaVista) {
+        new DAONoticiaRetrofit().pedirListaDeNoticias(cantResultado,new ResultListener<List<Noticia>>() {
 
             @Override
             public void finish(final List<Noticia> resultado) {

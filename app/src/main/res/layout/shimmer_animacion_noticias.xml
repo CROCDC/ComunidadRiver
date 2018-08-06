@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/rojo"
+    android:orientation="vertical"
+    android:padding="10dp">
+
+    <View
+        android:id="@+id/viewImage"
+        android:layout_width="match_parent"
+        android:layout_height="320dp"
+        android:layout_marginBottom="3dp"
+        android:alpha="0.2"
+        android:background="#F000" />
+
+    <View
+        android:id="@+id/viewTitulo"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_alignBottom="@+id/viewImage"
+        android:alpha="0.2"
+        android:background="#F000" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="320dp"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/viewImage"
+        android:layout_marginTop="-3dp"
+        android:alpha="0.1"
+        android:background="#F000" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/viewTitulo"
+        android:orientation="vertical">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="6dp"
+            android:layout_margin="3dp"
+            android:alpha="0.1"
+            android:background="#F000" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="6dp"
+            android:layout_margin="3dp"
+            android:alpha="0.1"
+            android:background="#F000" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="6dp"
+            android:layout_margin="3dp"
+
+            android:alpha="0.1"
+            android:background="#F000" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="6dp"
+            android:layout_margin="3dp"
+
+            android:alpha="0.1"
+            android:background="#F000" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="6dp"
+            android:layout_margin="3dp"
+            android:alpha="0.1"
+            android:background="#F000" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="6dp"
+            android:layout_margin="3dp"
+            android:alpha="0.1"
+            android:background="#F000" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="6dp"
+            android:layout_margin="3dp"
+            android:alpha="0.1"
+            android:background="#F000" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="6dp"
+            android:layout_margin="3dp"
+            android:alpha="0.1"
+            android:background="#F000" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="6dp"
+            android:layout_margin="3dp"
+            android:alpha="0.1"
+            android:background="#F000" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="6dp"
+            android:layout_margin="3dp"
+            android:alpha="0.1"
+            android:background="#F000" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="6dp"
+            android:layout_margin="3dp"
+            android:alpha="0.1"
+            android:background="#F000" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="6dp"
+            android:layout_margin="3dp"
+            android:alpha="0.1"
+            android:background="#F000" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="6dp"
+            android:layout_margin="3dp"
+            android:alpha="0.1"
+            android:background="#F000" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="6dp"
+            android:layout_margin="3dp"
+            android:alpha="0.1"
+            android:background="#F000" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="6dp"
+            android:layout_margin="3dp"
+            android:alpha="0.1"
+            android:background="#F000" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="6dp"
+            android:layout_margin="3dp"
+            android:alpha="0.1"
+            android:background="#F000" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="6dp"
+            android:layout_margin="3dp"
+            android:alpha="0.1"
+            android:background="#F000" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="6dp"
+            android:layout_margin="3dp"
+            android:alpha="0.1"
+            android:background="#F000" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="6dp"
+            android:layout_margin="3dp"
+            android:alpha="0.1"
+            android:background="#F000" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="6dp"
+            android:layout_margin="3dp"
+            android:alpha="0.1"
+            android:background="#F000" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="6dp"
+            android:layout_margin="3dp"
+            android:alpha="0.1"
+            android:background="#F000" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="6dp"
+            android:layout_margin="3dp"
+            android:alpha="0.1"
+            android:background="#F000" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="6dp"
+            android:layout_margin="3dp"
+            android:alpha="0.1"
+            android:background="#F000" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="6dp"
+            android:layout_margin="3dp"
+            android:alpha="0.1"
+            android:background="#F000" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="6dp"
+            android:layout_margin="3dp"
+            android:alpha="0.1"
+            android:background="#F000" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="6dp"
+            android:layout_margin="3dp"
+            android:alpha="0.1"
+            android:background="#F000" />
+
+
+    </LinearLayout>
+
+</RelativeLayout>
+

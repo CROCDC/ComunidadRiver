@@ -34,9 +34,9 @@ public class DAONoticiaRetrofit {
     }
 
 
-    public void pedirListaDeNoticias(final ResultListener<List<Noticia>> escuchadorDelControlador, Integer pagina) {
+    public void pedirListaDeNoticias(Integer cantResultados,final ResultListener<List<Noticia>> escuchadorDelControlador, Integer pagina) {
         serviceNoticia = retrofit.create(ServiceNoticia.class);
-        Call<List<Noticia>> llamada = serviceNoticia.pedirListaDeNoticias(pagina);
+        Call<List<Noticia>> llamada = serviceNoticia.pedirListaDeNoticias(pagina,cantResultados);
 
         llamada.enqueue(new Callback<List<Noticia>>() {
             @Override

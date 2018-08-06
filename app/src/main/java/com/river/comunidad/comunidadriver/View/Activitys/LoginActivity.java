@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.view.View;
 
 import com.facebook.CallbackManager;
@@ -37,11 +38,18 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
     //GOOGLE
     private GoogleApiClient googleApiClient;
-    private SignInButton signInButton;
+    private SignInButton signInButtonGoogle;
 
     //FIREBASE
     private FirebaseAuth firebaseAuth;
     private FirebaseAuth.AuthStateListener authStateListener;
+
+
+    //INTERNO
+    private CardView cardViewButtonLogin;
+    private CardView cardViewButtonRegister;
+    private CardView cardViewButtonInvitado;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +57,9 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         setContentView(R.layout.activity_login);
 
         loginButtonFacebook = findViewById(R.id.loginButtonFacebook_activitylogin);
+        signInButtonGoogle = findViewById(R.id.loginButtonGoogle_activitylogin);
+        cardViewButtonInvitado = findViewById(R.id.cardViewButtonInvitado_activitylogin);
+
         callbackManager = CallbackManager.Factory.create();
         loginButtonFacebook.setReadPermissions("email");
 
@@ -62,7 +73,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 .addApi(Auth.GOOGLE_SIGN_IN_API, googleSignInOptions)
                 .build();
 
-        signInButton = findViewById(R.id.loginButtonGoogle_activitylogin);
 
 
         firebaseAuth = FirebaseAuth.getInstance();
@@ -78,6 +88,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
         touchLoginButtonFacebook();
         touchLoginButtonGoogle();
+        touchCardViewButtonInvitado();
 
     }
 
@@ -113,11 +124,22 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     }
 
     public void touchLoginButtonGoogle() {
-        signInButton.setOnClickListener(new View.OnClickListener() {
+        signInButtonGoogle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = Auth.GoogleSignInApi.getSignInIntent(googleApiClient);
                 startActivityForResult(intent, 777);
+            }
+        });
+    }
+
+    public void touchCardViewButtonInvitado(){
+        cardViewButtonInvitado.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FancyToast.makeText(LoginActivity.this, "Inicio como invitado", FancyToast.LENGTH_LONG, FancyToast.SUCCESS, false).show();
+                startActivity(new Intent(LoginActivity.this, MainCircleActivity.class));
+                finish();
             }
         });
     }

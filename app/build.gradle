@@ -64,7 +64,11 @@ dependencies {
     implementation 'com.squareup.retrofit2:retrofit:2.3.0'
 
     //VERTICAL VIEWPAGER
-    implementation 'com.github.castorflex.verticalviewpager:library:19.0.1'
+    implementation 'com.azoft.carousellayoutmanager:carousel:1.2.4'
+
+    //ANIMACION DE CARGA FACEBOOK
+    implementation 'com.facebook.shimmer:shimmer:0.3.0'
+    implementation 'com.github.sharish:ShimmerRecyclerView:v1.3'
 
 
 

@@ -8,14 +8,17 @@
 
 
 
-
-    <fr.castorflex.android.verticalviewpager.VerticalViewPager
-        android:background="@color/gris"
+    <com.cooltechworks.views.shimmer.ShimmerRecyclerView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/verticalViewPagerListaNoticias_activitynoticias"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="150dp"
-     >
+        android:layout_height="match_parent"
+        android:background="@color/rojo"
+        app:shimmer_demo_child_count="1"
+        app:shimmer_demo_layout="@layout/shimmer_animacion_noticias"
+        app:shimmer_demo_grid_child_count="1"
+        app:shimmer_demo_layout_manager_type="grid"
+        app:shimmer_demo_angle="20"
+        />
 
-    </fr.castorflex.android.verticalviewpager.VerticalViewPager>
 </LinearLayout>

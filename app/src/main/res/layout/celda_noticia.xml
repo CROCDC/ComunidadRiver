@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aplicación="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".View.Fragments.FragmentsViewPager.VPNoticiaFragment">
+    android:layout_height="match_parent">
+
 
     <android.support.v7.widget.CardView
+        app:cardPreventCornerOverlap="false"
+        app:cardUseCompatPadding="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+
         app:cardElevation="10dp">
 
         <RelativeLayout
@@ -17,27 +19,27 @@
             android:layout_height="wrap_content">
 
             <ImageView
-                android:id="@+id/imageViewDeLaNoticia_fragmentvpnoticia"
+                android:id="@+id/imageViewDeLaNoticia_celdanoticia"
                 android:layout_width="match_parent"
                 android:layout_height="320dp"
                 android:scaleType="fitXY"
                 android:src="@drawable/prueba150x150" />
 
-            <TextView
-                android:id="@+id/textViewTituloDeLaNoticia_fragmentvpnoticia"
+            <WebView
+                android:id="@+id/textViewTituloDeLaNoticia_celdanoticia"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignBottom="@id/imageViewDeLaNoticia_fragmentvpnoticia"
+                android:layout_alignBottom="@id/imageViewDeLaNoticia_celdanoticia"
                 android:background="@color/rojoTrasparente"
                 android:padding="10dp"
                 android:textColor="@color/blanco"
-                android:textSize="20sp" />
+                android:textSize="30sp" />
 
-            <TextView
-                android:id="@+id/textViewCopeteDeLaNoticia_fragmentvpnoticia"
+            <WebView
+                android:id="@+id/textViewCopeteDeLaNoticia_celdanoticia"
                 android:layout_width="match_parent"
-                android:layout_height="80dp"
-                android:layout_below="@id/textViewTituloDeLaNoticia_fragmentvpnoticia"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/textViewTituloDeLaNoticia_celdanoticia"
                 android:layout_margin="10dp"
                 android:textColor="@color/negro"
                 android:textSize="15sp" />
@@ -46,5 +48,4 @@
 
     </android.support.v7.widget.CardView>
 
-
-</RelativeLayout>
+</LinearLayout>

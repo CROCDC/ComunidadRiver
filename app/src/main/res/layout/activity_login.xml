@@ -18,6 +18,7 @@
         android:layout_marginTop="49dp"
         app:cardCornerRadius="4dp"
         app:cardElevation="10dp"
+
         app:cardUseCompatPadding="true">
 
         <TextView
@@ -34,7 +35,6 @@
         android:id="@+id/cardViewButtonRegistrarse_activityloginL"
         android:layout_width="300dp"
         android:layout_height="80dp"
-
         android:layout_below="@+id/cardViewButtonInicio_activitylogin"
         android:layout_centerHorizontal="true"
         app:cardCornerRadius="4dp"

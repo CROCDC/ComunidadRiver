@@ -17,7 +17,8 @@ public interface ServiceNoticia {
 
     @GET("wp/v2/posts?_embed")
     Call<List<Noticia>> pedirListaDeNoticias(
-            @Query("page") int pagina
+            @Query("page") int pagina,
+            @Query("per_page") int cantResultados
     );
 
     @GET("wp/v2/posts?_embed")

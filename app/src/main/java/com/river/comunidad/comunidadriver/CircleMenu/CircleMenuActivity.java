@@ -12,34 +12,28 @@ import android.widget.ListView;
 import com.river.comunidad.comunidadriver.R;
 
 
-public class CircleMenuActivity extends ListActivity
-{
-	@Override
-	protected void onCreate(Bundle savedInstanceState)
-	{
-		super.onCreate(savedInstanceState);
+public class CircleMenuActivity extends ListActivity {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-		getListView().setAdapter(new ArrayAdapter<String>(this,	android.R.layout.simple_list_item_1, new String[] {
-								 }));
+        getListView().setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, new String[]{
+        }));
 
-	}
-
-	@Override
-	protected void onListItemClick(ListView l, View v, int position, long id)
-	{
-		Intent intent = null;
-		if (position == 0)
-		{
-			//intent = new Intent(this, CircleActivity.class);
-		} else
-		{
-			intent = new Intent(this, MainCircleActivity.class);
-		}
-		startActivity(intent);
-	}
+    }
 
 
 
+    @Override
+    protected void onListItemClick(ListView l, View v, int position, long id) {
+        Intent intent = null;
+        if (position == 0) {
+            //intent = new Intent(this, CircleActivity.class);
+        } else {
+            intent = new Intent(this, MainCircleActivity.class);
+        }
+        startActivity(intent);
+    }
 
 
 }

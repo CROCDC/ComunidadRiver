@@ -5,12 +5,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#2d2d2d"
     tools:context=".View.Activitys.SplashActivity">
 
     <ImageView
-        android:src="@drawable/logocomunidad"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+
+        android:src="@drawable/logofondonegropequeno"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         />
 
 
