@@ -50,7 +50,6 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.5'
     implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
 
-
     //PICASSO
     implementation 'com.squareup.picasso:picasso:2.5.2'
 
@@ -69,7 +68,6 @@ dependencies {
     //ANIMACION DE CARGA FACEBOOK
     implementation 'com.facebook.shimmer:shimmer:0.3.0'
     implementation 'com.github.sharish:ShimmerRecyclerView:v1.3'
-
 
 
 }

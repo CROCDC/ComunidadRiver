@@ -1,7 +1,6 @@
 package com.river.comunidad.comunidadriver.View.Adapters;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -13,7 +12,6 @@ import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.facebook.shimmer.ShimmerFrameLayout;
 import com.river.comunidad.comunidadriver.Model.Model.Noticia;
 import com.river.comunidad.comunidadriver.R;
 import com.river.comunidad.comunidadriver.Utils.Helper;
@@ -25,9 +23,13 @@ public class ListaDeNoticiasAdapter extends RecyclerView.Adapter {
 
     private List<Noticia> listaDeNoticias;
     private Context context;
+    Integer cantidad = 0;
 
-    public ListaDeNoticiasAdapter() {
-    listaDeNoticias = new ArrayList<>();
+    private NotificadorHaciaNoticiasActivity notificadorHaciaNoticiasActivity;
+
+    public ListaDeNoticiasAdapter(NotificadorHaciaNoticiasActivity notificadorHaciaNoticiasActivity) {
+        listaDeNoticias = new ArrayList<>();
+        this.notificadorHaciaNoticiasActivity = notificadorHaciaNoticiasActivity;
     }
 
     public void setListaDeNoticias(List<Noticia> listaDeNoticias) {
@@ -47,7 +49,7 @@ public class ListaDeNoticiasAdapter extends RecyclerView.Adapter {
 
         LayoutInflater layoutInflater = LayoutInflater.from(context);
 
-        View viewDeLaCelda = layoutInflater.inflate(R.layout.celda_noticia,parent,false);
+        View viewDeLaCelda = layoutInflater.inflate(R.layout.celda_noticia, parent, false);
 
         NoticiasViewHolder noticiasViewHolder = new NoticiasViewHolder(viewDeLaCelda);
 
@@ -60,6 +62,7 @@ public class ListaDeNoticiasAdapter extends RecyclerView.Adapter {
 
         NoticiasViewHolder noticiasViewHolder = (NoticiasViewHolder) holder;
 
+
         noticiasViewHolder.cargarNoticia(noticia);
     }
 
@@ -71,8 +74,8 @@ public class ListaDeNoticiasAdapter extends RecyclerView.Adapter {
     private class NoticiasViewHolder extends RecyclerView.ViewHolder {
 
         private ImageView imageViewDeLaNoticia;
-        private WebView webViewTituloDeLaNoticia;
-        private WebView webViewCopeteDeLaNoticia;
+        private TextView webViewTituloDeLaNoticia;
+        private TextView webViewCopeteDeLaNoticia;
 
 
         public NoticiasViewHolder(View itemView) {
@@ -82,24 +85,39 @@ public class ListaDeNoticiasAdapter extends RecyclerView.Adapter {
             webViewTituloDeLaNoticia = itemView.findViewById(R.id.textViewTituloDeLaNoticia_celdanoticia);
             webViewCopeteDeLaNoticia = itemView.findViewById(R.id.textViewCopeteDeLaNoticia_celdanoticia);
 
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    notificadorHaciaNoticiasActivity.notificarANoticiasActivity(listaDeNoticias.get(getAdapterPosition()));
+                }
+            });
+
         }
 
         public void cargarNoticia(Noticia noticia) {
+
             try {
 
-                Helper.cargarImagenes(imageViewDeLaNoticia, context, noticia.getEmbedded().getListaDeImagenes().get(0).getMedia_details().getSizes().getMedium().getSource_url());
-                webViewTituloDeLaNoticia.loadData(noticia.getTitle().getRendered(),"text/html","UTF-8");
-                webViewTituloDeLaNoticia.setBackgroundColor(Color.parseColor("#e02b20"));
+                Helper.cargarImagenes(imageViewDeLaNoticia, context, noticia.getEmbedded().getListaDeImagenes().get(0).getMedia_details().getSizes().getThumbnail().getSource_url());
 
-                WebSettings webSettings = webViewTituloDeLaNoticia.getSettings();
+                webViewTituloDeLaNoticia.setText(noticia.getTitle().getRendered());
+                webViewCopeteDeLaNoticia.setText(noticia.getExcerpt().getRendered());
+                /*webViewTituloDeLaNoticia.loadData(noticia.getTitle().getRendered(), "text/html", "UTF-8");
+                webViewTituloDeLaNoticia.setBackgroundColor(Color.parseColor("#e02b20"));*/
+
+                /*WebSettings webSettings = webViewTituloDeLaNoticia.getSettings();
                 webSettings.setDefaultFontSize(20);
-                webViewTituloDeLaNoticia.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
+                webViewTituloDeLaNoticia.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);*/
 
 
-                webViewCopeteDeLaNoticia.loadData(noticia.getExcerpt().getRendered(),"text/html","UTF-8");
+                /*webViewCopeteDeLaNoticia.loadData(noticia.getExcerpt().getRendered(), "text/html", "UTF-8");*/
             } catch (Exception e) {
-
+                listaDeNoticias.remove(noticia);
             }
         }
+    }
+
+    public interface NotificadorHaciaNoticiasActivity {
+        public void notificarANoticiasActivity(Noticia noticia);
     }
 }

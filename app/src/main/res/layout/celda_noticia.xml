@@ -22,10 +22,10 @@
                 android:id="@+id/imageViewDeLaNoticia_celdanoticia"
                 android:layout_width="match_parent"
                 android:layout_height="320dp"
-                android:scaleType="fitXY"
-                android:src="@drawable/prueba150x150" />
 
-            <WebView
+                />
+
+            <TextView
                 android:id="@+id/textViewTituloDeLaNoticia_celdanoticia"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -35,7 +35,7 @@
                 android:textColor="@color/blanco"
                 android:textSize="30sp" />
 
-            <WebView
+            <TextView
                 android:id="@+id/textViewCopeteDeLaNoticia_celdanoticia"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
