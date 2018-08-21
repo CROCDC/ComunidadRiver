@@ -1,4 +1,4 @@
-package com.river.comunidad.comunidadriver.Model.Model;
+package com.river.comunidad.comunidadriver.Model.Models;
 
 import java.io.Serializable;
 import java.util.List;
@@ -7,10 +7,10 @@ import java.util.List;
  * Created by TCR on 05/06/2018.
  */
 
-public class ListadoDeNotas implements Serializable {
+public class ListadoDeNoticias implements Serializable {
     private List<Noticia> array;
 
-    public ListadoDeNotas(List<Noticia> array) {
+    public ListadoDeNoticias(List<Noticia> array) {
         this.array = array;
     }
 

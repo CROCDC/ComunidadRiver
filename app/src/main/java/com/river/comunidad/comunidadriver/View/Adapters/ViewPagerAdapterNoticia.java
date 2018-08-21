@@ -4,17 +4,17 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import com.river.comunidad.comunidadriver.Model.Model.Noticia;
+import com.river.comunidad.comunidadriver.Model.Models.Noticia;
 import com.river.comunidad.comunidadriver.View.Fragments.FragmentsViewPager.VPNoticiaFragment;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ViewPagerAdapterNoticiaFragment extends FragmentStatePagerAdapter {
+public class ViewPagerAdapterNoticia extends FragmentStatePagerAdapter {
     private List<Fragment> listaDeFragments;
 
 
-    public ViewPagerAdapterNoticiaFragment(FragmentManager fm, List<Noticia> listaDeNoticias) {
+    public ViewPagerAdapterNoticia(FragmentManager fm, List<Noticia> listaDeNoticias) {
         super(fm);
         listaDeFragments = new ArrayList<>();
         for (Noticia noticia : listaDeNoticias) {

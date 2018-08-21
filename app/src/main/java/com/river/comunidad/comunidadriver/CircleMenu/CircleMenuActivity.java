@@ -28,7 +28,6 @@ public class CircleMenuActivity extends ListActivity {
     protected void onListItemClick(ListView l, View v, int position, long id) {
         Intent intent = null;
         if (position == 0) {
-            //intent = new Intent(this, CircleActivity.class);
         } else {
             intent = new Intent(this, MainCircleActivity.class);
         }

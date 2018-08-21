@@ -1,6 +1,8 @@
 package com.river.comunidad.comunidadriver.View.Activitys;
 
 import android.content.Intent;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
@@ -8,34 +10,38 @@ import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.azoft.carousellayoutmanager.CarouselLayoutManager;
 import com.azoft.carousellayoutmanager.CarouselZoomPostLayoutListener;
 import com.azoft.carousellayoutmanager.CenterScrollListener;
 import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
-import com.river.comunidad.comunidadriver.Controler.ControlerNoticias;
-import com.river.comunidad.comunidadriver.Model.Model.Noticia;
+import com.river.comunidad.comunidadriver.Controler.ControlerNoticia;
+import com.river.comunidad.comunidadriver.Model.Models.ListadoDeNoticias;
+import com.river.comunidad.comunidadriver.Model.Models.Noticia;
 
 import com.river.comunidad.comunidadriver.R;
 import com.river.comunidad.comunidadriver.Utils.ResultListener;
 
-import com.river.comunidad.comunidadriver.View.Adapters.ListaDeNoticiasAdapter;
+import com.river.comunidad.comunidadriver.View.Adapters.ListaDeNoticiasEnVerticalAdapter;
 
 import java.util.List;
-
 
 
 public class NoticiasActivity extends AppCompatActivity {
 
 
-    private ListaDeNoticiasAdapter listaDeNoticiasAdapter;
+    private ListaDeNoticiasEnVerticalAdapter listaDeNoticiasEnVerticalAdapter;
     private ShimmerRecyclerView shimmerRecyclerViewListaDeNotiicas;
     private CarouselLayoutManager layoutManager;
 
     private Boolean estaCargando = false;
-    private ControlerNoticias controlerNoticias;
+    private ControlerNoticia controlerNoticia;
     private Toolbar toolbar;
+    private ProgressBar progressBar;
+    private ListadoDeNoticias listadoDeNoticias;
 
 
     @Override
@@ -43,25 +49,29 @@ public class NoticiasActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_noticias);
 
+        progressBar = findViewById(R.id.progressBar_activitynoticias);
         toolbar = findViewById(R.id.toolbarPrincipal_toolbar);
         shimmerRecyclerViewListaDeNotiicas = findViewById(R.id.verticalViewPagerListaNoticias_activitynoticias);
 
         setSupportActionBar(toolbar);
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        final Drawable upArrow = getResources().getDrawable(R.drawable.flechitaback);
+        upArrow.setColorFilter(getResources().getColor(R.color.blancomono), PorterDuff.Mode.SRC_ATOP);
+        getSupportActionBar().setHomeAsUpIndicator(upArrow);
 
-        listaDeNoticiasAdapter = new ListaDeNoticiasAdapter(new ListaDeNoticiasAdapter.NotificadorHaciaNoticiasActivity() {
+        listaDeNoticiasEnVerticalAdapter = new ListaDeNoticiasEnVerticalAdapter(new ListaDeNoticiasEnVerticalAdapter.NotificadorHaciaNoticiasActivity() {
             @Override
-            public void notificarANoticiasActivity(Noticia noticia) {
-                cargarDetalleDeLaNoticia(noticia);
+            public void notificarANoticiasActivity(ListadoDeNoticias listadoDeNoticias, Integer posicionActual) {
+                cargarDetalleDeLaNoticia(listadoDeNoticias, posicionActual);
             }
         });
-        controlerNoticias = new ControlerNoticias();
-        controlerNoticias.pedirListaDeNoticias(5,new ResultListener<List<Noticia>>() {
+        controlerNoticia = new ControlerNoticia(this);
+        controlerNoticia.pedirListaDeNoticias(5, new ResultListener<List<Noticia>>() {
             @Override
             public void finish(List<Noticia> resultado) {
-                listaDeNoticiasAdapter.setListaDeNoticias(resultado);
+                listaDeNoticiasEnVerticalAdapter.setListaDeNoticias(resultado);
+                listadoDeNoticias = new ListadoDeNoticias(resultado);
                 shimmerRecyclerViewListaDeNotiicas.hideShimmerAdapter();
                 estaCargando = false;
             }
@@ -73,15 +83,14 @@ public class NoticiasActivity extends AppCompatActivity {
         shimmerRecyclerViewListaDeNotiicas.setHasFixedSize(true);
         shimmerRecyclerViewListaDeNotiicas.setLayoutManager(layoutManager);
         shimmerRecyclerViewListaDeNotiicas.addOnScrollListener(new CenterScrollListener());
-        shimmerRecyclerViewListaDeNotiicas.setAdapter(listaDeNoticiasAdapter);
+        shimmerRecyclerViewListaDeNotiicas.setAdapter(listaDeNoticiasEnVerticalAdapter);
         shimmerRecyclerViewListaDeNotiicas.showShimmerAdapter();
 
         paginacion();
     }
 
 
-
-    public void paginacion(){
+    public void paginacion() {
 
         shimmerRecyclerViewListaDeNotiicas.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -95,30 +104,35 @@ public class NoticiasActivity extends AppCompatActivity {
                 Integer posicionActual = layoutManager.getCenterItemPosition();
                 Integer ultimaCelda = layoutManager.getItemCount();
 
-                if (posicionActual >= (ultimaCelda - 3)) {
-                    estaCargando = true;
-                    controlerNoticias.pedirListaDeNoticias(5,new ResultListener<List<Noticia>>() {
-                        @Override
-                        public void finish(final List<Noticia> resultado) {
+                if (posicionActual != -1) {
+                    if (posicionActual >= (ultimaCelda - 2)) {
+                        estaCargando = true;
+                        progressBar.setVisibility(View.VISIBLE);
+                        controlerNoticia.pedirListaDeNoticias(5, new ResultListener<List<Noticia>>() {
+                            @Override
+                            public void finish(final List<Noticia> resultado) {
+                                progressBar.setVisibility(View.GONE);
+                                estaCargando = false;
+                                listaDeNoticiasEnVerticalAdapter.agregarNoticiasALaLista(resultado);
 
-                            estaCargando = false;
-                            listaDeNoticiasAdapter.agregarNoticiasALaLista(resultado);
-
-                        }
+                            }
 
 
-                    });
+                        });
+                    }
                 }
+
             }
         });
     }
 
-    public void cargarDetalleDeLaNoticia(Noticia noticia){
-        Intent intent = new Intent(NoticiasActivity.this,DetalleDeUnaNoticiaActivity.class);
+    public void cargarDetalleDeLaNoticia(ListadoDeNoticias listadoDeNoticias, Integer posicionActual) {
+        Intent intent = new Intent(NoticiasActivity.this, DetalleDeUnaNoticiaActivity.class);
 
         Bundle bundle = new Bundle();
 
-        bundle.putSerializable(DetalleDeUnaNoticiaActivity.CLAVE_NOTICIA,noticia);
+        bundle.putSerializable(DetalleDeUnaNoticiaActivity.CLAVE_LISTADENOTICIAS, listadoDeNoticias);
+        bundle.putInt(DetalleDeUnaNoticiaActivity.CLAVE_POSICION, posicionActual);
 
         intent.putExtras(bundle);
 
@@ -128,7 +142,7 @@ public class NoticiasActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.toolbar_menu_principal,menu);
+        getMenuInflater().inflate(R.menu.toolbar_menu_principal, menu);
 
         return true;
     }
@@ -136,10 +150,10 @@ public class NoticiasActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.opcionCuenta:
                 Toast toast = Toast.makeText(this, "account activity", Toast.LENGTH_SHORT);
-                toast.setGravity(Gravity.CENTER_HORIZONTAL,0,0);
+                toast.setGravity(Gravity.CENTER_HORIZONTAL, 0, 0);
                 toast.show();
                 break;
             case 16908332:

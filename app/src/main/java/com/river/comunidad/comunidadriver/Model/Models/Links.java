@@ -1,4 +1,4 @@
-package com.river.comunidad.comunidadriver.Model.Model;
+package com.river.comunidad.comunidadriver.Model.Models;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

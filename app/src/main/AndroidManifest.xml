@@ -6,7 +6,7 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/logofondonegrocentrado"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
@@ -50,7 +50,9 @@
         <activity
             android:name=".View.Activitys.NoticiasActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".View.Activitys.DetalleDeUnaNoticiaActivity"></activity>
+        <activity android:name=".View.Activitys.DetalleDeUnaNoticiaActivity" />
+        <activity android:name=".View.Activitys.AccountActivity" />
+        <activity android:name=".View.Activitys.ComentariosDelUsuarioActivity"></activity>
     </application>
 
 </manifest>

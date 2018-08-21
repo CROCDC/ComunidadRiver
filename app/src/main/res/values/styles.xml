@@ -15,4 +15,17 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="ToolbarColoredBackArrow" parent="AppTheme">
+        <item name="android:textColorSecondary">@color/blancomono</item>
+    </style>
+
+
+    <!--<style name="cardViewFachero">
+        <item name="app:cardUseCompatPadding=">true</item>
+        <item name="app:cardElevation=">10dp</item>
+        <item name=" app:cardBackgroundColor=">@color/negrito</item>
+    </style>-->
+
+
+
 </resources>

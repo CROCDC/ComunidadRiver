@@ -1,4 +1,4 @@
-package com.river.comunidad.comunidadriver.Model.Model;
+package com.river.comunidad.comunidadriver.Model.Models;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -41,8 +41,7 @@ public class Noticia implements Serializable {
         return embedded;
     }
 
-    public Noticia(Integer id, String link, Title title, Content content, Excerpt excerpt, Embedded embedded, List<Integer> categories) {
-        this.id = id;
+    public Noticia(String link, Title title, Content content, Excerpt excerpt, Embedded embedded, List<Integer> categories) {
         this.link = link;
         this.title = title;
         this.content = content;
@@ -56,7 +55,6 @@ public class Noticia implements Serializable {
         return link;
 
     }
-
 
 
     public Integer getFeatured_media() {

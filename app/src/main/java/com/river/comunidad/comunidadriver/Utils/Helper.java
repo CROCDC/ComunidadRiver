@@ -8,41 +8,20 @@ import android.content.Context;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
-import com.river.comunidad.comunidadriver.Model.Model.Excerpt;
-import com.river.comunidad.comunidadriver.Model.Model.Noticia;
+import com.river.comunidad.comunidadriver.Model.Models.Excerpt;
+import com.river.comunidad.comunidadriver.Model.Models.Noticia;
 import com.squareup.picasso.Picasso;
 
 import org.jsoup.Jsoup;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Helper {
     public static final String urlBase = "http://www.comunidadriver.com/wp-json/";
 
-    public static final String urlAPINotification = "http://www.palabras.com.ar/pnfw/register/";
 
-    public static final int BREVES = 44;
-
-    public static final int AMERICA = 53;
-
-    public static final int ANDROID = 10;
-
-    public static final int ARQUITECTURA = 57;
-
-    public static final int ARTESESCENICAS = 49;
-
-    public static final int AUDIOVISUALES = 33;
-
-    public static final int BALANCESYPERSPECTIVAS = 50;
-
-    public static final int BALLET = 35;
-
-    public static final int CINEYSERIES = 3;
-
-    public static final int AGENDA = 34;
-
-    public static final String REFERENCIA_CONTENIDO_FAVORITO = "Notas Favoritas";
+    public static final String REFERENCIA_CONTENIDO_FAVORITO = "Noticias Favoritas";
+    public static final String REFERENCIA_COMENTARIOS ="Comentarios";
 
 
     //Removedor de etiquetas HMTL
@@ -79,26 +58,7 @@ public class Helper {
 
 
 
-    public static List<Noticia> eliminarNoticiasBrevesYAgenda(List<Noticia> listaDeNoticias) {
-        List<Noticia> listaDeNoticiasARemover = new ArrayList<>();
 
-
-        for (Integer i = 0; i < listaDeNoticias.size(); i++) {
-
-            for (Integer j = 0; j < listaDeNoticias.get(i).getCategories().size(); j++) {
-
-                if (listaDeNoticias.get(i).getCategories().get(j).equals(Helper.AGENDA) || listaDeNoticias.get(i).getCategories().get(j).equals(Helper.BREVES)) {
-
-                    listaDeNoticiasARemover.add(listaDeNoticias.get(i));
-
-                }
-            }
-        }
-
-        listaDeNoticias.removeAll(listaDeNoticiasARemover);
-
-        return listaDeNoticias;
-    }
 
 
     public static void cargarImagenes(ImageView imageView, Context context, String url) {

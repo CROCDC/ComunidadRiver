@@ -4,15 +4,14 @@ package com.river.comunidad.comunidadriver.View.Fragments.FragmentsViewPager;
 import android.os.Bundle;
 
 import android.support.v4.app.Fragment;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.river.comunidad.comunidadriver.Model.Model.Noticia;
+import com.river.comunidad.comunidadriver.Model.Models.Noticia;
 import com.river.comunidad.comunidadriver.R;
 import com.river.comunidad.comunidadriver.Utils.Helper;
 
@@ -23,13 +22,14 @@ public class DetalleDeUnaNoticiaFragment extends Fragment {
 
 
     public static final String CLAVE_NOTICIA = "noticia fragment";
+    public static final String CLAVE_LISTA_NOTICIAS = "lista de noticias";
 
     private Noticia noticia;
 
 
     private ImageView imageViewDeLaNoticia;
     private TextView textViewTituloDeLaNoticia;
-    private WebView webViewContenidoDeLaNoticia;
+    private TextView textViewContenidoDeLaNoticia;
 
     public static DetalleDeUnaNoticiaFragment fabricaDeFragmentsDetalleDeUnaNoticia(Noticia noticia) {
         DetalleDeUnaNoticiaFragment detalleDeUnaNoticiaFragment = new DetalleDeUnaNoticiaFragment();
@@ -52,7 +52,8 @@ public class DetalleDeUnaNoticiaFragment extends Fragment {
 
         imageViewDeLaNoticia = view.findViewById(R.id.imageViewDeLaNoticia_fragmentdetalledeunanoticia);
         textViewTituloDeLaNoticia = view.findViewById(R.id.textViewTituloDeLaNoticia_fragmentdetalledeunanoticia);
-        webViewContenidoDeLaNoticia = view.findViewById(R.id.webViewContenidoDeLaNoticia_fragmentdetalledeunanoticia);
+        textViewContenidoDeLaNoticia = view.findViewById(R.id.webViewContenidoDeLaNoticia_fragmentdetalledeunanoticia);
+
 
         Bundle bundle = getArguments();
 
@@ -62,12 +63,13 @@ public class DetalleDeUnaNoticiaFragment extends Fragment {
             Helper.cargarImagenes(imageViewDeLaNoticia, getContext(), noticia.getEmbedded().getListaDeImagenes().get(0).getMedia_details().getSizes().getMedium_Large().getSource_url());
 
         } catch (Exception e) {
-            Toast.makeText(getContext(), "te debo la imagen", Toast.LENGTH_SHORT).show();
+            Helper.cargarImagenes(imageViewDeLaNoticia, getContext(), noticia.getEmbedded().getListaDeImagenes().get(0).getsource_url());
         }
 
         textViewTituloDeLaNoticia.setText(noticia.getTitle().getRendered());
 
-        webViewContenidoDeLaNoticia.loadData(noticia.getContent().getRendered(), "text/html", "UTF-8")
+        textViewContenidoDeLaNoticia.setText(Html.fromHtml(noticia.getContent().getRendered()));
+
 
         return view;
     }

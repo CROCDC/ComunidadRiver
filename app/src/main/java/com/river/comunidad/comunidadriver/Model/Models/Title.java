@@ -1,4 +1,4 @@
-package com.river.comunidad.comunidadriver.Model.Model;
+package com.river.comunidad.comunidadriver.Model.Models;
 /*
   Creado por Camilo 05/06/2018.
  */

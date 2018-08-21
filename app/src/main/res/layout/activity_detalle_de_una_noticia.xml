@@ -1,21 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:id="@+id/linearLayoutContenedor"
     tools:context=".View.Activitys.DetalleDeUnaNoticiaActivity">
 
+    <include
 
-    <include layout="@layout/toolbar" />
+        layout="@layout/toolbar" />
+
 
     <android.support.v4.view.ViewPager
+        android:layout_marginTop="50dp"
         android:id="@+id/viewPagerListaDeNoticias_activitydetalledeunanoticia"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        >
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
     </android.support.v4.view.ViewPager>
 
-</LinearLayout>
+
+</FrameLayout>

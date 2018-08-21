@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:background="@color/rojo"
+    android:layout_height="match_parent"
+    tools:context=".View.Activitys.ComentariosDelUsuarioActivity">
+
+    <include layout="@layout/toolbar" />
+
+    <TextView
+        android:layout_margin="10dp"
+        android:textColor="@color/blanco"
+        android:gravity="center"
+        android:text="@string/tus_comentarios"
+        android:textSize="25sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerViewListaDeComentariosDelUsuario_activitycomentariosdelusuario"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </android.support.v7.widget.RecyclerView>
+
+
+</LinearLayout>

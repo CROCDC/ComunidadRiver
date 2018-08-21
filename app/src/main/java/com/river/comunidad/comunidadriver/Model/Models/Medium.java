@@ -1,8 +1,8 @@
-package com.river.comunidad.comunidadriver.Model.Model;
+package com.river.comunidad.comunidadriver.Model.Models;
 
 import java.io.Serializable;
 
-public class MediumLarge implements Serializable {
+public class Medium implements Serializable {
     private String source_url;
 
     public String getSource_url() {

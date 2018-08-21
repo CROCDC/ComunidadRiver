@@ -19,27 +19,26 @@
             android:layout_height="wrap_content">
 
             <ImageView
-                android:id="@+id/imageViewDeLaNoticia_celdanoticia"
-                android:layout_width="match_parent"
-                android:layout_height="320dp"
-
-                />
+                android:scaleType="centerCrop"
+                android:id="@+id/imageViewDeLaNoticia_celdanoticiavertical"
+                android:layout_height="260dp"
+                android:layout_width="match_parent" />
 
             <TextView
-                android:id="@+id/textViewTituloDeLaNoticia_celdanoticia"
+                android:id="@+id/textViewTituloDeLaNoticia_celdanoticiavertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignBottom="@id/imageViewDeLaNoticia_celdanoticia"
+                android:layout_alignBottom="@id/imageViewDeLaNoticia_celdanoticiavertical"
                 android:background="@color/rojoTrasparente"
                 android:padding="10dp"
                 android:textColor="@color/blanco"
-                android:textSize="30sp" />
+                android:textSize="22sp" />
 
             <TextView
-                android:id="@+id/textViewCopeteDeLaNoticia_celdanoticia"
+                android:id="@+id/textViewCopeteDeLaNoticia_celdanoticiavertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/textViewTituloDeLaNoticia_celdanoticia"
+                android:layout_below="@id/textViewTituloDeLaNoticia_celdanoticiavertical"
                 android:layout_margin="10dp"
                 android:textColor="@color/negro"
                 android:textSize="15sp" />

@@ -1,11 +1,10 @@
-<resources>
+<resources xmlns:android="http://schemas.android.com/tools">
     <string name="app_name">Comunidad River</string>
 
 
     <string name="facebook_app_id">245256096094012</string>
     <string name="fb_login_protocol_scheme">fb245256096094012</string>
     <string name="continuar_como_invitado">Continuar como invitado</string>
-    <string name="nombre_de_usuario">Nombre de usuario</string>
     <string name="contrase_a">Contraseña</string>
     <string name="iniciar_sesi_n">Iniciar sesión</string>
     <string name="registrarse">Registrarse</string>
@@ -14,4 +13,23 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="cuenta">Cuenta</string>
     <string name="back">back</string>
+    <string name="compartir">Compartir</string>
+    <string name="me_gusta">Me gusta</string>
+
+    <string name="appbar_scrolling_view_behavior" translatable="false">android.support.design.widget.AppBarLayout$ScrollingViewBehavior</string>
+    <string name="o">O</string>
+    <string name="guardado">Guardado</string>
+    <string name="ultimas_noticias">Ultimas Noticias</string>
+    <string name="comentarios">Comentarios</string>
+    <string name="publicar_un_comentario">Publicar un comentario</string>
+    <string name="publicar">Publicar</string>
+    <string name="todos_los_comentarios">Todos los comentarios</string>
+    <string name="nombre_de_usuario">Nombre de usuario</string>
+    <string name="hace_1_hora">hace 1 hora</string>
+
+    <string name="com.twitter.sdk.android.CONSUMER_KEY">8nerl7OVcEvglqgQA8JKDIaRf </string>
+    <string name="com.twitter.sdk.android.CONSUMER_SECRET">dGMqE9a9auhKZUC8vRfaOT6ax0aZf1oKIGYGboVqWJJXOqICUQ </string>
+    <string name="cerrar_sesion">Cerrar Sesion</string>
+    <string name="tus_comentarios">Tus Comentarios</string>
+
 </resources>

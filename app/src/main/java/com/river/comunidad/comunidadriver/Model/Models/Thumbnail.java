@@ -1,4 +1,4 @@
-package com.river.comunidad.comunidadriver.Model.Model;
+package com.river.comunidad.comunidadriver.Model.Models;
 
 import java.io.Serializable;
 

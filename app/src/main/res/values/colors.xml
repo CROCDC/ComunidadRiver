@@ -1,11 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#e02b20</color>
-    <color name="colorPrimaryDark">#e02b20</color>
-    <color name="colorAccent">#FF4081</color>
-    <color name="rojo">#e02b20</color>
-    <color name="rojoTrasparente">#a7e02b20</color>
+    <color name="colorPrimary">#9C0000</color>
+    <color name="colorPrimaryDark">#670000</color>
+    <color name="colorAccent">#d5442b</color>
+    <color name="rojoTrasparente">#b89c0000</color>
     <color name="blanco">#FFFF</color>
+    <color name="blancoTransparente">#9dffffff</color>
     <color name="negro">#000000</color>
-    <color name="gris">#7b7b7b</color>
+
+
+
+
+    <color name="rojo">#9C0000</color>
+    <color name="blancomono">#eff0eb</color>
+    <color name="negrito">#2D2D2D</color>
+    <color name="negritoTransparente">#c92d2d2d</color>
+    <color name="gris">#afabac</color>
+    <color name="grisoscuro">#ea665d58</color>
 </resources>

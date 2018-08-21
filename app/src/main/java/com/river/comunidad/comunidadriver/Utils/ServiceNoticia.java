@@ -1,6 +1,6 @@
 package com.river.comunidad.comunidadriver.Utils;
 
-import com.river.comunidad.comunidadriver.Model.Model.Noticia;
+import com.river.comunidad.comunidadriver.Model.Models.Noticia;
 
 import java.util.List;
 

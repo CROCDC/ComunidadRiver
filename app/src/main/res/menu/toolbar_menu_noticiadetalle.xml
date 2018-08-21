@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/opcionCompartir"
+        android:icon="@drawable/share"
+        android:title="@string/compartir"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/opcionLike"
+        android:icon="@drawable/like"
+        android:title="@string/me_gusta"
+        app:showAsAction="always" />
+    <item
+        app:showAsAction="always"
+        android:id="@+id/opcionComentarios"
+        android:icon="@drawable/comentarios"
+        android:title="@string/comentarios">
+
+    </item>
+
+
+</menu>
