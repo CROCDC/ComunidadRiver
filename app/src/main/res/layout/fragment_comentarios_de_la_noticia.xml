@@ -9,19 +9,20 @@
     tools:context=".View.Fragments.ComentariosDeLaNoticiaFragment">
 
     <ScrollView
-        android:fillViewport="true"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <LinearLayout
+            android:fillViewport="true"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:layout_marginTop="70dp"
             android:paddingBottom="60dp"
             android:background="@color/blanco"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            >
 
 
             <TextView
@@ -83,9 +84,10 @@
             </View>
 
             <android.support.v7.widget.RecyclerView
+                android:fillViewport="true"
                 android:id="@+id/recyclerViewListaDeComentariosDeLaNoticia_fragmentcomentariosdelanoticia"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_margin="10dp">
 
             </android.support.v7.widget.RecyclerView>

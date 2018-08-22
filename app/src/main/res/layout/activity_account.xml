@@ -76,6 +76,7 @@
         </android.support.v7.widget.CardView>
 
         <android.support.v7.widget.CardView
+            android:id="@+id/cardViewButtonComentarios_activityaccount"
             android:layout_width="155dp"
             android:layout_height="60dp"
             android:layout_alignBottom="@id/cardViewButtonGuardado_activityaccount"

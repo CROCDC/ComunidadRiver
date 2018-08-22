@@ -2,7 +2,9 @@ package com.river.comunidad.comunidadriver.View.Adapters;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,8 +15,10 @@ import com.river.comunidad.comunidadriver.Model.Models.Comentario;
 import com.river.comunidad.comunidadriver.R;
 import com.river.comunidad.comunidadriver.Utils.Helper;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TimeZone;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -68,6 +72,7 @@ public class ListaDeComentariosAdapter extends RecyclerView.Adapter {
         private TextView textViewContendioDelComentario;
         private TextView textViewCantidadDeLikes;
         private TextView textViewCantidadDeDisLikes;
+        private RecyclerView recyclerViewListaDeRespuestas;
 
         public ComentariosViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -77,12 +82,29 @@ public class ListaDeComentariosAdapter extends RecyclerView.Adapter {
             textViewContendioDelComentario = itemView.findViewById(R.id.textViewContenidoDelComentario_celdacomentario);
             textViewCantidadDeLikes = itemView.findViewById(R.id.textViewCantidadDeLikesDelComentario_celdacomentario);
             textViewCantidadDeDisLikes = itemView.findViewById(R.id.textViewCantidadDeDisLikes_celdacomentario);
+            recyclerViewListaDeRespuestas = itemView.findViewById(R.id.recyclerViewListaDeRespuestas_celdacomentario);
         }
 
         public void cargarComentario(Comentario comentario) {
+
+            ListaDeRespuestasAdapter listaDeRespuestasAdapter = new ListaDeRespuestasAdapter();
+
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false) {
+                //UTILIZO ESTO PARA DESHABILITAR LA POSIBILIDAD DE SCROLLEAR EN EL RECYCLERVIEW
+                @Override
+                public boolean canScrollVertically() {
+                    return false;
+                }
+            };
+
+            listaDeRespuestasAdapter.setListaDeRespuestas(comentario.getListaDeRespuestas());
+
+            recyclerViewListaDeRespuestas.setLayoutManager(linearLayoutManager);
+
+            recyclerViewListaDeRespuestas.setAdapter(listaDeRespuestasAdapter);
+
             Helper.cargarImagenes(circleImageViewUsuario, context, comentario.getUrlImagen());
             textViewNombreDeUsuario.setText(comentario.getUsuario());
-            textViewFechaDePublicacionDelComentario.setText(comentario.getFechaDePublicacion());
             textViewContendioDelComentario.setText(comentario.getTexto());
             textViewCantidadDeLikes.setText(comentario.getLikes().toString());
             textViewCantidadDeDisLikes.setText(comentario.getDisLikes().toString());

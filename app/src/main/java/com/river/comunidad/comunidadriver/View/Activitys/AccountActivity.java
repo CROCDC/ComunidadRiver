@@ -1,8 +1,7 @@
 package com.river.comunidad.comunidadriver.View.Activitys;
 
 import android.content.Intent;
-import android.graphics.BlurMaskFilter;
-import android.graphics.Color;
+
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
@@ -18,7 +17,6 @@ import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.jackandphantom.blurimage.BlurImage;
 import com.river.comunidad.comunidadriver.R;
-import com.river.comunidad.comunidadriver.Utils.Helper;
 import com.shashank.sony.fancytoastlib.FancyToast;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -55,7 +53,7 @@ public class AccountActivity extends AppCompatActivity {
         cardViewButtonCerrarSesion = findViewById(R.id.cardViewButtonCerrarSesion_activityaccount);
         cardViewButtonIniciarSesion = findViewById(R.id.cardViewButtonIniciarSesion_activityaccount);
         cardViewButtonGuardado = findViewById(R.id.cardViewButtonGuardado_activityaccount);
-        cardViewButtonComentarios = findViewById(R.id.cardViewButtonPublicarComentario_fragmentcomentariosdelanoticia);
+        cardViewButtonComentarios = findViewById(R.id.cardViewButtonComentarios_activityaccount);
 
         if (FirebaseAuth.getInstance().getCurrentUser() != null) {
             Glide.with(getApplicationContext())
