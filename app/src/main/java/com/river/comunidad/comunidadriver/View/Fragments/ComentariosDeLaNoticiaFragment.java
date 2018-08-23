@@ -1,6 +1,7 @@
 package com.river.comunidad.comunidadriver.View.Fragments;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.annotation.Nullable;
@@ -12,27 +13,31 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.river.comunidad.comunidadriver.Controler.ControllerNoticiaFirebase;
 import com.river.comunidad.comunidadriver.Model.Models.Comentario;
+import com.river.comunidad.comunidadriver.Model.Models.DisLike;
+import com.river.comunidad.comunidadriver.Model.Models.Like;
 import com.river.comunidad.comunidadriver.Model.Models.Respuesta;
 import com.river.comunidad.comunidadriver.R;
 import com.river.comunidad.comunidadriver.Utils.ResultListener;
 import com.river.comunidad.comunidadriver.View.Adapters.ListaDeComentariosAdapter;
+import com.river.comunidad.comunidadriver.View.Adapters.ListaDeNoticiasEnVerticalAdapter;
 import com.shashank.sony.fancytoastlib.FancyToast;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
+
+import static com.facebook.FacebookSdk.getApplicationContext;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class ComentariosDeLaNoticiaFragment extends android.support.v4.app.Fragment {
 
+    private NotificadorHaciaDetalleDeUnaNoticiaActivity notificador;
 
     public static final String CLAVE_IDNOTICIA = "clave noticia";
 
@@ -62,6 +67,12 @@ public class ComentariosDeLaNoticiaFragment extends android.support.v4.app.Fragm
     }
 
     @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        notificador = (NotificadorHaciaDetalleDeUnaNoticiaActivity) context;
+    }
+
+    @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -69,7 +80,65 @@ public class ComentariosDeLaNoticiaFragment extends android.support.v4.app.Fragm
 
         idNoticia = bundle.getInt(CLAVE_IDNOTICIA);
 
-        listaDeComentariosAdapter = new ListaDeComentariosAdapter();
+        listaDeComentariosAdapter = new ListaDeComentariosAdapter(new ListaDeComentariosAdapter.NotificadorHaciaImplementadorDeComentariosAdapter() {
+            @Override
+            public void notificar() {
+            }
+
+            @Override
+            public void noticicarTouchLikeButton(final Integer idComentario) {
+                if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+                    new ControllerNoticiaFirebase(getContext()).verfificarSiElUsuarioYaLikeo(idNoticia, idComentario, FirebaseAuth.getInstance().getCurrentUser().getUid(), new ResultListener<Boolean>() {
+                        @Override
+                        public void finish(Boolean resultado) {
+                            if (resultado) {
+                                new ControllerNoticiaFirebase(getApplicationContext()).darLikeAUnComentario(idNoticia, idComentario, new ResultListener<Boolean>() {
+                                    @Override
+                                    public void finish(Boolean resultado) {
+                                        if (resultado) {
+                                            pedirComentarios();
+                                        }
+                                    }
+                                });
+                            } else {
+                                FancyToast.makeText(getContext(), "solo puede opinar una vez", FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
+                            }
+                        }
+                    });
+                } else {
+                    FancyToast.makeText(getContext(), "solo puede opinar una vez", FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
+
+                }
+
+            }
+
+            @Override
+            public void notificarTouchDisLikeButton(final Integer idComentario) {
+                if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+                    new ControllerNoticiaFirebase(getContext()).verfificarSiElUsuarioYaDisLikeo(idNoticia, idComentario, FirebaseAuth.getInstance().getCurrentUser().getUid(), new ResultListener<Boolean>() {
+                        @Override
+                        public void finish(Boolean resultado) {
+                            if (resultado) {
+                                new ControllerNoticiaFirebase(getContext()).darDisLikeAUnComentario(idNoticia, idComentario, new ResultListener<Boolean>() {
+                                    @Override
+                                    public void finish(Boolean resultado) {
+                                        if (resultado) {
+                                            pedirComentarios();
+                                        }
+                                    }
+                                });
+                            } else {
+                                FancyToast.makeText(getContext(), "solo puede opinar una vez", FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
+                            }
+                        }
+                    });
+                } else {
+                    FancyToast.makeText(getContext(), "solo puede opinar una vez", FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
+
+                }
+
+            }
+        });
         pedirComentarios();
 
     }
@@ -96,7 +165,6 @@ public class ComentariosDeLaNoticiaFragment extends android.support.v4.app.Fragm
             }
         };
 
-
         recyclerViewListaDeComentarios.setLayoutManager(linearLayoutManager);
 
 
@@ -110,33 +178,47 @@ public class ComentariosDeLaNoticiaFragment extends android.support.v4.app.Fragm
         cardViewButtonPublicar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!editTextComentarioDelUsuario.getText().toString().equals("")) {
-                    List<Respuesta> listaDeRespuestas = new ArrayList<>();
 
-                    listaDeRespuestas.add(new Respuesta("Camilo Romero",FirebaseAuth.getInstance().getCurrentUser().getUid(),FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl().toString(),0,0,"jajaja","hace una hora"));
-                    listaDeRespuestas.add(new Respuesta("Camilo Romero",FirebaseAuth.getInstance().getCurrentUser().getUid(),FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl().toString(),0,0,"jajaja","hace una hora"));
+                if (FirebaseAuth.getInstance().getCurrentUser() != null) {
 
-                    Date currentTime = Calendar.getInstance().getTime();
+                    if (!editTextComentarioDelUsuario.getText().toString().equals("")) {
+                        List<Respuesta> listaDeRespuestas = new ArrayList<>();
 
-                    comentario = new Comentario(FirebaseAuth.getInstance().getCurrentUser().getUid(), idNoticia, FirebaseAuth.getInstance().getCurrentUser().getDisplayName(), FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl().toString(), 0, 0, editTextComentarioDelUsuario.getText().toString(), currentTime.toString(), listaDeRespuestas);
+                        listaDeRespuestas.add(new Respuesta("Camilo Romero", FirebaseAuth.getInstance().getCurrentUser().getUid(), FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl().toString(), 0, 0, "jajaja", "hace una hora"));
+                        listaDeRespuestas.add(new Respuesta("Camilo Romero", FirebaseAuth.getInstance().getCurrentUser().getUid(), FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl().toString(), 0, 0, "jajaja", "hace una hora"));
 
-                    new ControllerNoticiaFirebase(getContext()).publicarComentario(idNoticia, comentario, new ResultListener<Boolean>() {
-                        @Override
-                        public void finish(Boolean resultado) {
-                            if (resultado) {
-                                FancyToast.makeText(getContext(), "Comentario Publicado", FancyToast.LENGTH_SHORT, FancyToast.SUCCESS, false).show();
-                                pedirComentarios();
-                                editTextComentarioDelUsuario.setText("");
-                            } else {
-                                FancyToast.makeText(getContext(), "a ocurrido un error por favor intente nuevamente", FancyToast.LENGTH_SHORT, FancyToast.SUCCESS, false).show();
+                        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                        List<String> usuarios = new ArrayList<>();
 
+                        Like like = new Like(0, usuarios);
+                        DisLike disLike = new DisLike(0, usuarios);
+
+
+                        comentario = new Comentario(idNoticia, user.getUid(), user.getDisplayName(), user.getPhotoUrl().toString(), like, disLike, editTextComentarioDelUsuario.getText().toString(), System.currentTimeMillis(), listaDeRespuestas);
+
+                        new ControllerNoticiaFirebase(getContext()).publicarComentario(idNoticia, comentario, new ResultListener<Boolean>() {
+                            @Override
+                            public void finish(Boolean resultado) {
+                                if (resultado) {
+                                    FancyToast.makeText(getContext(), "Comentario Publicado", FancyToast.LENGTH_SHORT, FancyToast.SUCCESS, false).show();
+                                    pedirComentarios();
+                                    editTextComentarioDelUsuario.setText("");
+                                } else {
+                                    FancyToast.makeText(getContext(), "a ocurrido un error por favor intente nuevamente", FancyToast.LENGTH_SHORT, FancyToast.SUCCESS, false).show();
+
+                                }
                             }
-                        }
-                    });
+                        });
+                    } else {
+                        FancyToast.makeText(getContext(), "Por favor escriba un comentario antes de publicarlo", FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
+                    }
                 } else {
-                    FancyToast.makeText(getContext(), "Por favor escriba un comentario antes de publicarlo", FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
+                    FancyToast.makeText(getContext(), "solo puede opinar una vez", FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
+
                 }
+
             }
+
         });
     }
 
@@ -145,8 +227,17 @@ public class ComentariosDeLaNoticiaFragment extends android.support.v4.app.Fragm
             @Override
             public void finish(List<Comentario> resultado) {
                 listaDeComentariosAdapter.setListaDeComentarios(resultado);
+                textViewCantidadDeComentarios.setText("Todos los comentarios (" + resultado.size() + ")");
 
             }
         });
+    }
+
+    public interface NotificadorHaciaDetalleDeUnaNoticiaActivity {
+        public void notificarTouchLikeButton(Integer idComentario);
+    }
+
+    public interface NotificadorHaciaComentariosAdapter {
+        public void notificarSumarLike();
     }
 }

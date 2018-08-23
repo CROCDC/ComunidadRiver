@@ -12,33 +12,42 @@ public class Comentario {
     private String usuario;
     private String usuarioUID;
     private String urlImagen;
-    private Integer likes;
-    private Integer disLikes;
+    private Like like;
+    private DisLike disLike;
     private String texto;
-    private String fechaDePublicacion;
+    private long fechaDePublicacion;
     private List<Respuesta> listaDeRespuestas;
+
+
 
     public Comentario() {
     }
 
-    public Comentario(String usuarioUID, Integer idNoticia, String usuario, String urlImagen, Integer likes, Integer disLikes, String texto, String fechaDePublicacion, List<Respuesta> respuestas) {
-        this.usuarioUID = usuarioUID;
+    public Comentario(Integer idNoticia, String usuarioUID, String usuario, String urlImagen, Like like, DisLike disLike, String texto, long fechaDePublicacion, List<Respuesta> listaDeRespuestas) {
         this.idNoticia = idNoticia;
         this.usuario = usuario;
+        this.usuarioUID = usuarioUID;
         this.urlImagen = urlImagen;
-        this.likes = likes;
-        this.disLikes = disLikes;
+        this.like = like;
+        this.disLike = disLike;
         this.texto = texto;
         this.fechaDePublicacion = fechaDePublicacion;
-        this.listaDeRespuestas = respuestas;
+        this.listaDeRespuestas = listaDeRespuestas;
+    }
+
+    public void setLike(Like like) {
+        this.like = like;
+    }
+    public Like getLike() {
+        return like;
+    }
+
+    public DisLike getDisLike() {
+        return disLike;
     }
 
     public String getUsuario() {
         return usuario;
-    }
-
-    public Integer getDisLikes() {
-        return disLikes;
     }
 
     public String getUrlImagen() {
@@ -53,10 +62,6 @@ public class Comentario {
         return usuarioUID;
     }
 
-    public Integer getLikes() {
-        return likes;
-    }
-
     public String getTexto() {
         return texto;
     }
@@ -65,7 +70,7 @@ public class Comentario {
         return listaDeRespuestas;
     }
 
-    public String getFechaDePublicacion() {
+    public long getFechaDePublicacion() {
         return fechaDePublicacion;
     }
 }

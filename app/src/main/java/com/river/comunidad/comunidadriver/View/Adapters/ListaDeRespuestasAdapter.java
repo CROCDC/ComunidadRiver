@@ -2,14 +2,12 @@ package com.river.comunidad.comunidadriver.View.Adapters;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.river.comunidad.comunidadriver.Model.Models.Comentario;
 import com.river.comunidad.comunidadriver.Model.Models.Respuesta;
 import com.river.comunidad.comunidadriver.R;
 import com.river.comunidad.comunidadriver.Utils.Helper;
@@ -23,9 +21,13 @@ public class ListaDeRespuestasAdapter extends RecyclerView.Adapter {
 
     private List<Respuesta> listaDeRespuestas;
     private Context context;
+    private RecyclerView recyclerView;
+    private NotificarClick NotificarClick;
 
-    public ListaDeRespuestasAdapter() {
+    public ListaDeRespuestasAdapter(NotificarClick NotificarClick) {
         listaDeRespuestas = new ArrayList<>();
+        this.NotificarClick = NotificarClick;
+
     }
 
     public void setListaDeRespuestas(List<Respuesta> listaDeRespuestas) {
@@ -55,6 +57,8 @@ public class ListaDeRespuestasAdapter extends RecyclerView.Adapter {
         RespuestasViewHolder respuestasViewHolder = (RespuestasViewHolder) viewHolder;
 
         respuestasViewHolder.cargarRespuesta(respuesta);
+
+        NotificarClick.notificar();
     }
 
     @Override
@@ -92,5 +96,9 @@ public class ListaDeRespuestasAdapter extends RecyclerView.Adapter {
 
 
         }
+    }
+
+    public interface NotificarClick {
+        public void notificar();
     }
 }

@@ -26,9 +26,10 @@ import com.river.comunidad.comunidadriver.View.Adapters.ViewPagerAdaperDetalleNo
 import com.river.comunidad.comunidadriver.View.Fragments.ComentariosDeLaNoticiaFragment;
 import com.shashank.sony.fancytoastlib.FancyToast;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class DetalleDeUnaNoticiaActivity extends AppCompatActivity {
+public class DetalleDeUnaNoticiaActivity extends AppCompatActivity implements ComentariosDeLaNoticiaFragment.NotificadorHaciaDetalleDeUnaNoticiaActivity {
 
     public static final String CLAVE_LISTADENOTICIAS = "lista de noticias";
     public static final String CLAVE_POSICION = "posicion noticia actual";
@@ -41,11 +42,6 @@ public class DetalleDeUnaNoticiaActivity extends AppCompatActivity {
     private ViewPager viewPagerListaDeNoticias;
     private ViewPagerAdaperDetalleNoticia viewPagerAdaperDetalleNoticia;
 
-    private RecyclerView recyclerViewListaDeUltimasNoticias;
-    private ListaDeNoticiasEnHorizontalAdapter listaDeNoticiasEnHorizontalAdapter;
-
-    private Integer cantidadDePedidos;
-    private ControlerNoticia controlerNoticia;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +56,6 @@ public class DetalleDeUnaNoticiaActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-
         getSupportActionBar().setTitle("");
 
         Intent intent = getIntent();
@@ -68,13 +63,15 @@ public class DetalleDeUnaNoticiaActivity extends AppCompatActivity {
         Bundle bundle = intent.getExtras();
 
         listadoDeNoticias = (ListadoDeNoticias) bundle.getSerializable(CLAVE_LISTADENOTICIAS);
-        posicionActual = bundle.getInt(CLAVE_POSICION);
 
+        posicionActual = bundle.getInt(CLAVE_POSICION);
         viewPagerAdaperDetalleNoticia = new ViewPagerAdaperDetalleNoticia(getSupportFragmentManager(), listadoDeNoticias.getArray());
 
         viewPagerListaDeNoticias.setAdapter(viewPagerAdaperDetalleNoticia);
 
         viewPagerListaDeNoticias.setCurrentItem(posicionActual);
+
+        informacionScrollViewPager();
 
 
     }
@@ -118,7 +115,7 @@ public class DetalleDeUnaNoticiaActivity extends AppCompatActivity {
                                         if (resultado) {
                                             FancyToast.makeText(getApplicationContext(), " la Noticia a sido Guardada", Toast.LENGTH_LONG, FancyToast.SUCCESS, false).show();
                                         } else {
-                                            FancyToast.makeText(getApplicationContext(),"Ocurrio un error por favor reintente mas tarde",FancyToast.LENGTH_SHORT,FancyToast.ERROR,false).show();
+                                            FancyToast.makeText(getApplicationContext(), "Ocurrio un error por favor reintente mas tarde", FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                                         }
                                     }
                                 });
@@ -130,7 +127,7 @@ public class DetalleDeUnaNoticiaActivity extends AppCompatActivity {
                         }
                     });
                 } else {
-                    FancyToast.makeText(getApplicationContext(), "Debe estas logueado para acceder a esta funcion ", Toast.LENGTH_LONG, FancyToast.ERROR, false).show();
+                    FancyToast.makeText(getApplicationContext(), "Debes estas logueado para acceder a esta funcion ", Toast.LENGTH_LONG, FancyToast.ERROR, false).show();
 
                 }
                 break;
@@ -139,7 +136,7 @@ public class DetalleDeUnaNoticiaActivity extends AppCompatActivity {
                 ComentariosDeLaNoticiaFragment comentariosDeLaNoticiaFragment = ComentariosDeLaNoticiaFragment.fabricaDeFragmentsComentariosDeLaNoticia(listadoDeNoticias.getArray().get(posicionActual).getId());
                 FragmentManager fragmentManager = getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.linearLayoutContenedor, comentariosDeLaNoticiaFragment);
+                fragmentTransaction.replace(R.id.linearLayoutContenedor, comentariosDeLaNoticiaFragment).addToBackStack("camilo");
                 fragmentTransaction.commit();
                 break;
         }
@@ -147,36 +144,36 @@ public class DetalleDeUnaNoticiaActivity extends AppCompatActivity {
 
     }
 
-    public void paginacionViewPager() {
-        cantidadDePedidos = 1;
-        controlerNoticia = new ControlerNoticia(this);
+    public void informacionScrollViewPager() {
+
         viewPagerListaDeNoticias.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
-            public void onPageScrolled(final int i, float v, int i1) {
-
-                if (viewPagerListaDeNoticias.getCurrentItem() > 3 * cantidadDePedidos) {
-                    cantidadDePedidos += 1;
-                    controlerNoticia.pedirListaDeNoticiasPaginado(10, cantidadDePedidos, new ResultListener<List<Noticia>>() {
-                        @Override
-                        public void finish(List<Noticia> resultado) {
-                            viewPagerAdaperDetalleNoticia.agregarNoticiasALaLista(resultado);
-                        }
-                    });
-                }
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                posicionActual = position;
 
             }
 
             @Override
-            public void onPageSelected(int i) {
+            public void onPageSelected(int position) {
 
             }
 
             @Override
-            public void onPageScrollStateChanged(int i) {
+            public void onPageScrollStateChanged(int state) {
 
             }
         });
+    }
 
+
+    @Override
+    public void notificarTouchLikeButton(final Integer idComentario) {
 
     }
+
+
 }
+
+
+
+

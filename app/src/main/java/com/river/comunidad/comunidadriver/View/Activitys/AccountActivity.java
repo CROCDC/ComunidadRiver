@@ -86,7 +86,7 @@ public class AccountActivity extends AppCompatActivity {
                 FirebaseAuth.getInstance().signOut();
                 FancyToast.makeText(getApplicationContext(), "sesion cerrada", FancyToast.LENGTH_SHORT, FancyToast.SUCCESS, false).show();
                 cardViewButtonCerrarSesion.setVisibility(View.GONE);
-                cardViewButtonIniciarSesion.setVisibility(View.GONE);
+                cardViewButtonIniciarSesion.setVisibility(View.VISIBLE);
             }
         });
     }
