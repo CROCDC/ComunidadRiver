@@ -24,13 +24,10 @@ import com.river.comunidad.comunidadriver.Model.Models.Respuesta;
 import com.river.comunidad.comunidadriver.R;
 import com.river.comunidad.comunidadriver.Utils.ResultListener;
 import com.river.comunidad.comunidadriver.View.Adapters.ListaDeComentariosAdapter;
-import com.river.comunidad.comunidadriver.View.Adapters.ListaDeNoticiasEnVerticalAdapter;
 import com.shashank.sony.fancytoastlib.FancyToast;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.facebook.FacebookSdk.getApplicationContext;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -47,6 +44,7 @@ public class ComentariosDeLaNoticiaFragment extends android.support.v4.app.Fragm
     private TextView textViewCantidadDeComentarios;
     private RecyclerView recyclerViewListaDeComentarios;
     private ListaDeComentariosAdapter listaDeComentariosAdapter;
+    private ControllerNoticiaFirebase controllerNoticiaFirebase;
 
     private Comentario comentario;
 
@@ -79,7 +77,7 @@ public class ComentariosDeLaNoticiaFragment extends android.support.v4.app.Fragm
         Bundle bundle = getArguments();
 
         idNoticia = bundle.getInt(CLAVE_IDNOTICIA);
-
+        controllerNoticiaFirebase = new ControllerNoticiaFirebase(getContext());
         listaDeComentariosAdapter = new ListaDeComentariosAdapter(new ListaDeComentariosAdapter.NotificadorHaciaImplementadorDeComentariosAdapter() {
             @Override
             public void notificar() {
@@ -88,60 +86,101 @@ public class ComentariosDeLaNoticiaFragment extends android.support.v4.app.Fragm
             @Override
             public void noticicarTouchLikeButton(final Integer idComentario) {
                 if (FirebaseAuth.getInstance().getCurrentUser() != null) {
-                    new ControllerNoticiaFirebase(getContext()).verfificarSiElUsuarioYaLikeo(idNoticia, idComentario, FirebaseAuth.getInstance().getCurrentUser().getUid(), new ResultListener<Boolean>() {
+                    final String usuarioUID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                    controllerNoticiaFirebase.verfificarSiElUsuarioYaLikeoElComentario(idNoticia, idComentario, usuarioUID, new ResultListener<Boolean>() {
                         @Override
                         public void finish(Boolean resultado) {
                             if (resultado) {
-                                new ControllerNoticiaFirebase(getApplicationContext()).darLikeAUnComentario(idNoticia, idComentario, new ResultListener<Boolean>() {
+                                FancyToast.makeText(getContext(), "solo puede opinar una vez", FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
+                            } else {
+                                controllerNoticiaFirebase.verfificarSiElUsuarioYaDisLikeoElComentario(idNoticia, idComentario, usuarioUID, new ResultListener<Boolean>() {
                                     @Override
                                     public void finish(Boolean resultado) {
                                         if (resultado) {
-                                            pedirComentarios();
+                                            controllerNoticiaFirebase.descontarDisLikeAUnComentario(idNoticia, idComentario, usuarioUID, new ResultListener<Boolean>() {
+                                                @Override
+                                                public void finish(Boolean resultado) {
+                                                    controllerNoticiaFirebase.darLikeAUnComentario(idNoticia, idComentario, new ResultListener<Boolean>() {
+                                                        @Override
+                                                        public void finish(Boolean resultado) {
+                                                            pedirComentarios();
+                                                        }
+                                                    });
+                                                }
+                                            });
+                                        } else {
+                                            controllerNoticiaFirebase.darLikeAUnComentario(idNoticia, idComentario, new ResultListener<Boolean>() {
+                                                @Override
+                                                public void finish(Boolean resultado) {
+                                                    pedirComentarios();
+                                                }
+                                            });
                                         }
                                     }
                                 });
-                            } else {
-                                FancyToast.makeText(getContext(), "solo puede opinar una vez", FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                             }
                         }
                     });
+
                 } else {
-                    FancyToast.makeText(getContext(), "solo puede opinar una vez", FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
+                    FancyToast.makeText(getContext(), "debe estar logueado para acceder a esta funcion", FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
 
                 }
-
             }
 
             @Override
             public void notificarTouchDisLikeButton(final Integer idComentario) {
                 if (FirebaseAuth.getInstance().getCurrentUser() != null) {
-                    new ControllerNoticiaFirebase(getContext()).verfificarSiElUsuarioYaDisLikeo(idNoticia, idComentario, FirebaseAuth.getInstance().getCurrentUser().getUid(), new ResultListener<Boolean>() {
+                    final String usuarioUID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                    controllerNoticiaFirebase.verfificarSiElUsuarioYaDisLikeoElComentario(idNoticia, idComentario, usuarioUID, new ResultListener<Boolean>() {
                         @Override
                         public void finish(Boolean resultado) {
                             if (resultado) {
-                                new ControllerNoticiaFirebase(getContext()).darDisLikeAUnComentario(idNoticia, idComentario, new ResultListener<Boolean>() {
+                                FancyToast.makeText(getContext(), "solo puede opinar una vez", FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
+
+                            } else {
+                                controllerNoticiaFirebase.verfificarSiElUsuarioYaLikeoElComentario(idNoticia, idComentario, usuarioUID, new ResultListener<Boolean>() {
                                     @Override
                                     public void finish(Boolean resultado) {
                                         if (resultado) {
-                                            pedirComentarios();
+                                            controllerNoticiaFirebase.descontarLikeAUnComentario(idNoticia, idComentario, usuarioUID, new ResultListener<Boolean>() {
+                                                @Override
+                                                public void finish(Boolean resultado) {
+                                                    controllerNoticiaFirebase.darDisLikeAUnComentario(idNoticia, idComentario, new ResultListener<Boolean>() {
+                                                        @Override
+                                                        public void finish(Boolean resultado) {
+                                                            pedirComentarios();
+                                                        }
+                                                    });
+                                                }
+                                            });
+                                        } else {
+                                            controllerNoticiaFirebase.darDisLikeAUnComentario(idNoticia, idComentario, new ResultListener<Boolean>() {
+                                                @Override
+                                                public void finish(Boolean resultado) {
+                                                    pedirComentarios();
+                                                }
+                                            });
                                         }
                                     }
                                 });
-                            } else {
-                                FancyToast.makeText(getContext(), "solo puede opinar una vez", FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                             }
                         }
                     });
+
+
                 } else {
-                    FancyToast.makeText(getContext(), "solo puede opinar una vez", FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
+                    FancyToast.makeText(getContext(), "debe estar logueado para acceder a esta funcion", FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
+
 
                 }
-
             }
-        });
-        pedirComentarios();
 
+        });
+
+        pedirComentarios();
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -157,7 +196,7 @@ public class ComentariosDeLaNoticiaFragment extends android.support.v4.app.Fragm
 
         recyclerViewListaDeComentarios.setAdapter(listaDeComentariosAdapter);
 
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false) {
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, true) {
             //UTILIZO ESTO PARA DESHABILITAR LA POSIBILIDAD DE SCROLLEAR EN EL RECYCLERVIEW
             @Override
             public boolean canScrollVertically() {
@@ -213,7 +252,7 @@ public class ComentariosDeLaNoticiaFragment extends android.support.v4.app.Fragm
                         FancyToast.makeText(getContext(), "Por favor escriba un comentario antes de publicarlo", FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                     }
                 } else {
-                    FancyToast.makeText(getContext(), "solo puede opinar una vez", FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
+                    FancyToast.makeText(getContext(), "debe estar logueado para acceder a esta funcion", FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
 
                 }
 

@@ -18,16 +18,18 @@ public class ControlerNoticia {
     public static final Boolean paginar = true;
     private Integer paginaActual;
     private Context context;
+    private DAONoticiaRetrofit daoNoticiaRetrofit;
 
 
     public ControlerNoticia(Context context) {
         paginaActual = 1;
         this.context = context;
+        daoNoticiaRetrofit = new DAONoticiaRetrofit(context);
 
     }
 
-    public void pedirListaDeNoticias(Integer cantResultado,final ResultListener<List<Noticia>> escuchadorDeLaVista) {
-        new DAONoticiaRetrofit(context).pedirListaDeNoticias(cantResultado,new ResultListener<List<Noticia>>() {
+    public void pedirListaDeNoticias(Integer cantResultado, final ResultListener<List<Noticia>> escuchadorDeLaVista) {
+        daoNoticiaRetrofit.pedirListaDeNoticias(cantResultado, new ResultListener<List<Noticia>>() {
 
             @Override
             public void finish(final List<Noticia> resultado) {
@@ -41,17 +43,18 @@ public class ControlerNoticia {
             }
         }, paginaActual);
     }
-    public void pedirListaDeNoticiasPaginado(Integer cantResultado,Integer paginaSolicitada,final ResultListener<List<Noticia>> escuchadorDeLaVista){
-        new DAONoticiaRetrofit(context).pedirListaDeNoticias(cantResultado, new ResultListener<List<Noticia>>() {
+
+    public void pedirListaDeNoticiasPaginado(Integer cantResultado, Integer paginaSolicitada, final ResultListener<List<Noticia>> escuchadorDeLaVista) {
+        daoNoticiaRetrofit.pedirListaDeNoticias(cantResultado, new ResultListener<List<Noticia>>() {
             @Override
             public void finish(List<Noticia> resultado) {
                 escuchadorDeLaVista.finish(resultado);
             }
-        },paginaSolicitada);
+        }, paginaSolicitada);
     }
 
     public void pedirListaDeNoticiassDeLaAgenda(Integer pagina, Integer tamaño, final ResultListener<List<Noticia>> escuchadorDeLaVista) {
-        new DAONoticiaRetrofit(context).pedirListaDeNoticiasDeLaAgenda(pagina, tamaño, new ResultListener<List<Noticia>>() {
+        daoNoticiaRetrofit.pedirListaDeNoticiasDeLaAgenda(pagina, tamaño, new ResultListener<List<Noticia>>() {
             @Override
             public void finish(List<Noticia> resultado) {
                 escuchadorDeLaVista.finish(resultado);
@@ -60,7 +63,7 @@ public class ControlerNoticia {
     }
 
     public void pedirListaDeNoticiasPorCategoria(final ResultListener<List<Noticia>> escuchadorDeLaVista, Integer categoria) {
-        new DAONoticiaRetrofit(context).pedirListaDeNoticiasPorCategoria(new ResultListener<List<Noticia>>() {
+        daoNoticiaRetrofit.pedirListaDeNoticiasPorCategoria(new ResultListener<List<Noticia>>() {
             @Override
             public void finish(List<Noticia> resultado) {
                 if (!(resultado == null)) {
@@ -74,7 +77,7 @@ public class ControlerNoticia {
     }
 
     public void pedirListaDeNoticiasDeLaBusqueda(String busqueda, final ResultListener<List<Noticia>> escuchadorDeLaVista) {
-        new DAONoticiaRetrofit(context).pedirListaDeNoticiasPorBusqueda(busqueda, new ResultListener<List<Noticia>>() {
+        daoNoticiaRetrofit.pedirListaDeNoticiasPorBusqueda(busqueda, new ResultListener<List<Noticia>>() {
             @Override
             public void finish(List<Noticia> resultado) {
                 Helper.acomodarPreviewDeNotasPorLista(resultado);
@@ -85,7 +88,7 @@ public class ControlerNoticia {
     }
 
     public void pedirNoticiasPorID(Integer id, final ResultListener<Noticia> escuchadorDeLaVista) {
-        new DAONoticiaRetrofit(context).pedirNoticiaPorID(id, new ResultListener<Noticia>() {
+        daoNoticiaRetrofit.pedirNoticiaPorID(id, new ResultListener<Noticia>() {
             @Override
             public void finish(Noticia resultado) {
                 escuchadorDeLaVista.finish(resultado);

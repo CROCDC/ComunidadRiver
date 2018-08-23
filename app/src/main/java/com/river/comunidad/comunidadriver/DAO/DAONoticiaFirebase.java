@@ -2,6 +2,7 @@ package com.river.comunidad.comunidadriver.DAO;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -62,11 +63,13 @@ public class DAONoticiaFirebase {
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                         String usuarioUID = snapshot.getValue(String.class);
                         if (usuarioUID.equals(usuarioUId)) {
+                            escuchadorDelControlador.finish(true);
+                        } else {
                             escuchadorDelControlador.finish(false);
                         }
                     }
                 } else {
-                    escuchadorDelControlador.finish(true);
+                    escuchadorDelControlador.finish(false);
                 }
             }
 
@@ -86,11 +89,13 @@ public class DAONoticiaFirebase {
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                         String usuarioUID = snapshot.getValue(String.class);
                         if (usuarioUID.equals(usuarioUId)) {
+                            escuchadorDelControlador.finish(true);
+                        } else {
                             escuchadorDelControlador.finish(false);
                         }
                     }
                 } else {
-                    escuchadorDelControlador.finish(true);
+                    escuchadorDelControlador.finish(false);
                 }
             }
 
@@ -100,6 +105,122 @@ public class DAONoticiaFirebase {
             }
         });
     }
+
+    public void descontarLikeAUnComentario(final Integer idNoticia, final Integer idComentario, final String usuarioUId, final ResultListener<Boolean> escuchadorDelControlador) {
+        databaseReference = firebaseDatabase.getReference().child(Helper.REFERENCIA_COMENTARIOS).child(idNoticia.toString()).child(idComentario.toString()).child("like").child("usuarios");
+
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (Integer i = 0; i <= dataSnapshot.getChildrenCount(); i++) {
+                    databaseReference.child(i.toString()).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            String usuario = dataSnapshot.getValue(String.class);
+
+                            if (usuario != null){
+
+                                if (usuario.equals(usuarioUId)) {
+                                    databaseReference.removeValue();
+
+                                    databaseReference = firebaseDatabase.getReference().child(Helper.REFERENCIA_COMENTARIOS).child(idNoticia.toString()).child(idComentario.toString()).child("like").child("cantLikes");
+
+
+                                    databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                            Integer cantLikes = dataSnapshot.getValue(Integer.class);
+                                            databaseReference.setValue(cantLikes - 1);
+                                            escuchadorDelControlador.finish(true);
+
+                                        }
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                                            escuchadorDelControlador.finish(false);
+                                        }
+                                    });
+
+                                }else {
+                                    escuchadorDelControlador.finish(false);
+                                }
+                            }
+
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
+    }
+
+    public void descontarDisLikeAUnComentario(final Integer idNoticia, final Integer idComentario, final String usuarioUId, final ResultListener<Boolean> escuchadorDelControlador) {
+        databaseReference = firebaseDatabase.getReference().child(Helper.REFERENCIA_COMENTARIOS).child(idNoticia.toString()).child(idComentario.toString()).child("disLike").child("usuarios");
+
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (Integer i = 0; i <= dataSnapshot.getChildrenCount(); i++) {
+                    databaseReference.child(i.toString()).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            String usuario = dataSnapshot.getValue(String.class);
+
+                            if (usuario != null){
+                                if (usuario.equals(usuarioUId)) {
+                                    databaseReference.removeValue();
+
+                                    databaseReference = firebaseDatabase.getReference().child(Helper.REFERENCIA_COMENTARIOS).child(idNoticia.toString()).child(idComentario.toString()).child("disLike").child("cantDisLikes");
+
+                                    databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                            Integer cantLikes = dataSnapshot.getValue(Integer.class);
+                                            databaseReference.setValue(cantLikes - 1);
+                                            escuchadorDelControlador.finish(true);
+
+                                        }
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                                            escuchadorDelControlador.finish(false);
+                                        }
+                                    });
+                                }
+                            }else {
+                                escuchadorDelControlador.finish(false);
+                            }
+
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
+    }
+
 
     public void agregarLaNoticiaAGuardado(Noticia noticia, final ResultListener<Boolean> escuchadorDelControlador) {
         databaseReference = firebaseDatabase.getReference().child(Helper.REFERENCIA_CONTENIDO_FAVORITO).child(user.getUid());
@@ -114,10 +235,14 @@ public class DAONoticiaFirebase {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.getChildrenCount() == 0) {
                     databaseReference.child("1").setValue(comentario);
+                    escuchadorDelControlador.finish(true);
+
 
                 } else {
                     long cuenta = dataSnapshot.getChildrenCount() + 1;
                     databaseReference.child(String.valueOf(cuenta)).setValue(comentario);
+                    escuchadorDelControlador.finish(true);
+
                 }
             }
 
@@ -127,7 +252,6 @@ public class DAONoticiaFirebase {
             }
         });
 
-        escuchadorDelControlador.finish(true);
 
     }
 

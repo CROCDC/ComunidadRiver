@@ -24,11 +24,11 @@ public class ListaDeNoticiasEnVerticalAdapter extends RecyclerView.Adapter {
     private Context context;
     Integer cantidad = 0;
 
-    private NotificadorHaciaNoticiasActivity notificadorHaciaNoticiasActivity;
+    private NotificadorHaciaActivity notificadorHaciaActivity;
 
-    public ListaDeNoticiasEnVerticalAdapter(NotificadorHaciaNoticiasActivity notificadorHaciaNoticiasActivity) {
+    public ListaDeNoticiasEnVerticalAdapter(NotificadorHaciaActivity notificadorHaciaActivity) {
         listaDeNoticias = new ArrayList<>();
-        this.notificadorHaciaNoticiasActivity = notificadorHaciaNoticiasActivity;
+        this.notificadorHaciaActivity = notificadorHaciaActivity;
     }
 
     public void setListaDeNoticias(List<Noticia> listaDeNoticias) {
@@ -87,7 +87,7 @@ public class ListaDeNoticiasEnVerticalAdapter extends RecyclerView.Adapter {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    notificadorHaciaNoticiasActivity.notificarANoticiasActivity(new ListadoDeNoticias(listaDeNoticias), getAdapterPosition());
+                    notificadorHaciaActivity.notificarAActivityClickItewView(new ListadoDeNoticias(listaDeNoticias), getAdapterPosition());
                 }
             });
 
@@ -123,8 +123,8 @@ public class ListaDeNoticiasEnVerticalAdapter extends RecyclerView.Adapter {
         }
     }
 
-    public interface NotificadorHaciaNoticiasActivity {
+    public interface NotificadorHaciaActivity {
         //envio la lista y la posicion para identificar que noticia fue tocada
-        public void notificarANoticiasActivity(ListadoDeNoticias listadoDeNoticias, Integer posicionActual);
+        public void notificarAActivityClickItewView(ListadoDeNoticias listadoDeNoticias, Integer posicionActual);
     }
 }

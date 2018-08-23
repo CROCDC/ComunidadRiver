@@ -87,6 +87,9 @@ public class AccountActivity extends AppCompatActivity {
                 FancyToast.makeText(getApplicationContext(), "sesion cerrada", FancyToast.LENGTH_SHORT, FancyToast.SUCCESS, false).show();
                 cardViewButtonCerrarSesion.setVisibility(View.GONE);
                 cardViewButtonIniciarSesion.setVisibility(View.VISIBLE);
+                textViewNombreDeUsuario.setText("Invitado");
+                circleImageViewUsuario.setImageResource(R.drawable.cuenta);
+
             }
         });
     }

@@ -52,7 +52,8 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".View.Activitys.DetalleDeUnaNoticiaActivity" />
         <activity android:name=".View.Activitys.AccountActivity" />
-        <activity android:name=".View.Activitys.ComentariosDelUsuarioActivity"></activity>
+        <activity android:name=".View.Activitys.ComentariosDelUsuarioActivity" />
+        <activity android:name=".View.Activitys.NoticiasGuardadasActivity"></activity>
     </application>
 
 </manifest>

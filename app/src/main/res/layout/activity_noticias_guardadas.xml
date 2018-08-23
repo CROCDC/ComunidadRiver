@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".View.Activitys.NoticiasGuardadasActivity">
+
+    <include layout="@layout/toolbar" />
+
+    <com.cooltechworks.views.shimmer.ShimmerRecyclerView
+        android:id="@+id/recyclerViewLisDeNoticiasGuardadas_activitynoticiasguardadas"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:shimmer_demo_angle="20"
+        app:shimmer_demo_child_count="1"
+        app:shimmer_demo_grid_child_count="1"
+        app:shimmer_demo_layout="@layout/shimmer_animacion_noticias"
+        app:shimmer_demo_layout_manager_type="grid">
+
+    </com.cooltechworks.views.shimmer.ShimmerRecyclerView>
+
+</LinearLayout>

@@ -7,12 +7,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import com.azoft.carousellayoutmanager.CarouselLayoutManager;
 import com.azoft.carousellayoutmanager.CarouselZoomPostLayoutListener;
@@ -34,7 +32,7 @@ public class NoticiasActivity extends AppCompatActivity {
 
 
     private ListaDeNoticiasEnVerticalAdapter listaDeNoticiasEnVerticalAdapter;
-    private ShimmerRecyclerView shimmerRecyclerViewListaDeNotiicas;
+    private ShimmerRecyclerView shimmerRecyclerViewListaDeNoticias;
     private CarouselLayoutManager layoutManager;
 
     private Boolean estaCargando = false;
@@ -51,7 +49,7 @@ public class NoticiasActivity extends AppCompatActivity {
 
         progressBar = findViewById(R.id.progressBar_activitynoticias);
         toolbar = findViewById(R.id.toolbarPrincipal_toolbar);
-        shimmerRecyclerViewListaDeNotiicas = findViewById(R.id.verticalViewPagerListaNoticias_activitynoticias);
+        shimmerRecyclerViewListaDeNoticias = findViewById(R.id.verticalViewPagerListaNoticias_activitynoticias);
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -60,9 +58,9 @@ public class NoticiasActivity extends AppCompatActivity {
         upArrow.setColorFilter(getResources().getColor(R.color.blancomono), PorterDuff.Mode.SRC_ATOP);
         getSupportActionBar().setHomeAsUpIndicator(upArrow);
 
-        listaDeNoticiasEnVerticalAdapter = new ListaDeNoticiasEnVerticalAdapter(new ListaDeNoticiasEnVerticalAdapter.NotificadorHaciaNoticiasActivity() {
+        listaDeNoticiasEnVerticalAdapter = new ListaDeNoticiasEnVerticalAdapter(new ListaDeNoticiasEnVerticalAdapter.NotificadorHaciaActivity() {
             @Override
-            public void notificarANoticiasActivity(ListadoDeNoticias listadoDeNoticias, Integer posicionActual) {
+            public void notificarAActivityClickItewView(ListadoDeNoticias listadoDeNoticias, Integer posicionActual) {
                 cargarDetalleDeLaNoticia(listadoDeNoticias, posicionActual);
             }
         });
@@ -72,7 +70,7 @@ public class NoticiasActivity extends AppCompatActivity {
             public void finish(List<Noticia> resultado) {
                 listaDeNoticiasEnVerticalAdapter.setListaDeNoticias(resultado);
                 listadoDeNoticias = new ListadoDeNoticias(resultado);
-                shimmerRecyclerViewListaDeNotiicas.hideShimmerAdapter();
+                shimmerRecyclerViewListaDeNoticias.hideShimmerAdapter();
                 estaCargando = false;
             }
         });
@@ -80,11 +78,11 @@ public class NoticiasActivity extends AppCompatActivity {
 
         layoutManager = new CarouselLayoutManager(CarouselLayoutManager.VERTICAL);
         layoutManager.setPostLayoutListener(new CarouselZoomPostLayoutListener());
-        shimmerRecyclerViewListaDeNotiicas.setHasFixedSize(true);
-        shimmerRecyclerViewListaDeNotiicas.setLayoutManager(layoutManager);
-        shimmerRecyclerViewListaDeNotiicas.addOnScrollListener(new CenterScrollListener());
-        shimmerRecyclerViewListaDeNotiicas.setAdapter(listaDeNoticiasEnVerticalAdapter);
-        shimmerRecyclerViewListaDeNotiicas.showShimmerAdapter();
+        shimmerRecyclerViewListaDeNoticias.setHasFixedSize(true);
+        shimmerRecyclerViewListaDeNoticias.setLayoutManager(layoutManager);
+        shimmerRecyclerViewListaDeNoticias.addOnScrollListener(new CenterScrollListener());
+        shimmerRecyclerViewListaDeNoticias.setAdapter(listaDeNoticiasEnVerticalAdapter);
+        shimmerRecyclerViewListaDeNoticias.showShimmerAdapter();
 
         paginacion();
     }
@@ -92,7 +90,7 @@ public class NoticiasActivity extends AppCompatActivity {
 
     public void paginacion() {
 
-        shimmerRecyclerViewListaDeNotiicas.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        shimmerRecyclerViewListaDeNoticias.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
@@ -152,9 +150,8 @@ public class NoticiasActivity extends AppCompatActivity {
 
         switch (item.getItemId()) {
             case R.id.opcionCuenta:
-                Toast toast = Toast.makeText(this, "account activity", Toast.LENGTH_SHORT);
-                toast.setGravity(Gravity.CENTER_HORIZONTAL, 0, 0);
-                toast.show();
+                Intent intent = new Intent(NoticiasActivity.this,AccountActivity.class);
+                startActivity(intent);
                 break;
             case 16908332:
                 NoticiasActivity.this.onBackPressed();

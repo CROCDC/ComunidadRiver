@@ -25,7 +25,7 @@ public class ControllerNoticiaFirebase {
         });
     }
 
-    public void verfificarSiElUsuarioYaLikeo(Integer idNoticia,Integer idComentario,String usuarioUID,final ResultListener<Boolean> escuchadorDeLaVista){
+    public void verfificarSiElUsuarioYaLikeoElComentario(Integer idNoticia, Integer idComentario, String usuarioUID, final ResultListener<Boolean> escuchadorDeLaVista){
         new DAONoticiaFirebase(context).verificarSiElUsuarioYaLikeo(idNoticia, idComentario, usuarioUID, new ResultListener<Boolean>() {
             @Override
             public void finish(Boolean resultado) {
@@ -33,7 +33,7 @@ public class ControllerNoticiaFirebase {
             }
         });
     }
-    public void verfificarSiElUsuarioYaDisLikeo(Integer idNoticia,Integer idComentario,String usuarioUID,final ResultListener<Boolean> escuchadorDeLaVista){
+    public void verfificarSiElUsuarioYaDisLikeoElComentario(Integer idNoticia, Integer idComentario, String usuarioUID, final ResultListener<Boolean> escuchadorDeLaVista){
         new DAONoticiaFirebase(context).verificarSiElUsuarioYaDislikeo(idNoticia, idComentario, usuarioUID, new ResultListener<Boolean>() {
             @Override
             public void finish(Boolean resultado) {
@@ -81,6 +81,23 @@ public class ControllerNoticiaFirebase {
 
     public void darLikeAUnComentario(Integer idNoticia,Integer idComentario,final ResultListener<Boolean> escuchadorDeLaVista){
         new DAONoticiaFirebase(context).darLikeAUnComentario(idNoticia, idComentario, new ResultListener<Boolean>() {
+            @Override
+            public void finish(Boolean resultado) {
+                escuchadorDeLaVista.finish(resultado);
+            }
+        });
+    }
+    public void descontarLikeAUnComentario(Integer idNoticia,Integer idComentario,String usuarioUID,final ResultListener<Boolean> escuchadorDeLaVista){
+        new DAONoticiaFirebase(context).descontarLikeAUnComentario(idNoticia, idComentario, usuarioUID, new ResultListener<Boolean>() {
+            @Override
+            public void finish(Boolean resultado) {
+                escuchadorDeLaVista.finish(resultado);
+            }
+        });
+    }
+
+    public void descontarDisLikeAUnComentario(Integer idNoticia,Integer idComentario,String usuarioUID,final ResultListener<Boolean> escuchadorDeLaVista){
+        new DAONoticiaFirebase(context).descontarDisLikeAUnComentario(idNoticia, idComentario, usuarioUID, new ResultListener<Boolean>() {
             @Override
             public void finish(Boolean resultado) {
                 escuchadorDeLaVista.finish(resultado);

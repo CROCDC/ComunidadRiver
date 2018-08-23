@@ -3,29 +3,26 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:orientation="vertical"
-    android:background="@color/rojo"
     android:layout_height="match_parent"
+    android:background="@color/rojo"
+    android:orientation="vertical"
     tools:context=".View.Activitys.NoticiasActivity">
 
 
-    <include
-        layout="@layout/toolbar"/>
+    <include layout="@layout/toolbar" />
 
 
-    <com.cooltechworks.views.shimmer.ShimmerRecyclerView
-        android:layout_marginTop="60dp"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+    <com.cooltechworks.views.shimmer.ShimmerRecyclerView xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/verticalViewPagerListaNoticias_activitynoticias"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="60dp"
         android:background="@color/rojo"
-        app:shimmer_demo_child_count="1"
-        app:shimmer_demo_layout="@layout/shimmer_animacion_noticias"
-        app:shimmer_demo_grid_child_count="1"
-        app:shimmer_demo_layout_manager_type="grid"
         app:shimmer_demo_angle="20"
-        />
+        app:shimmer_demo_child_count="1"
+        app:shimmer_demo_grid_child_count="1"
+        app:shimmer_demo_layout="@layout/shimmer_animacion_noticias"
+        app:shimmer_demo_layout_manager_type="grid" />
 
     <ProgressBar
 

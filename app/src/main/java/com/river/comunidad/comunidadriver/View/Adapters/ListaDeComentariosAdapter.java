@@ -2,12 +2,15 @@ package com.river.comunidad.comunidadriver.View.Adapters;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.river.comunidad.comunidadriver.Model.Models.Comentario;
@@ -82,6 +85,10 @@ public class ListaDeComentariosAdapter extends RecyclerView.Adapter {
         private ImageView imageViewButtonDisLike;
         private TextView textViewCantidadDeLikes;
         private TextView textViewCantidadDeDisLikes;
+        private ImageView imageViewButtonResponder;
+        private LinearLayout linearLayoutContenedorCampoComentario;
+        private EditText editTextRespuestaDelUsuario;
+        private CardView cardViewButtonPublicarRespuesta;
         private RecyclerView recyclerViewListaDeRespuestas;
 
         public ComentariosViewHolder(@NonNull View itemView) {
@@ -95,6 +102,10 @@ public class ListaDeComentariosAdapter extends RecyclerView.Adapter {
             imageViewButtonDisLike = itemView.findViewById(R.id.imageViewButtonDisLike_celdacomentario);
             textViewCantidadDeLikes = itemView.findViewById(R.id.textViewCantidadDeLikesDelComentario_celdacomentario);
             textViewCantidadDeDisLikes = itemView.findViewById(R.id.textViewCantidadDeDisLikes_celdacomentario);
+            imageViewButtonResponder = itemView.findViewById(R.id.imageViewButtonResponder_celdacomentario);
+            linearLayoutContenedorCampoComentario = itemView.findViewById(R.id.linearLayoutContenedorCampoDeRespuesta_celdacomentario);
+            editTextRespuestaDelUsuario = itemView.findViewById(R.id.editTextRespuestaDelUsuario_celdacomentario);
+            cardViewButtonPublicarRespuesta = itemView.findViewById(R.id.cardViewButtonPublicarRespuesta_celdacomentario);
             recyclerViewListaDeRespuestas = itemView.findViewById(R.id.recyclerViewListaDeRespuestas_celdacomentario);
 
         }
@@ -109,7 +120,7 @@ public class ListaDeComentariosAdapter extends RecyclerView.Adapter {
                 }
             });
 
-            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false) {
+            final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false) {
                 //UTILIZO ESTO PARA DESHABILITAR LA POSIBILIDAD DE SCROLLEAR EN EL RECYCLERVIEW
                 @Override
                 public boolean canScrollVertically() {
@@ -141,6 +152,13 @@ public class ListaDeComentariosAdapter extends RecyclerView.Adapter {
                 @Override
                 public void onClick(View view) {
                     notificadorHaciaImplementadorDeComentariosAdapter.notificarTouchDisLikeButton(getAdapterPosition() + 1);
+                }
+            });
+
+            imageViewButtonResponder.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    linearLayoutContenedorCampoComentario.setVisibility(View.VISIBLE);
                 }
             });
 
