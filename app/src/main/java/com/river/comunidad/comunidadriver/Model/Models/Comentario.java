@@ -73,5 +73,10 @@ public class Comentario {
     public long getFechaDePublicacion() {
         return fechaDePublicacion;
     }
+
+
+    public void setListaDeRespuestas(List<Respuesta> listaDeRespuestas) {
+        this.listaDeRespuestas = listaDeRespuestas;
+    }
 }
 

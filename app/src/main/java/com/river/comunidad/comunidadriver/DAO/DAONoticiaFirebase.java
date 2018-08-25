@@ -13,6 +13,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.river.comunidad.comunidadriver.Model.Models.Comentario;
 import com.river.comunidad.comunidadriver.Model.Models.Noticia;
+import com.river.comunidad.comunidadriver.Model.Models.Respuesta;
 import com.river.comunidad.comunidadriver.Utils.Helper;
 import com.river.comunidad.comunidadriver.Utils.ResultListener;
 import com.shashank.sony.fancytoastlib.FancyToast;
@@ -52,6 +53,27 @@ public class DAONoticiaFirebase {
             }
         });
 
+    }
+
+    public void pedirListaDeNoticiasGuardadasDelUsuario(String usuarioUID, final ResultListener<List<Noticia>> escuchadorDelControlador) {
+        databaseReference = firebaseDatabase.getReference().child(Helper.REFERENCIA_CONTENIDO_FAVORITO).child(usuarioUID);
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                List<Noticia> listaDeNotiicas = new ArrayList<>();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    Noticia noticia = snapshot.getValue(Noticia.class);
+                    listaDeNotiicas.add(noticia);
+
+                }
+                escuchadorDelControlador.finish(listaDeNotiicas);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                error();
+            }
+        });
     }
 
     public void verificarSiElUsuarioYaLikeo(Integer idNoticia, Integer idComentario, final String usuarioUId, final ResultListener<Boolean> escuchadorDelControlador) {
@@ -118,7 +140,7 @@ public class DAONoticiaFirebase {
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                             String usuario = dataSnapshot.getValue(String.class);
 
-                            if (usuario != null){
+                            if (usuario != null) {
 
                                 if (usuario.equals(usuarioUId)) {
                                     databaseReference.removeValue();
@@ -141,7 +163,7 @@ public class DAONoticiaFirebase {
                                         }
                                     });
 
-                                }else {
+                                } else {
                                     escuchadorDelControlador.finish(false);
                                 }
                             }
@@ -177,7 +199,7 @@ public class DAONoticiaFirebase {
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                             String usuario = dataSnapshot.getValue(String.class);
 
-                            if (usuario != null){
+                            if (usuario != null) {
                                 if (usuario.equals(usuarioUId)) {
                                     databaseReference.removeValue();
 
@@ -198,7 +220,7 @@ public class DAONoticiaFirebase {
                                         }
                                     });
                                 }
-                            }else {
+                            } else {
                                 escuchadorDelControlador.finish(false);
                             }
 
@@ -255,6 +277,35 @@ public class DAONoticiaFirebase {
 
     }
 
+
+    public void publicarRespuestas(final Integer idNoticia, Integer idComentario, final Respuesta respuestaF, final ResultListener<Boolean> escuchadorDelControlador) {
+        databaseReference = firebaseDatabase.getReference().child(Helper.REFERENCIA_COMENTARIOS).child(idNoticia.toString()).child(idComentario.toString()).child("listaDeRespuestas");
+
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                if (dataSnapshot.getChildrenCount() == 0) {
+                    databaseReference.child("0").setValue(respuestaF);
+                    escuchadorDelControlador.finish(true);
+                } else {
+                    long cuenta = dataSnapshot.getChildrenCount();
+                    databaseReference.child(String.valueOf(cuenta)).setValue(respuestaF);
+                    escuchadorDelControlador.finish(true);
+
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
+    }
+
     public void pedirListaDeComentariosDeUnaNoticia(final Integer idNoticia, final ResultListener<List<Comentario>> escuchadorDelControlador) {
         databaseReference = firebaseDatabase.getReference().child(Helper.REFERENCIA_COMENTARIOS).child(idNoticia.toString());
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -270,7 +321,12 @@ public class DAONoticiaFirebase {
                     }
 
                 }
-                escuchadorDelControlador.finish(listaDeComentarios);
+                try {
+                    escuchadorDelControlador.finish(listaDeComentarios);
+
+                } catch (Exception e) {
+                    e.toString();
+                }
             }
 
             @Override

@@ -11,7 +11,7 @@ import com.river.comunidad.comunidadriver.Utils.ResultListener;
 
 import java.util.List;
 
-public class ControlerNoticia {
+public class ControlerNoticiaRetrofit {
 
     public static final int PaginaInicial = 1;
     public static final int PaginasTotales = 10;
@@ -21,7 +21,7 @@ public class ControlerNoticia {
     private DAONoticiaRetrofit daoNoticiaRetrofit;
 
 
-    public ControlerNoticia(Context context) {
+    public ControlerNoticiaRetrofit(Context context) {
         paginaActual = 1;
         this.context = context;
         daoNoticiaRetrofit = new DAONoticiaRetrofit(context);

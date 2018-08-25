@@ -107,6 +107,10 @@ public class AccountActivity extends AppCompatActivity {
         cardViewButtonGuardado.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (FirebaseAuth.getInstance().getCurrentUser() != null){
+                    Intent intent = new Intent(AccountActivity.this,NoticiasGuardadasActivity.class);
+                    startActivity(intent);
+                }
 
             }
         });

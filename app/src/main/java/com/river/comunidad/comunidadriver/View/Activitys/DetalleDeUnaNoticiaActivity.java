@@ -6,7 +6,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -14,20 +13,13 @@ import android.widget.Toast;
 
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.river.comunidad.comunidadriver.Controler.ControlerNoticia;
 import com.river.comunidad.comunidadriver.Controler.ControllerNoticiaFirebase;
-import com.river.comunidad.comunidadriver.Model.Models.Comentario;
 import com.river.comunidad.comunidadriver.Model.Models.ListadoDeNoticias;
-import com.river.comunidad.comunidadriver.Model.Models.Noticia;
 import com.river.comunidad.comunidadriver.R;
 import com.river.comunidad.comunidadriver.Utils.ResultListener;
-import com.river.comunidad.comunidadriver.View.Adapters.ListaDeNoticiasEnHorizontalAdapter;
 import com.river.comunidad.comunidadriver.View.Adapters.ViewPagerAdaperDetalleNoticia;
 import com.river.comunidad.comunidadriver.View.Fragments.ComentariosDeLaNoticiaFragment;
 import com.shashank.sony.fancytoastlib.FancyToast;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class DetalleDeUnaNoticiaActivity extends AppCompatActivity implements ComentariosDeLaNoticiaFragment.NotificadorHaciaDetalleDeUnaNoticiaActivity {
 

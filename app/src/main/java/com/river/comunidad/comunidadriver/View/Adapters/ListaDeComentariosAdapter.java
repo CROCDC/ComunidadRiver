@@ -13,10 +13,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.river.comunidad.comunidadriver.Model.Models.Comentario;
 import com.river.comunidad.comunidadriver.R;
 import com.river.comunidad.comunidadriver.Utils.Helper;
 import com.river.comunidad.comunidadriver.Utils.MiRelojDeArena;
+import com.shashank.sony.fancytoastlib.FancyToast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -120,7 +122,7 @@ public class ListaDeComentariosAdapter extends RecyclerView.Adapter {
                 }
             });
 
-            final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false) {
+            final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, true) {
                 //UTILIZO ESTO PARA DESHABILITAR LA POSIBILIDAD DE SCROLLEAR EN EL RECYCLERVIEW
                 @Override
                 public boolean canScrollVertically() {
@@ -128,7 +130,10 @@ public class ListaDeComentariosAdapter extends RecyclerView.Adapter {
                 }
             };
 
-            listaDeRespuestasAdapter.setListaDeRespuestas(comentario.getListaDeRespuestas());
+            if (comentario.getListaDeRespuestas() != null){
+                listaDeRespuestasAdapter.setListaDeRespuestas(comentario.getListaDeRespuestas());
+
+            }
 
             recyclerViewListaDeRespuestas.setLayoutManager(linearLayoutManager);
 
@@ -158,10 +163,31 @@ public class ListaDeComentariosAdapter extends RecyclerView.Adapter {
             imageViewButtonResponder.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    linearLayoutContenedorCampoComentario.setVisibility(View.VISIBLE);
+                    if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+                        linearLayoutContenedorCampoComentario.setVisibility(View.VISIBLE);
+                    } else {
+                        FancyToast.makeText(context, "debe estar logueado para acceder a esta funcion", FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
+
+                    }
+
                 }
             });
 
+            cardViewButtonPublicarRespuesta.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    if (!editTextRespuestaDelUsuario.getText().toString().equals("")) {
+                        notificadorHaciaImplementadorDeComentariosAdapter.notificarTouchPublicarButton(editTextRespuestaDelUsuario.getText().toString(),getAdapterPosition() + 1);
+                        linearLayoutContenedorCampoComentario.setVisibility(View.GONE);
+                        editTextRespuestaDelUsuario.setText("");
+                    } else {
+                        FancyToast.makeText(context, "Por favor escriba una respuestas antes de publicarla", FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
+
+                    }
+                }
+
+            });
         }
     }
 
@@ -171,6 +197,8 @@ public class ListaDeComentariosAdapter extends RecyclerView.Adapter {
         public void noticicarTouchLikeButton(Integer idComentario);
 
         public void notificarTouchDisLikeButton(Integer idComentario);
+
+        public void notificarTouchPublicarButton(String texto,Integer idComentario);
     }
 
 }

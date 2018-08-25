@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/rojo"
     tools:context=".View.Activitys.NoticiasGuardadasActivity">
 
     <include layout="@layout/toolbar" />
@@ -12,7 +13,7 @@
     <com.cooltechworks.views.shimmer.ShimmerRecyclerView
         android:id="@+id/recyclerViewLisDeNoticiasGuardadas_activitynoticiasguardadas"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         app:shimmer_demo_angle="20"
         app:shimmer_demo_child_count="1"
         app:shimmer_demo_grid_child_count="1"

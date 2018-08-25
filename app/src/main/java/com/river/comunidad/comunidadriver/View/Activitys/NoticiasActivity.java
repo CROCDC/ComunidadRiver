@@ -1,8 +1,6 @@
 package com.river.comunidad.comunidadriver.View.Activitys;
 
 import android.content.Intent;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
@@ -16,7 +14,7 @@ import com.azoft.carousellayoutmanager.CarouselLayoutManager;
 import com.azoft.carousellayoutmanager.CarouselZoomPostLayoutListener;
 import com.azoft.carousellayoutmanager.CenterScrollListener;
 import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
-import com.river.comunidad.comunidadriver.Controler.ControlerNoticia;
+import com.river.comunidad.comunidadriver.Controler.ControlerNoticiaRetrofit;
 import com.river.comunidad.comunidadriver.Model.Models.ListadoDeNoticias;
 import com.river.comunidad.comunidadriver.Model.Models.Noticia;
 
@@ -36,7 +34,7 @@ public class NoticiasActivity extends AppCompatActivity {
     private CarouselLayoutManager layoutManager;
 
     private Boolean estaCargando = false;
-    private ControlerNoticia controlerNoticia;
+    private ControlerNoticiaRetrofit controlerNoticiaRetrofit;
     private Toolbar toolbar;
     private ProgressBar progressBar;
     private ListadoDeNoticias listadoDeNoticias;
@@ -54,9 +52,7 @@ public class NoticiasActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        final Drawable upArrow = getResources().getDrawable(R.drawable.flechitaback);
-        upArrow.setColorFilter(getResources().getColor(R.color.blancomono), PorterDuff.Mode.SRC_ATOP);
-        getSupportActionBar().setHomeAsUpIndicator(upArrow);
+
 
         listaDeNoticiasEnVerticalAdapter = new ListaDeNoticiasEnVerticalAdapter(new ListaDeNoticiasEnVerticalAdapter.NotificadorHaciaActivity() {
             @Override
@@ -64,8 +60,8 @@ public class NoticiasActivity extends AppCompatActivity {
                 cargarDetalleDeLaNoticia(listadoDeNoticias, posicionActual);
             }
         });
-        controlerNoticia = new ControlerNoticia(this);
-        controlerNoticia.pedirListaDeNoticias(5, new ResultListener<List<Noticia>>() {
+        controlerNoticiaRetrofit = new ControlerNoticiaRetrofit(this);
+        controlerNoticiaRetrofit.pedirListaDeNoticias(5, new ResultListener<List<Noticia>>() {
             @Override
             public void finish(List<Noticia> resultado) {
                 listaDeNoticiasEnVerticalAdapter.setListaDeNoticias(resultado);
@@ -106,7 +102,7 @@ public class NoticiasActivity extends AppCompatActivity {
                     if (posicionActual >= (ultimaCelda - 2)) {
                         estaCargando = true;
                         progressBar.setVisibility(View.VISIBLE);
-                        controlerNoticia.pedirListaDeNoticias(5, new ResultListener<List<Noticia>>() {
+                        controlerNoticiaRetrofit.pedirListaDeNoticias(5, new ResultListener<List<Noticia>>() {
                             @Override
                             public void finish(final List<Noticia> resultado) {
                                 progressBar.setVisibility(View.GONE);

@@ -46,6 +46,8 @@ public class ComentariosDeLaNoticiaFragment extends android.support.v4.app.Fragm
     private ListaDeComentariosAdapter listaDeComentariosAdapter;
     private ControllerNoticiaFirebase controllerNoticiaFirebase;
 
+    private FirebaseUser user;
+
     private Comentario comentario;
 
     public ComentariosDeLaNoticiaFragment() {
@@ -75,6 +77,11 @@ public class ComentariosDeLaNoticiaFragment extends android.support.v4.app.Fragm
         super.onCreate(savedInstanceState);
 
         Bundle bundle = getArguments();
+
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            user = FirebaseAuth.getInstance().getCurrentUser();
+        }
+
 
         idNoticia = bundle.getInt(CLAVE_IDNOTICIA);
         controllerNoticiaFirebase = new ControllerNoticiaFirebase(getContext());
@@ -176,6 +183,30 @@ public class ComentariosDeLaNoticiaFragment extends android.support.v4.app.Fragm
                 }
             }
 
+            @Override
+            public void notificarTouchPublicarButton(String texto, Integer idComentario) {
+                List<String> usuarios = new ArrayList<>();
+
+                Like like = new Like(0, usuarios);
+                DisLike disLike = new DisLike(0, usuarios);
+
+
+                Respuesta respuesta = new Respuesta(idNoticia, idComentario, user.getDisplayName(), user.getUid(), user.getPhotoUrl().toString(), like, disLike, texto, System.currentTimeMillis());
+
+                controllerNoticiaFirebase.publicarRespuestas(idNoticia, idComentario, respuesta, new ResultListener<Boolean>() {
+                    @Override
+                    public void finish(Boolean resultado) {
+                        if (resultado) {
+                            pedirComentarios();
+                        } else {
+                            FancyToast.makeText(getContext(), "a ocurrido un error por favor intente nuevamente", FancyToast.LENGTH_SHORT, FancyToast.SUCCESS, false).show();
+
+                        }
+                    }
+                });
+
+            }
+
         });
 
         pedirComentarios();
@@ -222,9 +253,6 @@ public class ComentariosDeLaNoticiaFragment extends android.support.v4.app.Fragm
 
                     if (!editTextComentarioDelUsuario.getText().toString().equals("")) {
                         List<Respuesta> listaDeRespuestas = new ArrayList<>();
-
-                        listaDeRespuestas.add(new Respuesta("Camilo Romero", FirebaseAuth.getInstance().getCurrentUser().getUid(), FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl().toString(), 0, 0, "jajaja", "hace una hora"));
-                        listaDeRespuestas.add(new Respuesta("Camilo Romero", FirebaseAuth.getInstance().getCurrentUser().getUid(), FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl().toString(), 0, 0, "jajaja", "hace una hora"));
 
                         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                         List<String> usuarios = new ArrayList<>();

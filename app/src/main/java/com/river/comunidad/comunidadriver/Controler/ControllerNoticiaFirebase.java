@@ -5,15 +5,27 @@ import android.content.Context;
 import com.river.comunidad.comunidadriver.DAO.DAONoticiaFirebase;
 import com.river.comunidad.comunidadriver.Model.Models.Comentario;
 import com.river.comunidad.comunidadriver.Model.Models.Noticia;
+import com.river.comunidad.comunidadriver.Model.Models.Respuesta;
 import com.river.comunidad.comunidadriver.Utils.ResultListener;
 
 import java.util.List;
 
 public class ControllerNoticiaFirebase {
     private Context context;
+    private DAONoticiaFirebase daoNoticiaFirebase;
 
     public ControllerNoticiaFirebase(Context context) {
         this.context = context;
+        daoNoticiaFirebase = new DAONoticiaFirebase(context);
+    }
+
+    public void pedirListaDeNoticiasGuardadasDelUsuario(String usuarioUID, final ResultListener<List<Noticia>> escuchadorDeLaVista){
+        daoNoticiaFirebase.pedirListaDeNoticiasGuardadasDelUsuario(usuarioUID, new ResultListener<List<Noticia>>() {
+            @Override
+            public void finish(List<Noticia> resultado) {
+                escuchadorDeLaVista.finish(resultado);
+            }
+        });
     }
 
     public void verficiarSiLaNoticiaEstaEnFirebase(Noticia noticia, final ResultListener<Boolean> escuchadorDeLaVista) {
@@ -61,10 +73,20 @@ public class ControllerNoticiaFirebase {
         });
     }
 
+    public void publicarRespuestas(Integer idNoticia, Integer idComentario, Respuesta respuesta, final ResultListener<Boolean> escuhadorDeLaVista){
+        daoNoticiaFirebase.publicarRespuestas(idNoticia, idComentario, respuesta, new ResultListener<Boolean>() {
+            @Override
+            public void finish(Boolean resultado) {
+                escuhadorDeLaVista.finish(resultado);
+            }
+        });
+    }
+
     public void pedirListaDeComentariosDeUnaNoticia(Integer idNoticia, final ResultListener<List<Comentario>> escuchadorDeLaVista) {
         new DAONoticiaFirebase(context).pedirListaDeComentariosDeUnaNoticia(idNoticia, new ResultListener<List<Comentario>>() {
             @Override
             public void finish(List<Comentario> resultado) {
+
                 escuchadorDeLaVista.finish(resultado);
             }
         });

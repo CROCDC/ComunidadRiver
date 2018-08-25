@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.river.comunidad.comunidadriver.Model.Models.Respuesta;
 import com.river.comunidad.comunidadriver.R;
 import com.river.comunidad.comunidadriver.Utils.Helper;
+import com.river.comunidad.comunidadriver.Utils.MiRelojDeArena;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -89,10 +90,10 @@ public class ListaDeRespuestasAdapter extends RecyclerView.Adapter {
 
             Helper.cargarImagenes(circleImageViewUsuario, context, respuesta.getUrlImagen());
             textViewNombreDeUsuario.setText(respuesta.getUsuario());
-            textViewFechaDePublicacionDelComentario.setText(respuesta.getFechaDePublicacion());
+            textViewFechaDePublicacionDelComentario.setText(MiRelojDeArena.getTimeAgo(respuesta.getFechaDePublicacion()).toString());
             textViewContendioDelComentario.setText(respuesta.getTexto());
-            textViewCantidadDeLikes.setText(respuesta.getLikes().toString());
-            textViewCantidadDeDisLikes.setText(respuesta.getDisLikes().toString());
+            textViewCantidadDeLikes.setText(respuesta.getLike().getCantLikes().toString());
+            textViewCantidadDeDisLikes.setText(respuesta.getDisLike().getCantDisLikes().toString());
 
 
         }

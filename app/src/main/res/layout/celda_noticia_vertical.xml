@@ -19,6 +19,7 @@
             android:layout_height="wrap_content">
 
             <ImageView
+                android:foregroundGravity="center_horizontal"
                 android:scaleType="centerCrop"
                 android:id="@+id/imageViewDeLaNoticia_celdanoticiavertical"
                 android:layout_height="260dp"
