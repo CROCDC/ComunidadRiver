@@ -5,6 +5,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 
@@ -63,7 +65,7 @@ public class NoticiasPorCategoriaActivity extends AppCompatActivity {
         listaDeNoticiasEnVerticalAdapter = new ListaDeNoticiasEnVerticalAdapter(new ListaDeNoticiasEnVerticalAdapter.NotificadorHaciaActivity() {
             @Override
             public void notificarAActivityClickItewView(ListadoDeNoticias listadoDeNoticias, Integer posicionActual) {
-                cargarDetalleDeLaNoticia(listadoDeNoticias,posicionActual);
+                cargarDetalleDeLaNoticia(listadoDeNoticias, posicionActual);
             }
         });
         controlerNoticiaRetrofit.pedirListaDeNoticiasPorCategoria(new ResultListener<List<Noticia>>() {
@@ -134,5 +136,30 @@ public class NoticiasPorCategoriaActivity extends AppCompatActivity {
         intent.putExtras(bundle);
 
         startActivity(intent);
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.toolbar_menu_principal, menu);
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.opcionCuenta:
+                Intent intent = new Intent(NoticiasPorCategoriaActivity.this,AccountActivity.class);
+                startActivity(intent);
+                break;
+            case 16908332:
+                NoticiasPorCategoriaActivity.this.onBackPressed();
+                break;
+
+        }
+        return super.onOptionsItemSelected(item);
+
     }
 }

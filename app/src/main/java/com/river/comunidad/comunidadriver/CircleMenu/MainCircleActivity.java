@@ -23,6 +23,9 @@ public class MainCircleActivity extends AppCompatActivity {
     private CircleMenuLayout mCircleMenuLayout;
     private Toolbar toolbar;
 
+    private Intent intent;
+    private Bundle bundle;
+
     private int[] mItemImgs = new int[]{
             R.drawable.eventosjpg, R.drawable.actividadesjpg,
             R.drawable.sabiasquejpg, R.drawable.historiasdevidajpg};
@@ -40,27 +43,33 @@ public class MainCircleActivity extends AppCompatActivity {
 
         mCircleMenuLayout.setMenuItemIconsAndTexts(mItemImgs);
 
-
+        intent = new Intent(MainCircleActivity.this, NoticiasPorCategoriaActivity.class);
+        bundle = new Bundle();
 
         mCircleMenuLayout.setOnMenuItemClickListener(new CircleMenuLayout.OnMenuItemClickListener() {
-            Intent intent = new Intent(MainCircleActivity.this, NoticiasPorCategoriaActivity.class);
-            Bundle bundle = new Bundle();
+
 
             @Override
             public void itemClick(View view, int pos) {
-                switch (mItemImgs[pos]){
+                switch (mItemImgs[pos]) {
                     case R.drawable.historiasdevidajpg:
-                        bundle.putInt(NoticiasPorCategoriaActivity.CLAVE_CATEGORIA_RECIBIDA, Helper.CATEGORIA_DEPORTE_Y_SOCIEDAD);
-                        intent.putExtras(bundle);
-                        startActivity(intent);
+                        cargarCategoria(Helper.CATEGORIA_DEPORTE_Y_SOCIEDAD);
                         break;
-
+                    case R.drawable.sabiasquejpg:
+                        cargarCategoria(Helper.CATEGORIA_EFEMÉRIDES);
+                        break;
+                    case R.drawable.eventosjpg:
+                        cargarCategoria(Helper.CATEGORIA_NUESTRO_CLUB);
+                        break;
+                    case R.drawable.actividadesjpg:
+                        cargarCategoria(Helper.CATEGORIA_POR_LOS_QUINCHOS);
+                        break;
                 }
             }
 
             @Override
             public void itemCenterClick(View view) {
-                startActivity(new Intent(MainCircleActivity.this, NoticiasActivity.class));
+                cargarCategoria(Helper.CATEGORIA_NOTICIAS);
             }
         });
     }
@@ -83,5 +92,11 @@ public class MainCircleActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
 
+    }
+
+    public void cargarCategoria(Integer categoria) {
+        bundle.putInt(NoticiasPorCategoriaActivity.CLAVE_CATEGORIA_RECIBIDA, categoria);
+        intent.putExtras(bundle);
+        startActivity(intent);
     }
 }
