@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/rojo"
+    android:orientation="vertical"
+    tools:context=".View.Activitys.NoticiasPorCategoriaActivity">
+
+    <include layout="@layout/toolbar" />
+
+    <com.cooltechworks.views.shimmer.ShimmerRecyclerView xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/recyclerViewListaNoticias_activitynoticiasporcategoria"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/rojo"
+        app:shimmer_demo_angle="20"
+        app:shimmer_demo_child_count="1"
+        app:shimmer_demo_grid_child_count="1"
+        app:shimmer_demo_layout="@layout/shimmer_animacion_noticias"
+        app:shimmer_demo_layout_manager_type="grid" />
+
+
+    <ProgressBar
+
+        android:id="@+id/progressBar_activitynoticiasporcategoria"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="71dp"
+        android:progress="20"
+        android:visibility="gone" />
+
+
+</LinearLayout>

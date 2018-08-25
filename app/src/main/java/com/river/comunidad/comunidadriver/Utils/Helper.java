@@ -23,6 +23,13 @@ public class Helper {
     public static final String REFERENCIA_CONTENIDO_FAVORITO = "Noticias Favoritas";
     public static final String REFERENCIA_COMENTARIOS ="Comentarios";
 
+    public static final int CATEGORIA_DEPORTE_Y_SOCIEDAD = 30;
+    public static final int CATEGORIA_EFEMÉRIDES = 46;
+    public static final int CATEGORIA_NOTICIAS = 2;
+    public static final int CATEGORIA_NUESTRO_CLUB = 6;
+    public static final int CATEGORIA_POR_LOS_QUINCHOS = 45;
+    public static final int CATEGORIA_RIVER_EN_FOTOS = 3;
+
 
     //Removedor de etiquetas HMTL
     public static String eliminarEtiquetasHTML(String html) {
