@@ -1,6 +1,7 @@
 package com.river.comunidad.comunidadriver.View.Activitys;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
@@ -9,6 +10,8 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 
 
@@ -19,9 +22,11 @@ import com.river.comunidad.comunidadriver.R;
 import com.river.comunidad.comunidadriver.Utils.ResultListener;
 import com.river.comunidad.comunidadriver.View.Adapters.ViewPagerAdaperDetalleNoticia;
 import com.river.comunidad.comunidadriver.View.Fragments.ComentariosDeLaNoticiaFragment;
+import com.river.comunidad.comunidadriver.View.Fragments.FragmentsViewPager.DetalleDeUnaNoticiaFragment;
+import com.river.comunidad.comunidadriver.View.Fragments.ImagenDeLaNoticiaFragment;
 import com.shashank.sony.fancytoastlib.FancyToast;
 
-public class DetalleDeUnaNoticiaActivity extends AppCompatActivity implements ComentariosDeLaNoticiaFragment.NotificadorHaciaDetalleDeUnaNoticiaActivity {
+public class DetalleDeUnaNoticiaActivity extends AppCompatActivity implements ComentariosDeLaNoticiaFragment.NotificadorHaciaDetalleDeUnaNoticiaActivity, DetalleDeUnaNoticiaFragment.NotificadorHaciaDetalleDeUnaNoticiaActivity {
 
     public static final String CLAVE_LISTADENOTICIAS = "lista de noticias";
     public static final String CLAVE_POSICION = "posicion noticia actual";
@@ -31,8 +36,11 @@ public class DetalleDeUnaNoticiaActivity extends AppCompatActivity implements Co
 
     private Toolbar toolbar;
 
+    private FrameLayout frameLayoutContenedor;
     private ViewPager viewPagerListaDeNoticias;
     private ViewPagerAdaperDetalleNoticia viewPagerAdaperDetalleNoticia;
+
+    ImagenDeLaNoticiaFragment imagenDeLaNoticiaFragment;
 
 
     @Override
@@ -40,6 +48,7 @@ public class DetalleDeUnaNoticiaActivity extends AppCompatActivity implements Co
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detalle_de_una_noticia);
 
+        frameLayoutContenedor = findViewById(R.id.frameLayoutContenedor);
         toolbar = findViewById(R.id.toolbarPrincipal_toolbar);
         viewPagerListaDeNoticias = findViewById(R.id.viewPagerListaDeNoticias_activitydetalledeunanoticia);
 
@@ -74,6 +83,16 @@ public class DetalleDeUnaNoticiaActivity extends AppCompatActivity implements Co
         getMenuInflater().inflate(R.menu.toolbar_menu_noticiadetalle, menu);
 
         return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        imagenDeLaNoticiaFragment = null;
+        viewPagerListaDeNoticias.setVisibility(View.VISIBLE);
+        frameLayoutContenedor.setBackgroundColor(Color.TRANSPARENT);
+
+
     }
 
     @Override
@@ -128,7 +147,7 @@ public class DetalleDeUnaNoticiaActivity extends AppCompatActivity implements Co
                 ComentariosDeLaNoticiaFragment comentariosDeLaNoticiaFragment = ComentariosDeLaNoticiaFragment.fabricaDeFragmentsComentariosDeLaNoticia(listadoDeNoticias.getArray().get(posicionActual).getId());
                 FragmentManager fragmentManager = getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.linearLayoutContenedor, comentariosDeLaNoticiaFragment).addToBackStack("camilo");
+                fragmentTransaction.replace(R.id.frameLayoutContenedor, comentariosDeLaNoticiaFragment).addToBackStack("Camilo");
                 fragmentTransaction.commit();
                 break;
         }
@@ -164,6 +183,23 @@ public class DetalleDeUnaNoticiaActivity extends AppCompatActivity implements Co
     }
 
 
+    @Override
+    public void notificarTouchImageView(String url) {
+
+        if (imagenDeLaNoticiaFragment == null){
+            imagenDeLaNoticiaFragment = ImagenDeLaNoticiaFragment.fabricaDeFragmentsImagenDeLaNoticia(url);
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.setCustomAnimations(R.anim.desde_abajo_hacia_arriba,0,0, R.anim.desde_arriba_hacia_abajo);
+            fragmentTransaction.replace(R.id.frameLayoutContenedor, imagenDeLaNoticiaFragment).addToBackStack("Camilo");
+            fragmentTransaction.commit();
+
+            viewPagerListaDeNoticias.setVisibility(View.GONE);
+            frameLayoutContenedor.setBackgroundColor(Color.BLACK);
+        }
+
+
+    }
 }
 
 

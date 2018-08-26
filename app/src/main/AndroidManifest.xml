@@ -54,7 +54,7 @@
         <activity android:name=".View.Activitys.AccountActivity" />
         <activity android:name=".View.Activitys.ComentariosDelUsuarioActivity" />
         <activity android:name=".View.Activitys.NoticiasGuardadasActivity" />
-        <activity android:name=".View.Activitys.NoticiasPorCategoriaActivity"></activity>
+        <activity android:name=".View.Activitys.NoticiasPorCategoriaActivity" />
     </application>
 
 </manifest>

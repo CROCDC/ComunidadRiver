@@ -14,7 +14,7 @@
     <com.river.comunidad.comunidadriver.CircleMenu.CircleMenuLayout
         android:id="@+id/id_menulayout"
         android:layout_width="wrap_content"
-        android:gravity="center_vertical"
+        android:layout_gravity="center"
         android:layout_marginTop="90dp"
         android:layout_height="wrap_content"
         >

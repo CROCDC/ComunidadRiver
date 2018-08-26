@@ -40,7 +40,6 @@ public class MainCircleActivity extends AppCompatActivity {
 
         setSupportActionBar(toolbar);
 
-
         mCircleMenuLayout.setMenuItemIconsAndTexts(mItemImgs);
 
         intent = new Intent(MainCircleActivity.this, NoticiasPorCategoriaActivity.class);

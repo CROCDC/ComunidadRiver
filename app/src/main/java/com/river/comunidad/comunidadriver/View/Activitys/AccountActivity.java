@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.bumptech.glide.Glide;
@@ -107,9 +108,12 @@ public class AccountActivity extends AppCompatActivity {
         cardViewButtonGuardado.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (FirebaseAuth.getInstance().getCurrentUser() != null){
-                    Intent intent = new Intent(AccountActivity.this,NoticiasGuardadasActivity.class);
+                if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+                    Intent intent = new Intent(AccountActivity.this, NoticiasGuardadasActivity.class);
                     startActivity(intent);
+                } else {
+                    FancyToast.makeText(getApplicationContext(), "Debes estas logueado para acceder a esta funcion ", Toast.LENGTH_LONG, FancyToast.ERROR, false).show();
+
                 }
 
             }
@@ -120,7 +124,13 @@ public class AccountActivity extends AppCompatActivity {
         cardViewButtonComentarios.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(AccountActivity.this, ComentariosDelUsuarioActivity.class));
+                if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+                    startActivity(new Intent(AccountActivity.this, ComentariosDelUsuarioActivity.class));
+
+                } else {
+                    FancyToast.makeText(getApplicationContext(), "Debes estas logueado para acceder a esta funcion ", Toast.LENGTH_LONG, FancyToast.ERROR, false).show();
+
+                }
             }
         });
     }
