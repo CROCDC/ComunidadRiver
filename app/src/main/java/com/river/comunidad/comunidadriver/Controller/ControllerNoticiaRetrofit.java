@@ -1,4 +1,4 @@
-package com.river.comunidad.comunidadriver.Controler;
+package com.river.comunidad.comunidadriver.Controller;
 
 import android.content.Context;
 
@@ -11,7 +11,7 @@ import com.river.comunidad.comunidadriver.Utils.ResultListener;
 
 import java.util.List;
 
-public class ControlerNoticiaRetrofit {
+public class ControllerNoticiaRetrofit {
 
     public static final int PaginaInicial = 1;
     public static final int PaginasTotales = 10;
@@ -21,7 +21,7 @@ public class ControlerNoticiaRetrofit {
     private DAONoticiaRetrofit daoNoticiaRetrofit;
 
 
-    public ControlerNoticiaRetrofit(Context context) {
+    public ControllerNoticiaRetrofit(Context context) {
         paginaActual = 1;
         this.context = context;
         daoNoticiaRetrofit = new DAONoticiaRetrofit(context);
@@ -87,7 +87,7 @@ public class ControlerNoticiaRetrofit {
 
     }
 
-    public void pedirNoticiasPorID(Integer id, final ResultListener<Noticia> escuchadorDeLaVista) {
+    public void pedirNoticiaPorID(Integer id, final ResultListener<Noticia> escuchadorDeLaVista) {
         daoNoticiaRetrofit.pedirNoticiaPorID(id, new ResultListener<Noticia>() {
             @Override
             public void finish(Noticia resultado) {

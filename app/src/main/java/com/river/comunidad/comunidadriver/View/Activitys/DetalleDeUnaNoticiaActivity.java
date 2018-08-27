@@ -16,9 +16,10 @@ import android.widget.Toast;
 
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.river.comunidad.comunidadriver.Controler.ControllerNoticiaFirebase;
+import com.river.comunidad.comunidadriver.Controller.ControllerNoticiaFirebase;
 import com.river.comunidad.comunidadriver.Model.Models.ListadoDeNoticias;
 import com.river.comunidad.comunidadriver.R;
+import com.river.comunidad.comunidadriver.Utils.CubeTransformer;
 import com.river.comunidad.comunidadriver.Utils.ResultListener;
 import com.river.comunidad.comunidadriver.View.Adapters.ViewPagerAdaperDetalleNoticia;
 import com.river.comunidad.comunidadriver.View.Fragments.ComentariosDeLaNoticiaFragment;
@@ -28,7 +29,7 @@ import com.shashank.sony.fancytoastlib.FancyToast;
 
 public class DetalleDeUnaNoticiaActivity extends AppCompatActivity implements ComentariosDeLaNoticiaFragment.NotificadorHaciaDetalleDeUnaNoticiaActivity, DetalleDeUnaNoticiaFragment.NotificadorHaciaDetalleDeUnaNoticiaActivity {
 
-    public static final String CLAVE_LISTADENOTICIAS = "lista de noticias";
+    public static final String CLAVE_LISTADODENOTICIAS = "lista de noticias";
     public static final String CLAVE_POSICION = "posicion noticia actual";
 
     private ListadoDeNoticias listadoDeNoticias;
@@ -63,7 +64,7 @@ public class DetalleDeUnaNoticiaActivity extends AppCompatActivity implements Co
 
         Bundle bundle = intent.getExtras();
 
-        listadoDeNoticias = (ListadoDeNoticias) bundle.getSerializable(CLAVE_LISTADENOTICIAS);
+        listadoDeNoticias = (ListadoDeNoticias) bundle.getSerializable(CLAVE_LISTADODENOTICIAS);
 
         posicionActual = bundle.getInt(CLAVE_POSICION);
         viewPagerAdaperDetalleNoticia = new ViewPagerAdaperDetalleNoticia(getSupportFragmentManager(), listadoDeNoticias.getArray());
@@ -71,6 +72,8 @@ public class DetalleDeUnaNoticiaActivity extends AppCompatActivity implements Co
         viewPagerListaDeNoticias.setAdapter(viewPagerAdaperDetalleNoticia);
 
         viewPagerListaDeNoticias.setCurrentItem(posicionActual);
+
+        viewPagerListaDeNoticias.setPageTransformer(true,new CubeTransformer());
 
         informacionScrollViewPager();
 

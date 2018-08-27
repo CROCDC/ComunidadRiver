@@ -6,7 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.river.comunidad.comunidadriver.Controler.ControllerNoticiaFirebase;
+import com.river.comunidad.comunidadriver.Controller.ControllerNoticiaFirebase;
 import com.river.comunidad.comunidadriver.Model.Models.Comentario;
 import com.river.comunidad.comunidadriver.R;
 import com.river.comunidad.comunidadriver.Utils.ResultListener;

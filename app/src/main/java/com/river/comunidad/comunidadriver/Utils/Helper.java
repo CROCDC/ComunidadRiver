@@ -18,6 +18,7 @@ import java.util.List;
 
 public class Helper {
     public static final String urlBase = "http://www.comunidadriver.com/wp-json/";
+    public static final String urlAPINotification = "http://www.comunidadriver.com/pnfw/register/";
 
 
     public static final String REFERENCIA_CONTENIDO_FAVORITO = "Noticias Favoritas";

@@ -1,4 +1,4 @@
-package com.river.comunidad.comunidadriver.Controler;
+package com.river.comunidad.comunidadriver.Controller;
 
 import android.content.Context;
 

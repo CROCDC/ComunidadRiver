@@ -33,7 +33,7 @@ public interface ServiceNoticia {
             @Query("per_page") int tamaño
 
     );
-    @GET("wp/v2/posts/{id_nota}")
+    @GET("wp/v2/posts/{id_nota}?_embed")
     Call<Noticia> pedirUnaNoticiaPorID(
             @Path("id_nota") int pagina
     );

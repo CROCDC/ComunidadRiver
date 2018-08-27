@@ -14,7 +14,7 @@ import com.azoft.carousellayoutmanager.CarouselLayoutManager;
 import com.azoft.carousellayoutmanager.CarouselZoomPostLayoutListener;
 import com.azoft.carousellayoutmanager.CenterScrollListener;
 import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
-import com.river.comunidad.comunidadriver.Controler.ControlerNoticiaRetrofit;
+import com.river.comunidad.comunidadriver.Controller.ControllerNoticiaRetrofit;
 import com.river.comunidad.comunidadriver.Model.Models.ListadoDeNoticias;
 import com.river.comunidad.comunidadriver.Model.Models.Noticia;
 
@@ -34,7 +34,7 @@ public class NoticiasActivity extends AppCompatActivity {
     private CarouselLayoutManager layoutManager;
 
     private Boolean estaCargando = false;
-    private ControlerNoticiaRetrofit controlerNoticiaRetrofit;
+    private ControllerNoticiaRetrofit controllerNoticiaRetrofit;
     private Toolbar toolbar;
     private ProgressBar progressBar;
     private ListadoDeNoticias listadoDeNoticias;
@@ -60,8 +60,8 @@ public class NoticiasActivity extends AppCompatActivity {
                 cargarDetalleDeLaNoticia(listadoDeNoticias, posicionActual);
             }
         });
-        controlerNoticiaRetrofit = new ControlerNoticiaRetrofit(this);
-        controlerNoticiaRetrofit.pedirListaDeNoticias(5, new ResultListener<List<Noticia>>() {
+        controllerNoticiaRetrofit = new ControllerNoticiaRetrofit(this);
+        controllerNoticiaRetrofit.pedirListaDeNoticias(5, new ResultListener<List<Noticia>>() {
             @Override
             public void finish(List<Noticia> resultado) {
                 listaDeNoticiasEnVerticalAdapter.setListaDeNoticias(resultado);
@@ -102,7 +102,7 @@ public class NoticiasActivity extends AppCompatActivity {
                     if (posicionActual >= (ultimaCelda - 2)) {
                         estaCargando = true;
                         progressBar.setVisibility(View.VISIBLE);
-                        controlerNoticiaRetrofit.pedirListaDeNoticias(5, new ResultListener<List<Noticia>>() {
+                        controllerNoticiaRetrofit.pedirListaDeNoticias(5, new ResultListener<List<Noticia>>() {
                             @Override
                             public void finish(final List<Noticia> resultado) {
                                 progressBar.setVisibility(View.GONE);
@@ -125,7 +125,7 @@ public class NoticiasActivity extends AppCompatActivity {
 
         Bundle bundle = new Bundle();
 
-        bundle.putSerializable(DetalleDeUnaNoticiaActivity.CLAVE_LISTADENOTICIAS, listadoDeNoticias);
+        bundle.putSerializable(DetalleDeUnaNoticiaActivity.CLAVE_LISTADODENOTICIAS, listadoDeNoticias);
         bundle.putInt(DetalleDeUnaNoticiaActivity.CLAVE_POSICION, posicionActual);
 
         intent.putExtras(bundle);

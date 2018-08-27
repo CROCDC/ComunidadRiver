@@ -3,7 +3,7 @@ package com.river.comunidad.comunidadriver.Model.Models;
 import android.net.Uri;
 
 import com.google.firebase.auth.FirebaseUser;
-import com.thoughtbot.expandablerecyclerview.models.ExpandableGroup;
+
 
 import java.util.List;
 

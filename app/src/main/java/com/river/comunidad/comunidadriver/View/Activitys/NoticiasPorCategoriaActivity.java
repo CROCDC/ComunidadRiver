@@ -14,7 +14,7 @@ import com.azoft.carousellayoutmanager.CarouselLayoutManager;
 import com.azoft.carousellayoutmanager.CarouselZoomPostLayoutListener;
 import com.azoft.carousellayoutmanager.CenterScrollListener;
 import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
-import com.river.comunidad.comunidadriver.Controler.ControlerNoticiaRetrofit;
+import com.river.comunidad.comunidadriver.Controller.ControllerNoticiaRetrofit;
 import com.river.comunidad.comunidadriver.Model.Models.ListadoDeNoticias;
 import com.river.comunidad.comunidadriver.Model.Models.Noticia;
 import com.river.comunidad.comunidadriver.R;
@@ -33,7 +33,7 @@ public class NoticiasPorCategoriaActivity extends AppCompatActivity {
     private ShimmerRecyclerView shimmerRecyclerViewListaDeNoticias;
     private CarouselLayoutManager layoutManager;
 
-    private ControlerNoticiaRetrofit controlerNoticiaRetrofit;
+    private ControllerNoticiaRetrofit controllerNoticiaRetrofit;
 
     private Toolbar toolbar;
     private ProgressBar progressBar;
@@ -58,7 +58,7 @@ public class NoticiasPorCategoriaActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        controlerNoticiaRetrofit = new ControlerNoticiaRetrofit(getApplicationContext());
+        controllerNoticiaRetrofit = new ControllerNoticiaRetrofit(getApplicationContext());
 
         categoriaRecibida = bundle.getInt(CLAVE_CATEGORIA_RECIBIDA);
 
@@ -68,7 +68,7 @@ public class NoticiasPorCategoriaActivity extends AppCompatActivity {
                 cargarDetalleDeLaNoticia(listadoDeNoticias, posicionActual);
             }
         });
-        controlerNoticiaRetrofit.pedirListaDeNoticiasPorCategoria(new ResultListener<List<Noticia>>() {
+        controllerNoticiaRetrofit.pedirListaDeNoticiasPorCategoria(new ResultListener<List<Noticia>>() {
             @Override
             public void finish(List<Noticia> resultado) {
                 listaDeNoticiasEnVerticalAdapter.setListaDeNoticias(resultado);
@@ -110,7 +110,7 @@ public class NoticiasPorCategoriaActivity extends AppCompatActivity {
                     if (posicionActual >= (ultimaCelda - 2)) {
                         estaCargando = true;
                         progressBar.setVisibility(View.VISIBLE);
-                        controlerNoticiaRetrofit.pedirListaDeNoticiasPorCategoria(new ResultListener<List<Noticia>>() {
+                        controllerNoticiaRetrofit.pedirListaDeNoticiasPorCategoria(new ResultListener<List<Noticia>>() {
                             @Override
                             public void finish(List<Noticia> resultado) {
                                 progressBar.setVisibility(View.GONE);
@@ -130,7 +130,7 @@ public class NoticiasPorCategoriaActivity extends AppCompatActivity {
 
         Bundle bundle = new Bundle();
 
-        bundle.putSerializable(DetalleDeUnaNoticiaActivity.CLAVE_LISTADENOTICIAS, listadoDeNoticias);
+        bundle.putSerializable(DetalleDeUnaNoticiaActivity.CLAVE_LISTADODENOTICIAS, listadoDeNoticias);
         bundle.putInt(DetalleDeUnaNoticiaActivity.CLAVE_POSICION, posicionActual);
 
         intent.putExtras(bundle);

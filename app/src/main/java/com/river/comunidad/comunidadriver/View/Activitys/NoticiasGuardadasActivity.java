@@ -3,7 +3,6 @@ package com.river.comunidad.comunidadriver.View.Activitys;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
 
 import com.azoft.carousellayoutmanager.CarouselLayoutManager;
@@ -11,8 +10,7 @@ import com.azoft.carousellayoutmanager.CarouselZoomPostLayoutListener;
 import com.azoft.carousellayoutmanager.CenterScrollListener;
 import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
 import com.google.firebase.auth.FirebaseAuth;
-import com.river.comunidad.comunidadriver.Controler.ControllerNoticiaFirebase;
-import com.river.comunidad.comunidadriver.Model.Models.Comentario;
+import com.river.comunidad.comunidadriver.Controller.ControllerNoticiaFirebase;
 import com.river.comunidad.comunidadriver.Model.Models.ListadoDeNoticias;
 import com.river.comunidad.comunidadriver.Model.Models.Noticia;
 import com.river.comunidad.comunidadriver.R;
@@ -76,7 +74,7 @@ public class NoticiasGuardadasActivity extends AppCompatActivity {
 
         Bundle bundle = new Bundle();
 
-        bundle.putSerializable(DetalleDeUnaNoticiaActivity.CLAVE_LISTADENOTICIAS, listadoDeNoticias);
+        bundle.putSerializable(DetalleDeUnaNoticiaActivity.CLAVE_LISTADODENOTICIAS, listadoDeNoticias);
         bundle.putInt(DetalleDeUnaNoticiaActivity.CLAVE_POSICION, posicionActual);
 
         intent.putExtras(bundle);
