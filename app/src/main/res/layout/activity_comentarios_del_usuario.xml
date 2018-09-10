@@ -3,28 +3,36 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:orientation="vertical"
-    android:background="@color/rojo"
     android:layout_height="match_parent"
+    android:background="@color/rojo"
+    android:orientation="vertical"
     tools:context=".View.Activitys.ComentariosDelUsuarioActivity">
 
     <include layout="@layout/toolbar" />
 
     <TextView
-        android:layout_margin="10dp"
-        android:textColor="@color/blanco"
-        android:gravity="center"
-        android:text="@string/tus_comentarios"
-        android:textSize="25sp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        />
+        android:layout_margin="10dp"
+        android:gravity="center"
+        android:text="@string/tus_comentarios"
+        android:textColor="@color/blanco"
+        android:textSize="25sp" />
+
+    <TextView
+        android:visibility="gone"
+        android:id="@+id/textViewFijoAdvertenciaComentarios_activitycomentariodelusuario"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/todavia_no_has_comentado_ninguna_noticia"
+        android:textColor="@color/blanco"
+        android:textSize="20sp" />
 
     <android.support.v7.widget.RecyclerView
-        android:layout_margin="10dp"
         android:id="@+id/recyclerViewListaDeComentariosDelUsuario_activitycomentariosdelusuario"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp">
 
     </android.support.v7.widget.RecyclerView>
 

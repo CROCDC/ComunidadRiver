@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 
 import com.azoft.carousellayoutmanager.CarouselLayoutManager;
 import com.azoft.carousellayoutmanager.CarouselZoomPostLayoutListener;
@@ -50,7 +51,7 @@ public class NoticiasGuardadasActivity extends AppCompatActivity {
             }
         });
 
-        controllerNoticiaFirebase.pedirListaDeNoticiasGuardadasDelUsuario( new ResultListener<List<Noticia>>() {
+        controllerNoticiaFirebase.pedirListaDeNoticiasGuardadasDelUsuario(new ResultListener<List<Noticia>>() {
             @Override
             public void finish(List<Noticia> resultado) {
                 listaDeNoticiasEnVerticalAdapter.setListaDeNoticias(resultado);
@@ -80,5 +81,19 @@ public class NoticiasGuardadasActivity extends AppCompatActivity {
         intent.putExtras(bundle);
 
         startActivity(intent);
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case 16908332:
+                NoticiasGuardadasActivity.this.onBackPressed();
+                break;
+
+        }
+        return super.onOptionsItemSelected(item);
+
     }
 }

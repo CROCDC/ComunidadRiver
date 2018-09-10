@@ -36,6 +36,7 @@
     <string name="publicar_una_respuesta">Publicar una respuesta</string>
     <string name="email">Email</string>
     <string name="olvidaste_tu_contrase_a">olvidaste tu contraseña?</string>
+    <string name="todavia_no_has_comentado_ninguna_noticia">Todavia no has comentado ninguna noticia</string>
 
 
 </resources>

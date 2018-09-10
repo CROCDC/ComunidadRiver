@@ -4,6 +4,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -28,6 +32,8 @@ public class ComentariosDelUsuarioActivity extends AppCompatActivity {
     private ListaDeComentariosAdapter listaDeComentariosAdapter;
     private LinearLayoutManager linearLayoutManager;
     private FirebaseUser user;
+    private Toolbar toolbar;
+    private TextView textViewFijoAdvertencia;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +41,14 @@ public class ComentariosDelUsuarioActivity extends AppCompatActivity {
         setContentView(R.layout.activity_comentarios_del_usuario);
 
         user = FirebaseAuth.getInstance().getCurrentUser();
+
+        toolbar = findViewById(R.id.toolbarPrincipal_toolbar);
+        recyclerViewListaDeComentariosDelUsuario = findViewById(R.id.recyclerViewListaDeComentariosDelUsuario_activitycomentariosdelusuario);
+        textViewFijoAdvertencia = findViewById(R.id.textViewFijoAdvertenciaComentarios_activitycomentariodelusuario);
+
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
 
         listaDeComentariosAdapter = new ListaDeComentariosAdapter(new ListaDeComentariosAdapter.NotificadorHaciaImplementadorDeComentariosAdapter() {
             @Override
@@ -257,7 +271,6 @@ public class ComentariosDelUsuarioActivity extends AppCompatActivity {
 
         pedirComentarios();
 
-        recyclerViewListaDeComentariosDelUsuario = findViewById(R.id.recyclerViewListaDeComentariosDelUsuario_activitycomentariosdelusuario);
 
         linearLayoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, true);
 
@@ -268,11 +281,28 @@ public class ComentariosDelUsuarioActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case 16908332:
+               ComentariosDelUsuarioActivity.this.onBackPressed();
+                break;
+
+        }
+        return super.onOptionsItemSelected(item);
+
+    }
+
     public void pedirComentarios() {
         controllerNoticiaFirebase.pedirListaDeComentariosDeUnUsuario(new ResultListener<List<Comentario>>() {
             @Override
             public void finish(List<Comentario> resultado) {
                 listaDeComentariosAdapter.setListaDeComentarios(resultado);
+                if (resultado.size() == 0){
+                    textViewFijoAdvertencia.setVisibility(View.VISIBLE);
+                    recyclerViewListaDeComentariosDelUsuario.setVisibility(View.GONE);
+                }
             }
         });
     }
