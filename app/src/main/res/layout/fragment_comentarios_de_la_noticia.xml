@@ -74,14 +74,7 @@
                 android:textColor="@color/negro"
                 android:textSize="20sp" />
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="3dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:background="@color/grisoscuro">
 
-            </View>
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recyclerViewListaDeComentariosDeLaNoticia_fragmentcomentariosdelanoticia"

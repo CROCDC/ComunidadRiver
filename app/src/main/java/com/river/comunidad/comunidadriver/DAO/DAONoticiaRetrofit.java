@@ -23,7 +23,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class DAONoticiaRetrofit{
+public class DAONoticiaRetrofit {
     private Retrofit retrofit;
     private Context context;
     private ServiceNoticia serviceNoticia;
@@ -49,9 +49,9 @@ public class DAONoticiaRetrofit{
         llamada.enqueue(new Callback<List<Noticia>>() {
             @Override
             public void onResponse(Call<List<Noticia>> call, Response<List<Noticia>> response) {
-                if (response.body() != null){
+                if (response.body() != null) {
                     escuchadorDelControlador.finish(response.body());
-                }else {
+                } else {
                     aFalladoLaConexion();
                 }
 
@@ -60,9 +60,9 @@ public class DAONoticiaRetrofit{
             @Override
             public void onFailure(Call<List<Noticia>> call, Throwable t) {
 
-                if (pagina == 1){
+                if (pagina == 1) {
                     aFalladoLaConexion();
-                }else {
+                } else {
                     FancyToast.makeText(context, "La conexion a fallado", FancyToast.LENGTH_LONG, FancyToast.ERROR, false).show();
                 }
             }
@@ -142,8 +142,15 @@ public class DAONoticiaRetrofit{
             @Override
             public void run() {
                 FancyToast.makeText(context, "La conexion a fallado", FancyToast.LENGTH_LONG, FancyToast.ERROR, false).show();
-                ((Activity) context).onBackPressed();
+
+                try {
+                    ((Activity) context).finish();
+                } catch (Exception e) {
+
+                }
             }
         }, 1000);
+
+
     }
 }

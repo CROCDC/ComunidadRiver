@@ -36,6 +36,9 @@ public class AccountActivity extends AppCompatActivity {
 
     private Toolbar toolbar;
 
+    private String nombreDeUsuario;
+    private String fotoUrl;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,11 +60,27 @@ public class AccountActivity extends AppCompatActivity {
         cardViewButtonComentarios = findViewById(R.id.cardViewButtonComentarios_activityaccount);
 
         if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+
+            try {
+                fotoUrl = FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl().toString();
+            } catch (Exception e) {
+                fotoUrl = "http://www.comunidadriver.com/wp-content/uploads/2018/08/cuenta.png";
+            }
+
+
             Glide.with(getApplicationContext())
-                    .load(FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl())
+                    .load(fotoUrl)
                     .into(circleImageViewUsuario);
 
-            textViewNombreDeUsuario.setText(FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
+
+            if (FirebaseAuth.getInstance().getCurrentUser().getDisplayName().equals("")) {
+                textViewNombreDeUsuario.setText(FirebaseAuth.getInstance().getCurrentUser().getEmail());
+
+            }else {
+                textViewNombreDeUsuario.setText(FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
+
+            }
+
             cardViewButtonIniciarSesion.setVisibility(View.GONE);
 
         } else {
@@ -75,7 +94,7 @@ public class AccountActivity extends AppCompatActivity {
         touchCardViewButtonGuardado();
         touchCardViewButtonComentarios();
 
-        BlurImage.with(getApplicationContext()).load(R.drawable.cancha).intensity(40).Async(true).into(imageViewBackgroundMenu);
+        //BlurImage.with(getApplicationContext()).load(R.drawable.cancha).intensity(40).Async(true).into(imageViewBackgroundMenu);
 
 
     }

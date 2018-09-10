@@ -1,19 +1,18 @@
 package com.river.comunidad.comunidadriver;
 
-import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
+import android.graphics.Color;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.NotificationCompat;
-import android.widget.Toast;
-
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -23,12 +22,14 @@ import com.google.firebase.messaging.RemoteMessage;
 import com.river.comunidad.comunidadriver.Controller.ControllerNoticiaRetrofit;
 import com.river.comunidad.comunidadriver.Model.Models.ListadoDeNoticias;
 import com.river.comunidad.comunidadriver.Model.Models.Noticia;
+import com.river.comunidad.comunidadriver.Utils.Helper;
 import com.river.comunidad.comunidadriver.Utils.MySingleton;
 import com.river.comunidad.comunidadriver.Utils.ResultListener;
 import com.river.comunidad.comunidadriver.View.Activitys.DetalleDeUnaNoticiaActivity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
@@ -36,91 +37,146 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     private static final String CLAVE_ID = "id";
     private static final String CLAVE_TITULO = "title";
+    private static final String CLAVE_GRUPO_NOTIFICACIONES = "grupo";
 
-    Notification.Builder mBuilder;
-    NotificationCompat.Builder nmBuilder;
+    private NotificationManager notificationManager;
 
+    private String url;
+    private String titulo;
+    private String descripcion;
+
+    private ImageRequest imageRequest;
 
 
     private String id = "";
-    private String titulo = "";
-    private String descripcion = "";
+    private String ADMIN_CHANNEL_ID = "random 1 1";
 
-    private Intent intent;
+    private Intent notificationIntent;
+    private Bundle bundle;
+    private PendingIntent pendingIntent;
 
-    private Bitmap bitmap;
 
     @Override
     public void onMessageReceived(final RemoteMessage remoteMessage) {
 
-
         if (remoteMessage.getData().size() > 0) {
-
 
             id = remoteMessage.getData().get(CLAVE_ID);
             titulo = remoteMessage.getData().get(CLAVE_TITULO);
 
-
         }
 
         if (id.equals("0")) {
-            Notification.Builder mBuilder = new Notification.Builder(this)
-                    .setSmallIcon(R.drawable.ic_launcher_background)
-                    .setStyle(new Notification.BigTextStyle()
-                            .bigText("texto grande que se muesta cuando se despliega la notificacion"))
-                    .setContentTitle(titulo)
-                    .setContentText("jajajja")
-                    //.setSound(defaultSoundUri)
-                    .setAutoCancel(true);
+            //CODIGO PARA VERIFICAR SI FUNCIONAN LAS NOTIFICACIONES
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                setupChannels();
+            }
+            final int notificationId = new Random().nextInt(60000);
 
-            NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            notificationIntent = new Intent(this, DetalleDeUnaNoticiaActivity.class);
 
-            mNotificationManager.notify(0, mBuilder.build());
+            notificationIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
+
+            pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_ONE_SHOT);
+
+            url = "http://www.palabras.com.ar/wp-content/uploads/2018/08/Buenos-Aires-GIN-2-1152x759.jpg";
+
+            imageRequest = new ImageRequest(url, new Response.Listener<Bitmap>() {
+                @Override
+                public void onResponse(Bitmap response) {
+
+                    Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+                    NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(getApplicationContext(), ADMIN_CHANNEL_ID)
+                            .setSmallIcon(R.drawable.logofondonegropequeno)
+                            .setContentTitle(remoteMessage.getData().get("title"))
+                            .setContentText(remoteMessage.getData().get("message"))
+                            .setAutoCancel(true)
+                            .setSound(defaultSoundUri)
+                            .setContentIntent(pendingIntent)
+                            .setStyle(new NotificationCompat.BigPictureStyle()
+                                    .bigPicture(response));
+
+
+                    notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+                    notificationManager.notify(notificationId, notificationBuilder.build());
+
+
+                }
+            }, 0, 0, null, Bitmap.Config.RGB_565, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+
+                }
+            });
+
+            MySingleton.getmInstance(getApplicationContext()).addToRequestQue(imageRequest);
 
 
         } else {
-            new ControllerNoticiaRetrofit(getApplicationContext()).pedirNoticiaPorID(Integer.valueOf(id), new ResultListener<Noticia>() {
+
+            new ControllerNoticiaRetrofit(getApplicationContext()).pedirNoticiaPorID(Integer.parseInt(id), new ResultListener<Noticia>() {
                 @Override
                 public void finish(final Noticia noticia) {
 
-                    intent = new Intent(MyFirebaseMessagingService.this, DetalleDeUnaNoticiaActivity.class);
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                        setupChannels();
+                    }
+                    final int notificationId = new Random().nextInt(60000);
 
-                    final NotificationCompat.BigPictureStyle notiStyle = new NotificationCompat.BigPictureStyle();
+                    notificationIntent = new Intent(MyFirebaseMessagingService.this, DetalleDeUnaNoticiaActivity.class);
 
+                    notificationIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
-                    Bundle bundle = new Bundle();
+                    bundle = new Bundle();
 
                     List<Noticia> listaDeNoticias = new ArrayList<>();
+
                     listaDeNoticias.add(noticia);
+
                     ListadoDeNoticias listadoDeNoticias = new ListadoDeNoticias(listaDeNoticias);
 
                     bundle.putSerializable(DetalleDeUnaNoticiaActivity.CLAVE_LISTADODENOTICIAS, listadoDeNoticias);
-                    bundle.putSerializable(DetalleDeUnaNoticiaActivity.CLAVE_POSICION, 0);
+                    bundle.putInt(DetalleDeUnaNoticiaActivity.CLAVE_POSICION, 0);
 
+                    notificationIntent.putExtras(bundle);
 
-                    final PendingIntent pendingIntent = PendingIntent.getActivity(MyFirebaseMessagingService.this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
+                    pendingIntent = PendingIntent.getActivity(MyFirebaseMessagingService.this, 0, notificationIntent, PendingIntent.FLAG_ONE_SHOT);
 
-                    Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-                    nmBuilder = new NotificationCompat.Builder(MyFirebaseMessagingService.this)
-                            .setSmallIcon(R.drawable.logofondonegropequeno)
-                            .setStyle(notiStyle)
-                            .setContentTitle(noticia.getTitle().getRendered())
-                            .setContentText(noticia.getExcerpt().getRendered())
-                            .setSound(defaultSoundUri)
-                            .setContentIntent(pendingIntent);
+                    try {
+                        url = noticia.getEmbedded().getListaDeImagenes().get(0).getMedia_details().getSizes().getMedium_Large().getSource_url();
 
+                    } catch (Exception e) {
+                        url = noticia.getEmbedded().getListaDeImagenes().get(0).getsource_url();
+                    }
 
+                    titulo = noticia.getTitle().getRendered();
+                    descripcion = noticia.getExcerpt().getRendered();
 
-                   ImageRequest imageRequest = new ImageRequest(noticia.getEmbedded().getListaDeImagenes().get(0).getMedia_details().getSizes().getMedium().getSource_url(), new Response.Listener<Bitmap>() {
+                    titulo = Helper.eliminarEtiquetasHTML(titulo);
+                    descripcion = Helper.eliminarEtiquetasHTML(descripcion);
+
+                    imageRequest = new ImageRequest(url, new Response.Listener<Bitmap>() {
                         @Override
                         public void onResponse(Bitmap response) {
 
-                            nmBuilder.setStyle(new NotificationCompat.BigPictureStyle().bigPicture(response));
+                            Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+                            NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(getApplicationContext(), ADMIN_CHANNEL_ID)
+                                    .setSmallIcon(R.drawable.logofondonegropequeno)
+                                    .setContentTitle(titulo)
+                                    .setContentText(descripcion)
+                                    .setAutoCancel(true)
+                                    .setSound(defaultSoundUri)
+                                    .setContentIntent(pendingIntent)
+                                    .setStyle(new NotificationCompat.BigPictureStyle()
+                                            .bigPicture(response));
 
-                            NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
-                            notificationManager.notify(0, nmBuilder.build());
+                            notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+                            notificationManager.notify(notificationId, notificationBuilder.build());
+
 
                         }
                     }, 0, 0, null, Bitmap.Config.RGB_565, new Response.ErrorListener() {
@@ -130,7 +186,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                         }
                     });
 
-
                     MySingleton.getmInstance(getApplicationContext()).addToRequestQue(imageRequest);
 
 
@@ -138,8 +193,27 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
 
             });
+
         }
+
+
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void setupChannels() {
+        CharSequence adminChannelName = "Comunidad River";
+        String adminChannelDescription = "Comunidad";
 
+        NotificationChannel adminChannel;
+        adminChannel = new NotificationChannel(ADMIN_CHANNEL_ID, adminChannelName, NotificationManager.IMPORTANCE_LOW);
+        adminChannel.setDescription(adminChannelDescription);
+        adminChannel.enableLights(true);
+        adminChannel.setLightColor(Color.RED);
+        adminChannel.enableVibration(true);
+        if (notificationManager != null) {
+            notificationManager.createNotificationChannel(adminChannel);
+        }
+    }
 }
+
+

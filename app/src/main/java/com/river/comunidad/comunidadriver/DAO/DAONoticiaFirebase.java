@@ -2,7 +2,6 @@ package com.river.comunidad.comunidadriver.DAO;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -55,8 +54,8 @@ public class DAONoticiaFirebase {
 
     }
 
-    public void pedirListaDeNoticiasGuardadasDelUsuario(String usuarioUID, final ResultListener<List<Noticia>> escuchadorDelControlador) {
-        databaseReference = firebaseDatabase.getReference().child(Helper.REFERENCIA_CONTENIDO_FAVORITO).child(usuarioUID);
+    public void pedirListaDeNoticiasGuardadasDelUsuario(final ResultListener<List<Noticia>> escuchadorDelControlador) {
+        databaseReference = firebaseDatabase.getReference().child(Helper.REFERENCIA_CONTENIDO_FAVORITO).child(user.getUid());
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -76,20 +75,28 @@ public class DAONoticiaFirebase {
         });
     }
 
-    public void verificarSiElUsuarioYaLikeo(Integer idNoticia, Integer idComentario, final String usuarioUId, final ResultListener<Boolean> escuchadorDelControlador) {
-        databaseReference = firebaseDatabase.getReference().child(Helper.REFERENCIA_COMENTARIOS).child(idNoticia.toString()).child(idComentario.toString()).child("like").child("usuarios");
+
+    public void verificarSiElUsuarioYaReaccionoAlComentario(String reaccion, Integer idNoticia, String idComentario, final ResultListener<Boolean> escuchadorDelControlador) {
+        final List<String> listaDeUsuarios = new ArrayList<>();
+
+
+        databaseReference = firebaseDatabase.getReference().child(Helper.REFERENCIA_COMENTARIOS).child(idNoticia.toString()).child(idComentario.toString()).child(reaccion).child("usuarios");
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                         String usuarioUID = snapshot.getValue(String.class);
-                        if (usuarioUID.equals(usuarioUId)) {
-                            escuchadorDelControlador.finish(true);
-                        } else {
-                            escuchadorDelControlador.finish(false);
-                        }
+                        listaDeUsuarios.add(usuarioUID);
                     }
+
+                    if (listaDeUsuarios.contains(user.getUid())) {
+                        escuchadorDelControlador.finish(true);
+                    } else {
+                        escuchadorDelControlador.finish(false);
+                    }
+
+
                 } else {
                     escuchadorDelControlador.finish(false);
                 }
@@ -102,20 +109,27 @@ public class DAONoticiaFirebase {
         });
     }
 
-    public void verificarSiElUsuarioYaDislikeo(Integer idNoticia, Integer idComentario, final String usuarioUId, final ResultListener<Boolean> escuchadorDelControlador) {
-        databaseReference = firebaseDatabase.getReference().child(Helper.REFERENCIA_COMENTARIOS).child(idNoticia.toString()).child(idComentario.toString()).child("disLike").child("usuarios");
+    public void verificarSiElUsuarioYaReaccionoALaRespuesta(String reaccion, Integer idNoticia, String idComentario, Integer idRespuesta, final ResultListener<Boolean> escuchadorDelControlador) {
+        final List<String> listaDeUsuarios = new ArrayList<>();
+
+        databaseReference = firebaseDatabase.getReference().child(Helper.REFERENCIA_COMENTARIOS).child(idNoticia.toString()).child(idComentario.toString()).child("listaDeRespuestas").child(idRespuesta.toString()).child(reaccion).child("usuarios");
+
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                         String usuarioUID = snapshot.getValue(String.class);
-                        if (usuarioUID.equals(usuarioUId)) {
-                            escuchadorDelControlador.finish(true);
-                        } else {
-                            escuchadorDelControlador.finish(false);
-                        }
+                        listaDeUsuarios.add(usuarioUID);
                     }
+
+                    if (listaDeUsuarios.contains(user.getUid())) {
+                        escuchadorDelControlador.finish(true);
+                    } else {
+                        escuchadorDelControlador.finish(false);
+                    }
+
+
                 } else {
                     escuchadorDelControlador.finish(false);
                 }
@@ -128,144 +142,148 @@ public class DAONoticiaFirebase {
         });
     }
 
-    public void descontarLikeAUnComentario(final Integer idNoticia, final Integer idComentario, final String usuarioUId, final ResultListener<Boolean> escuchadorDelControlador) {
-        databaseReference = firebaseDatabase.getReference().child(Helper.REFERENCIA_COMENTARIOS).child(idNoticia.toString()).child(idComentario.toString()).child("like").child("usuarios");
+    public void darReaccionAUnComentario(final String reaccion, final Integer idNoticia, final String idComentario, final ResultListener<Boolean> escuchadorDelControlador) {
+
+        databaseReference = firebaseDatabase.getReference().child(Helper.REFERENCIA_COMENTARIOS).child(idNoticia.toString()).child(idComentario.toString()).child(reaccion).child("usuarios");
 
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (Integer i = 0; i <= dataSnapshot.getChildrenCount(); i++) {
-                    databaseReference.child(i.toString()).addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            String usuario = dataSnapshot.getValue(String.class);
+                List<String> listaDeUsuarios = (List<String>) dataSnapshot.getValue();
 
-                            if (usuario != null) {
-
-                                if (usuario.equals(usuarioUId)) {
-                                    databaseReference.removeValue();
-
-                                    databaseReference = firebaseDatabase.getReference().child(Helper.REFERENCIA_COMENTARIOS).child(idNoticia.toString()).child(idComentario.toString()).child("like").child("cantLikes");
-
-
-                                    databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-                                        @Override
-                                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                            Integer cantLikes = dataSnapshot.getValue(Integer.class);
-                                            databaseReference.setValue(cantLikes - 1);
-                                            escuchadorDelControlador.finish(true);
-
-                                        }
-
-                                        @Override
-                                        public void onCancelled(@NonNull DatabaseError databaseError) {
-                                            escuchadorDelControlador.finish(false);
-                                        }
-                                    });
-
-                                } else {
-                                    escuchadorDelControlador.finish(false);
-                                }
-                            }
-
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                        }
-                    });
+                try {
+                    listaDeUsuarios.add(user.getUid());
+                    databaseReference.setValue(listaDeUsuarios);
+                    escuchadorDelControlador.finish(true);
+                } catch (Exception e) {
+                    databaseReference.child("0").setValue(user.getUid());
+                    escuchadorDelControlador.finish(true);
                 }
+
+
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                escuchadorDelControlador.finish(false);
             }
+
+
         });
-
-
     }
 
-    public void descontarDisLikeAUnComentario(final Integer idNoticia, final Integer idComentario, final String usuarioUId, final ResultListener<Boolean> escuchadorDelControlador) {
-        databaseReference = firebaseDatabase.getReference().child(Helper.REFERENCIA_COMENTARIOS).child(idNoticia.toString()).child(idComentario.toString()).child("disLike").child("usuarios");
+    public void descontarReaccionAUnComentario(final String reaccion, final Integer idNoticia, final String idComentario, final ResultListener<Boolean> escuchadorDelControlador) {
+
+        databaseReference = firebaseDatabase.getReference().child(Helper.REFERENCIA_COMENTARIOS).child(idNoticia.toString()).child(idComentario.toString()).child(reaccion).child("usuarios");
 
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (Integer i = 0; i <= dataSnapshot.getChildrenCount(); i++) {
-                    databaseReference.child(i.toString()).addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            String usuario = dataSnapshot.getValue(String.class);
+                List<String> listaDeUsuarios = (List<String>) dataSnapshot.getValue();
 
-                            if (usuario != null) {
-                                if (usuario.equals(usuarioUId)) {
-                                    databaseReference.removeValue();
+                try {
+                    listaDeUsuarios.remove(user.getUid());
 
-                                    databaseReference = firebaseDatabase.getReference().child(Helper.REFERENCIA_COMENTARIOS).child(idNoticia.toString()).child(idComentario.toString()).child("disLike").child("cantDisLikes");
-
-                                    databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-                                        @Override
-                                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                            Integer cantLikes = dataSnapshot.getValue(Integer.class);
-                                            databaseReference.setValue(cantLikes - 1);
-                                            escuchadorDelControlador.finish(true);
-
-                                        }
-
-                                        @Override
-                                        public void onCancelled(@NonNull DatabaseError databaseError) {
-                                            escuchadorDelControlador.finish(false);
-                                        }
-                                    });
-                                }
-                            } else {
-                                escuchadorDelControlador.finish(false);
-                            }
-
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                        }
-                    });
+                } catch (Exception e) {
+                    escuchadorDelControlador.finish(true);
                 }
+
+                databaseReference.setValue(listaDeUsuarios);
+
+                escuchadorDelControlador.finish(true);
+
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                escuchadorDelControlador.finish(false);
             }
+
+
         });
-
-
     }
 
 
-    public void agregarLaNoticiaAGuardado(Noticia noticia, final ResultListener<Boolean> escuchadorDelControlador) {
+    public void darReaccionAUnaRespuesta(final String reaccion, final Integer idNoticia, final String idComentario, final Integer idRespuesta, final ResultListener<Boolean> escuchadorDelControlador) {
+
+        databaseReference = firebaseDatabase.getReference().child(Helper.REFERENCIA_COMENTARIOS).child(idNoticia.toString()).child(idComentario.toString()).child("listaDeRespuestas").child(idRespuesta.toString()).child(reaccion).child("usuarios");
+
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                List<String> listaDeUsuarios = (List<String>) dataSnapshot.getValue();
+
+                try {
+                    listaDeUsuarios.add(user.getUid());
+                    databaseReference.setValue(listaDeUsuarios);
+                    escuchadorDelControlador.finish(true);
+                } catch (Exception e) {
+                    databaseReference.child("0").setValue(user.getUid());
+                    escuchadorDelControlador.finish(true);
+                }
+
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                escuchadorDelControlador.finish(false);
+            }
+
+
+        });
+    }
+
+    public void descontarReaccionAUnaRespuesta(final String reaccion, final Integer idNoticia, final String idComentario, Integer idRespuesta, final ResultListener<Boolean> escuchadorDelControlador) {
+
+        databaseReference = firebaseDatabase.getReference().child(Helper.REFERENCIA_COMENTARIOS).child(idNoticia.toString()).child(idComentario.toString()).child("listaDeRespuestas").child(idRespuesta.toString()).child(reaccion).child("usuarios");
+
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                List<String> listaDeUsuarios = (List<String>) dataSnapshot.getValue();
+
+                try {
+                    listaDeUsuarios.remove(user.getUid());
+
+                } catch (Exception e) {
+                    escuchadorDelControlador.finish(true);
+                }
+
+                databaseReference.setValue(listaDeUsuarios);
+
+                escuchadorDelControlador.finish(true);
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                escuchadorDelControlador.finish(false);
+            }
+
+
+        });
+    }
+
+    public void agregarLaNoticiaAGuardado(Noticia noticia,final ResultListener<Boolean> escuchadorDelControlador) {
         databaseReference = firebaseDatabase.getReference().child(Helper.REFERENCIA_CONTENIDO_FAVORITO).child(user.getUid());
         databaseReference.child(noticia.getId().toString()).setValue(new Noticia(noticia.getLink(), noticia.getTitle(), noticia.getContent(), noticia.getExcerpt(), noticia.getEmbedded(), noticia.getCategories()));
         escuchadorDelControlador.finish(true);
     }
 
-    public void publicarComentario(final Integer idNoticia, final Comentario comentario, final ResultListener<Boolean> escuchadorDelControlador) {
+    public void publicarComentario(final Integer idNoticia, final Comentario comentario,
+                                   final ResultListener<Boolean> escuchadorDelControlador) {
         databaseReference = firebaseDatabase.getReference().child(Helper.REFERENCIA_COMENTARIOS).child(idNoticia.toString());
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.getChildrenCount() == 0) {
-                    databaseReference.child("1").setValue(comentario);
+
+                    databaseReference.child(comentario.getIdComentario()).setValue(comentario);
                     escuchadorDelControlador.finish(true);
 
 
-                } else {
-                    long cuenta = dataSnapshot.getChildrenCount() + 1;
-                    databaseReference.child(String.valueOf(cuenta)).setValue(comentario);
-                    escuchadorDelControlador.finish(true);
-
-                }
             }
 
             @Override
@@ -278,7 +296,7 @@ public class DAONoticiaFirebase {
     }
 
 
-    public void publicarRespuestas(final Integer idNoticia, Integer idComentario, final Respuesta respuestaF, final ResultListener<Boolean> escuchadorDelControlador) {
+    public void publicarRespuestas(final Integer idNoticia, final String idComentario, final Respuesta respuestaF, final ResultListener<Boolean> escuchadorDelControlador) {
         databaseReference = firebaseDatabase.getReference().child(Helper.REFERENCIA_COMENTARIOS).child(idNoticia.toString()).child(idComentario.toString()).child("listaDeRespuestas");
 
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -306,7 +324,7 @@ public class DAONoticiaFirebase {
 
     }
 
-    public void pedirListaDeComentariosDeUnaNoticia(final Integer idNoticia, final ResultListener<List<Comentario>> escuchadorDelControlador) {
+    public void pedirListaDeComentariosDeUnaNoticia(final Integer idNoticia,final ResultListener<List<Comentario>> escuchadorDelControlador) {
         databaseReference = firebaseDatabase.getReference().child(Helper.REFERENCIA_COMENTARIOS).child(idNoticia.toString());
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -337,7 +355,7 @@ public class DAONoticiaFirebase {
 
     }
 
-    public void pedirListaDeComentariosDeUnUsuario(final String usuarioUID, final ResultListener<List<Comentario>> escuchadorDelControlador) {
+    public void pedirListaDeComentariosDeUnUsuario(final ResultListener<List<Comentario>> escuchadorDelControlador) {
         databaseReference = firebaseDatabase.getReference().child(Helper.REFERENCIA_COMENTARIOS);
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -350,7 +368,7 @@ public class DAONoticiaFirebase {
                     for (DataSnapshot snapshotComentario : snapshot.getChildren()) {
                         Comentario comentario = snapshotComentario.getValue(Comentario.class);
 
-                        if (comentario.getUsuarioUID().equals(usuarioUID)) {
+                        if (comentario.getUsuarioUID().equals(user.getUid())) {
                             listaDeComentariosDelUsuario.add(comentario);
                         }
                     }
@@ -366,55 +384,10 @@ public class DAONoticiaFirebase {
         });
     }
 
-    public void darLikeAUnComentario(Integer idNoticia, Integer idComentario, final ResultListener<Boolean> escuchadorDelControlador) {
-        databaseReference = firebaseDatabase.getReference().child(Helper.REFERENCIA_COMENTARIOS).child(idNoticia.toString()).child(idComentario.toString()).child("like").child("usuarios");
-        List<String> uidUsuario = new ArrayList<>();
-        uidUsuario.add(user.getUid());
-        databaseReference.setValue(uidUsuario);
-        databaseReference = firebaseDatabase.getReference().child(Helper.REFERENCIA_COMENTARIOS).child(idNoticia.toString()).child(idComentario.toString()).child("like").child("cantLikes");
-
-        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Integer cantLikes = dataSnapshot.getValue(Integer.class);
-                databaseReference.setValue(cantLikes + 1);
-                escuchadorDelControlador.finish(true);
-
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                error();
-            }
-        });
-    }
-
-    public void darDisLikeAUnComentario(Integer idNoticia, Integer idComentario, final ResultListener<Boolean> escuchadorDelControlador) {
-        databaseReference = firebaseDatabase.getReference().child(Helper.REFERENCIA_COMENTARIOS).child(idNoticia.toString()).child(idComentario.toString()).child("disLike").child("usuarios");
-        List<String> uidUsuario = new ArrayList<>();
-        uidUsuario.add(user.getUid());
-        databaseReference.setValue(uidUsuario);
-        databaseReference = firebaseDatabase.getReference().child(Helper.REFERENCIA_COMENTARIOS).child(idNoticia.toString()).child(idComentario.toString()).child("disLike").child("cantDisLikes");
-
-        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Integer cantDisLikes = dataSnapshot.getValue(Integer.class);
-                databaseReference.setValue(cantDisLikes + 1);
-                escuchadorDelControlador.finish(true);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                error();
-            }
-        });
-    }
-
 
     public void error() {
         FancyToast.makeText(context, "a ocurrido un error", FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
+
 
     }
 

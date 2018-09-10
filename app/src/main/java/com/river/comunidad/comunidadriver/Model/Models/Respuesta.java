@@ -2,7 +2,7 @@ package com.river.comunidad.comunidadriver.Model.Models;
 
 public class Respuesta {
     private Integer idNoticia;
-    private Integer idComentario;
+    private Integer idRespuesta;
     private String usuario;
     private String usuarioUID;
     private String urlImagen;
@@ -15,9 +15,9 @@ public class Respuesta {
     }
 
 
-    public Respuesta(Integer idNoticia, Integer idComentario, String usuario, String usuarioUID, String urlImagen, Like like, DisLike disLike, String texto, long fechaDePublicacion) {
+    public Respuesta(Integer idNoticia, Integer idRespuesta, String usuario, String usuarioUID, String urlImagen, Like like, DisLike disLike, String texto, long fechaDePublicacion) {
         this.idNoticia = idNoticia;
-        this.idComentario = idComentario;
+        this.idRespuesta = idRespuesta;
         this.usuario = usuario;
         this.usuarioUID = usuarioUID;
         this.urlImagen = urlImagen;
@@ -33,8 +33,8 @@ public class Respuesta {
         return idNoticia;
     }
 
-    public Integer getIdComentario() {
-        return idComentario;
+    public Integer getIdRespuesta() {
+        return idRespuesta;
     }
 
     public Like getLike() {

@@ -5,8 +5,10 @@
     <color name="colorAccent">#d5442b</color>
     <color name="rojoTrasparente">#b89c0000</color>
     <color name="blanco">#FFFF</color>
+    <color name="blancoSuave">#bdbdbd</color>
     <color name="blancoTransparente">#9dffffff</color>
     <color name="negro">#000000</color>
+    <color name="azul">#475bec</color>
 
 
 

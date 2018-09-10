@@ -29,8 +29,8 @@ public class MainCircleActivity extends AppCompatActivity {
     private Bundle bundle;
 
     private int[] mItemImgs = new int[]{
-            R.drawable.eventosjpg, R.drawable.actividadesjpg,
-            R.drawable.sabiasquejpg, R.drawable.historiasdevidajpg};
+            R.drawable.efermides, R.drawable.deporteysociedad,
+            R.drawable.nuestroclub, R.drawable.quinchos};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,16 +59,16 @@ public class MainCircleActivity extends AppCompatActivity {
             @Override
             public void itemClick(View view, int pos) {
                 switch (mItemImgs[pos]) {
-                    case R.drawable.historiasdevidajpg:
+                    case R.drawable.deporteysociedad:
                         cargarCategoria(Helper.CATEGORIA_DEPORTE_Y_SOCIEDAD);
                         break;
-                    case R.drawable.sabiasquejpg:
+                    case R.drawable.efermides:
                         cargarCategoria(Helper.CATEGORIA_EFEMÉRIDES);
                         break;
-                    case R.drawable.eventosjpg:
+                    case R.drawable.nuestroclub:
                         cargarCategoria(Helper.CATEGORIA_NUESTRO_CLUB);
                         break;
-                    case R.drawable.actividadesjpg:
+                    case R.drawable.quinchos:
                         cargarCategoria(Helper.CATEGORIA_POR_LOS_QUINCHOS);
                         break;
                 }

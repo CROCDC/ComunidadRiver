@@ -1,9 +1,5 @@
 package com.river.comunidad.comunidadriver.Model.Models;
 
-import android.net.Uri;
-
-import com.google.firebase.auth.FirebaseUser;
-
 
 import java.util.List;
 
@@ -17,13 +13,14 @@ public class Comentario {
     private String texto;
     private long fechaDePublicacion;
     private List<Respuesta> listaDeRespuestas;
+    private String idComentario;
 
 
 
     public Comentario() {
     }
 
-    public Comentario(Integer idNoticia, String usuarioUID, String usuario, String urlImagen, Like like, DisLike disLike, String texto, long fechaDePublicacion, List<Respuesta> listaDeRespuestas) {
+    public Comentario(Integer idNoticia, String usuarioUID, String usuario, String urlImagen, Like like, DisLike disLike, String texto, long fechaDePublicacion, List<Respuesta> listaDeRespuestas, String idComentario) {
         this.idNoticia = idNoticia;
         this.usuario = usuario;
         this.usuarioUID = usuarioUID;
@@ -33,6 +30,7 @@ public class Comentario {
         this.texto = texto;
         this.fechaDePublicacion = fechaDePublicacion;
         this.listaDeRespuestas = listaDeRespuestas;
+        this.idComentario = idComentario;
     }
 
     public void setLike(Like like) {
@@ -74,9 +72,14 @@ public class Comentario {
         return fechaDePublicacion;
     }
 
+    public String getIdComentario() {
+        return idComentario;
+    }
 
     public void setListaDeRespuestas(List<Respuesta> listaDeRespuestas) {
         this.listaDeRespuestas = listaDeRespuestas;
     }
 }
+
+
 

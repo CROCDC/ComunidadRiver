@@ -32,7 +32,6 @@ import com.shashank.sony.fancytoastlib.FancyToast;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.Twitter;
-import com.twitter.sdk.android.core.TwitterAuthToken;
 import com.twitter.sdk.android.core.TwitterCore;
 import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.TwitterSession;
@@ -67,15 +66,18 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
         Twitter.initialize(this);
+
+
+        super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_login);
 
         twitterLoginButton = findViewById(R.id.loginButtonTwitter_activitylogin);
         loginButtonFacebook = findViewById(R.id.loginButtonFacebook_activitylogin);
         signInButtonGoogle = findViewById(R.id.loginButtonGoogle_activitylogin);
+        cardViewButtonLogin = findViewById(R.id.cardViewButtonIniciarSesiom_activitylogin);
+        cardViewButtonRegister = findViewById(R.id.cardViewButtonRegistrarse_activitylogin);
         cardViewButtonInvitado = findViewById(R.id.cardViewButtonInvitado_activitylogin);
 
 
@@ -90,6 +92,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             }
         };
 
+        touchLoginButton();
+        touchRegisterButton();
         touchLoginButtonTwitter();
         touchLoginButtonFacebook();
         touchLoginButtonGoogle();
@@ -97,6 +101,42 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
     }
 
+    public void touchLoginButton(){
+        cardViewButtonLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(LoginActivity.this,LoginNativoActivity.class);
+
+                Bundle bundle = new Bundle();
+
+                bundle.putBoolean(LoginNativoActivity.OPCION,true);
+
+                intent.putExtras(bundle);
+
+                startActivity(intent);
+
+            }
+        });
+
+    }
+    public void touchRegisterButton(){
+        cardViewButtonRegister.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(LoginActivity.this,LoginNativoActivity.class);
+
+                Bundle bundle = new Bundle();
+
+                bundle.putBoolean(LoginNativoActivity.OPCION,false);
+
+                intent.putExtras(bundle);
+
+                startActivity(intent);
+
+            }
+        });
+
+    }
 
     public void touchLoginButtonTwitter() {
         twitterLoginButton.setCallback(new Callback<TwitterSession>() {
@@ -131,8 +171,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     }
 
     public void touchLoginButtonFacebook() {
-
-        //OBJETOS NECESARIOS PARA EL LOGIN CON FACEBOOK
         callbackManager = CallbackManager.Factory.create();
         loginButtonFacebook.setReadPermissions("email");
 
@@ -207,9 +245,9 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
         if (requestCode == 140) {
             twitterLoginButton.onActivityResult(requestCode, resultCode, data);
-        }else if (requestCode == 64206){
+        } else if (requestCode == 64206) {
             callbackManager.onActivityResult(requestCode, resultCode, data);
-        }else if (requestCode == 777){
+        } else if (requestCode == 777) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             if (result.isSuccess()) {
                 AuthCredential credential = GoogleAuthProvider.getCredential(result.getSignInAccount().getIdToken(), null);

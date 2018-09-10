@@ -34,5 +34,8 @@
     <string name="cerrar_sesion">Cerrar Sesion</string>
     <string name="tus_comentarios">Tus Comentarios</string>
     <string name="publicar_una_respuesta">Publicar una respuesta</string>
+    <string name="email">Email</string>
+    <string name="olvidaste_tu_contrase_a">olvidaste tu contraseña?</string>
+
 
 </resources>

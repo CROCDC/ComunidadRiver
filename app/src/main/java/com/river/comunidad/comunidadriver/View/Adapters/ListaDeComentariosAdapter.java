@@ -1,6 +1,7 @@
 package com.river.comunidad.comunidadriver.View.Adapters;
 
 import android.content.Context;
+import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
@@ -29,6 +30,7 @@ public class ListaDeComentariosAdapter extends RecyclerView.Adapter {
 
     private List<Comentario> listaDeComentarios;
     private Context context;
+    private long mLastClickTime;
     private NotificadorHaciaImplementadorDeComentariosAdapter notificadorHaciaImplementadorDeComentariosAdapter;
 
     public ListaDeComentariosAdapter(NotificadorHaciaImplementadorDeComentariosAdapter notificadorHaciaImplementadorDeComentariosAdapter) {
@@ -39,6 +41,7 @@ public class ListaDeComentariosAdapter extends RecyclerView.Adapter {
     public void setListaDeComentarios(List<Comentario> listaDeComentarios) {
         this.listaDeComentarios = listaDeComentarios;
         notifyDataSetChanged();
+
     }
 
 
@@ -93,6 +96,9 @@ public class ListaDeComentariosAdapter extends RecyclerView.Adapter {
         private CardView cardViewButtonPublicarRespuesta;
         private RecyclerView recyclerViewListaDeRespuestas;
 
+        private Integer cantLikes;
+        private Integer cantDisLikes;
+
         public ComentariosViewHolder(@NonNull View itemView) {
             super(itemView);
 
@@ -115,10 +121,15 @@ public class ListaDeComentariosAdapter extends RecyclerView.Adapter {
 
         public void cargarComentario(final Comentario comentario) {
 
-            ListaDeRespuestasAdapter listaDeRespuestasAdapter = new ListaDeRespuestasAdapter(new ListaDeRespuestasAdapter.NotificarClick() {
+            ListaDeRespuestasAdapter listaDeRespuestasAdapter = new ListaDeRespuestasAdapter(new ListaDeRespuestasAdapter.NotificadorHaciaListaDeComentariosAdapter() {
                 @Override
-                public void notificar() {
-                    notificadorHaciaImplementadorDeComentariosAdapter.notificar();
+                public void notificarTouchLikeButton(Integer idRespuesta) {
+                    notificadorHaciaImplementadorDeComentariosAdapter.notificarTouchLikeButtonRespuesta(idRespuesta, comentario.getIdComentario(), listaDeComentarios.get(getAdapterPosition()).getIdNoticia());
+                }
+
+                @Override
+                public void notificarTouchDisLikeButton(Integer idRespuesta) {
+                    notificadorHaciaImplementadorDeComentariosAdapter.notificarTouchDisLikeButtonRespuesta(idRespuesta, comentario.getIdComentario(), listaDeComentarios.get(getAdapterPosition()).getIdNoticia());
                 }
             });
 
@@ -130,7 +141,7 @@ public class ListaDeComentariosAdapter extends RecyclerView.Adapter {
                 }
             };
 
-            if (comentario.getListaDeRespuestas() != null){
+            if (comentario.getListaDeRespuestas() != null) {
                 listaDeRespuestasAdapter.setListaDeRespuestas(comentario.getListaDeRespuestas());
 
             }
@@ -142,23 +153,51 @@ public class ListaDeComentariosAdapter extends RecyclerView.Adapter {
             Helper.cargarImagenes(circleImageViewUsuario, context, comentario.getUrlImagen());
             textViewNombreDeUsuario.setText(comentario.getUsuario());
             textViewContendioDelComentario.setText(comentario.getTexto());
-            textViewCantidadDeLikes.setText(comentario.getLike().getCantLikes().toString());
-            textViewCantidadDeDisLikes.setText(comentario.getDisLike().getCantDisLikes().toString());
+
+            try {
+                cantLikes = comentario.getLike().getUsuarios().size();
+
+            } catch (Exception e) {
+                cantLikes = 0;
+            }
+
+            try {
+                cantDisLikes = comentario.getDisLike().getUsuarios().size();
+            } catch (Exception e) {
+                cantDisLikes = 0;
+
+            }
+
+            textViewCantidadDeLikes.setText(cantLikes.toString());
+            textViewCantidadDeDisLikes.setText(cantDisLikes.toString());
             textViewFechaDePublicacionDelComentario.setText(MiRelojDeArena.getTimeAgo(comentario.getFechaDePublicacion()));
+
 
             imageViewButtonLike.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    notificadorHaciaImplementadorDeComentariosAdapter.noticicarTouchLikeButton(getAdapterPosition() + 1);
+                    if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                        return;
+                    }
+                    mLastClickTime = SystemClock.elapsedRealtime();
+
+                    notificadorHaciaImplementadorDeComentariosAdapter.notificarTouchLikeButton(comentario.getIdComentario(), listaDeComentarios.get(getAdapterPosition()).getIdNoticia());
                 }
             });
+
 
             imageViewButtonDisLike.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    notificadorHaciaImplementadorDeComentariosAdapter.notificarTouchDisLikeButton(getAdapterPosition() + 1);
+                    if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                        return;
+                    }
+                    mLastClickTime = SystemClock.elapsedRealtime();
+
+                    notificadorHaciaImplementadorDeComentariosAdapter.notificarTouchDisLikeButton(comentario.getIdComentario(), listaDeComentarios.get(getAdapterPosition()).getIdNoticia());
                 }
             });
+
 
             imageViewButtonResponder.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -178,7 +217,7 @@ public class ListaDeComentariosAdapter extends RecyclerView.Adapter {
                 public void onClick(View view) {
 
                     if (!editTextRespuestaDelUsuario.getText().toString().equals("")) {
-                        notificadorHaciaImplementadorDeComentariosAdapter.notificarTouchPublicarButton(editTextRespuestaDelUsuario.getText().toString(),getAdapterPosition() + 1);
+                        notificadorHaciaImplementadorDeComentariosAdapter.notificarTouchPublicarButton(editTextRespuestaDelUsuario.getText().toString(), comentario.getIdComentario(), listaDeComentarios.get(getAdapterPosition()).getIdNoticia());
                         linearLayoutContenedorCampoComentario.setVisibility(View.GONE);
                         editTextRespuestaDelUsuario.setText("");
                     } else {
@@ -192,13 +231,15 @@ public class ListaDeComentariosAdapter extends RecyclerView.Adapter {
     }
 
     public interface NotificadorHaciaImplementadorDeComentariosAdapter {
-        public void notificar();
+        public void notificarTouchLikeButtonRespuesta(Integer idRespuesta, String idComentario, Integer idNoticia);
 
-        public void noticicarTouchLikeButton(Integer idComentario);
+        public void notificarTouchDisLikeButtonRespuesta(Integer idRespuesta, String idComentario, Integer idNoticia);
 
-        public void notificarTouchDisLikeButton(Integer idComentario);
+        public void notificarTouchLikeButton(String idComentario, Integer idNoticia);
 
-        public void notificarTouchPublicarButton(String texto,Integer idComentario);
+        public void notificarTouchDisLikeButton(String idComentario, Integer idNoticia);
+
+        public void notificarTouchPublicarButton(String texto, String idComentario, Integer idNoticia);
     }
 
 }

@@ -53,7 +53,6 @@ public class NoticiasActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
-
         listaDeNoticiasEnVerticalAdapter = new ListaDeNoticiasEnVerticalAdapter(new ListaDeNoticiasEnVerticalAdapter.NotificadorHaciaActivity() {
             @Override
             public void notificarAActivityClickItewView(ListadoDeNoticias listadoDeNoticias, Integer posicionActual) {
@@ -146,7 +145,7 @@ public class NoticiasActivity extends AppCompatActivity {
 
         switch (item.getItemId()) {
             case R.id.opcionCuenta:
-                Intent intent = new Intent(NoticiasActivity.this,AccountActivity.class);
+                Intent intent = new Intent(NoticiasActivity.this, AccountActivity.class);
                 startActivity(intent);
                 break;
             case 16908332:

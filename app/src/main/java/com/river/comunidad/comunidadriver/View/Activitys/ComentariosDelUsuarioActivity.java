@@ -2,36 +2,279 @@ package com.river.comunidad.comunidadriver.View.Activitys;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.river.comunidad.comunidadriver.Controller.ControllerNoticiaFirebase;
 import com.river.comunidad.comunidadriver.Model.Models.Comentario;
+import com.river.comunidad.comunidadriver.Model.Models.DisLike;
+import com.river.comunidad.comunidadriver.Model.Models.Like;
+import com.river.comunidad.comunidadriver.Model.Models.Respuesta;
 import com.river.comunidad.comunidadriver.R;
+import com.river.comunidad.comunidadriver.Utils.Helper;
 import com.river.comunidad.comunidadriver.Utils.ResultListener;
+import com.river.comunidad.comunidadriver.View.Adapters.ListaDeComentariosAdapter;
+import com.shashank.sony.fancytoastlib.FancyToast;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ComentariosDelUsuarioActivity extends AppCompatActivity {
 
+    private ControllerNoticiaFirebase controllerNoticiaFirebase;
     private RecyclerView recyclerViewListaDeComentariosDelUsuario;
+    private ListaDeComentariosAdapter listaDeComentariosAdapter;
+    private LinearLayoutManager linearLayoutManager;
+    private FirebaseUser user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comentarios_del_usuario);
 
-        new ControllerNoticiaFirebase(getApplicationContext()).pedirListaDeComentariosDeUnUsuario(FirebaseAuth.getInstance().getCurrentUser().getUid(), new ResultListener<List<Comentario>>() {
+        user = FirebaseAuth.getInstance().getCurrentUser();
+
+        listaDeComentariosAdapter = new ListaDeComentariosAdapter(new ListaDeComentariosAdapter.NotificadorHaciaImplementadorDeComentariosAdapter() {
             @Override
-            public void finish(List<Comentario> resultado) {
-                Toast.makeText(ComentariosDelUsuarioActivity.this, resultado.toString(), Toast.LENGTH_SHORT).show();
+            public void notificarTouchLikeButtonRespuesta(final Integer idRespuesta, final String idComentario, final Integer idNoticia) {
+                if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+                    controllerNoticiaFirebase.verificarSiElUsuarioYaReaccionoALaRespuesta("like", idNoticia, idComentario, idRespuesta, new ResultListener<Boolean>() {
+                        @Override
+                        public void finish(Boolean resultado) {
+                            if (resultado) {
+                                FancyToast.makeText(getApplicationContext(), "solo puede opinar una vez", FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
+                            } else {
+                                controllerNoticiaFirebase.verificarSiElUsuarioYaReaccionoALaRespuesta("disLike", idNoticia, idComentario, idRespuesta, new ResultListener<Boolean>() {
+                                    @Override
+                                    public void finish(Boolean resultado) {
+                                        if (resultado) {
+                                            controllerNoticiaFirebase.descontarReaccionAUnaRespueta("disLike", idNoticia, idComentario, idRespuesta, new ResultListener<Boolean>() {
+                                                @Override
+                                                public void finish(Boolean resultado) {
+                                                    controllerNoticiaFirebase.darReaccionAUnaRespuesta("like", idNoticia, idComentario, idRespuesta, new ResultListener<Boolean>() {
+                                                        @Override
+                                                        public void finish(Boolean resultado) {
+                                                            pedirComentarios();
+                                                        }
+                                                    });
+                                                }
+                                            });
+
+
+                                        } else {
+                                            controllerNoticiaFirebase.darReaccionAUnaRespuesta("like", idNoticia, idComentario, idRespuesta, new ResultListener<Boolean>() {
+                                                @Override
+                                                public void finish(Boolean resultado) {
+                                                    pedirComentarios();
+                                                }
+                                            });
+                                        }
+                                    }
+                                });
+                            }
+                        }
+                    });
+
+
+                } else {
+                    Helper.avisarNoEstasLogueado(getApplicationContext());
+
+                }
             }
+
+            @Override
+            public void notificarTouchDisLikeButtonRespuesta(final Integer idRespuesta, final String idComentario, final Integer idNoticia) {
+                if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+                    controllerNoticiaFirebase.verificarSiElUsuarioYaReaccionoALaRespuesta("disLike", idNoticia, idComentario, idRespuesta, new ResultListener<Boolean>() {
+                        @Override
+                        public void finish(Boolean resultado) {
+                            if (resultado) {
+                                FancyToast.makeText(getApplicationContext(), "solo puede opinar una vez", FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
+
+                            } else {
+                                controllerNoticiaFirebase.verificarSiElUsuarioYaReaccionoALaRespuesta("like", idNoticia, idComentario, idRespuesta, new ResultListener<Boolean>() {
+                                    @Override
+                                    public void finish(Boolean resultado) {
+                                        if (resultado) {
+                                            controllerNoticiaFirebase.descontarReaccionAUnaRespueta("like", idNoticia, idComentario, idRespuesta, new ResultListener<Boolean>() {
+                                                @Override
+                                                public void finish(Boolean resultado) {
+                                                    controllerNoticiaFirebase.darReaccionAUnaRespuesta("disLike", idNoticia, idComentario, idRespuesta, new ResultListener<Boolean>() {
+                                                        @Override
+                                                        public void finish(Boolean resultado) {
+                                                            pedirComentarios();
+                                                        }
+                                                    });
+                                                }
+                                            });
+
+
+                                        } else {
+                                            controllerNoticiaFirebase.darReaccionAUnaRespuesta("disLike", idNoticia, idComentario, idRespuesta, new ResultListener<Boolean>() {
+                                                @Override
+                                                public void finish(Boolean resultado) {
+                                                    pedirComentarios();
+                                                }
+                                            });
+                                        }
+                                    }
+                                });
+                            }
+                        }
+                    });
+
+
+                } else {
+                    Helper.avisarNoEstasLogueado(getApplicationContext());
+
+                }
+            }
+
+            @Override
+            public void notificarTouchLikeButton(final String idComentario, final Integer idNoticia) {
+                if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+                    controllerNoticiaFirebase.verfificarSiElUsuarioYaReaccionoAlComentario("like", idNoticia, idComentario, new ResultListener<Boolean>() {
+                        @Override
+                        public void finish(Boolean resultado) {
+                            if (resultado) {
+                                FancyToast.makeText(getApplicationContext(), "solo puede opinar una vez", FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
+                            } else {
+                                controllerNoticiaFirebase.verfificarSiElUsuarioYaReaccionoAlComentario("disLike", idNoticia, idComentario, new ResultListener<Boolean>() {
+                                    @Override
+                                    public void finish(Boolean resultado) {
+                                        if (resultado) {
+                                            controllerNoticiaFirebase.descontarReaccionAUnComentario("disLike", idNoticia, idComentario, new ResultListener<Boolean>() {
+                                                @Override
+                                                public void finish(Boolean resultado) {
+
+                                                    controllerNoticiaFirebase.darReaccionAUnComentario("like", idNoticia, idComentario, new ResultListener<Boolean>() {
+                                                        @Override
+                                                        public void finish(Boolean resultado) {
+                                                            pedirComentarios();
+                                                        }
+                                                    });
+                                                }
+                                            });
+
+
+                                        } else {
+                                            controllerNoticiaFirebase.darReaccionAUnComentario("like", idNoticia, idComentario, new ResultListener<Boolean>() {
+                                                @Override
+                                                public void finish(Boolean resultado) {
+                                                    pedirComentarios();
+                                                }
+                                            });
+                                        }
+                                    }
+                                });
+                            }
+                        }
+                    });
+
+                } else {
+                    Helper.avisarNoEstasLogueado(getApplicationContext());
+                }
+            }
+
+            @Override
+            public void notificarTouchDisLikeButton(final String idComentario, final Integer idNoticia) {
+                if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+                    controllerNoticiaFirebase.verfificarSiElUsuarioYaReaccionoAlComentario("disLike", idNoticia, idComentario, new ResultListener<Boolean>() {
+                        @Override
+                        public void finish(Boolean resultado) {
+                            if (resultado) {
+                                FancyToast.makeText(getApplicationContext(), "solo puede opinar una vez", FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
+
+                            } else {
+                                controllerNoticiaFirebase.verfificarSiElUsuarioYaReaccionoAlComentario("like", idNoticia, idComentario, new ResultListener<Boolean>() {
+                                    @Override
+                                    public void finish(Boolean resultado) {
+                                        if (resultado) {
+                                            controllerNoticiaFirebase.descontarReaccionAUnComentario("like", idNoticia, idComentario, new ResultListener<Boolean>() {
+                                                @Override
+                                                public void finish(Boolean resultado) {
+                                                    controllerNoticiaFirebase.darReaccionAUnComentario("disLike", idNoticia, idComentario, new ResultListener<Boolean>() {
+                                                        @Override
+                                                        public void finish(Boolean resultado) {
+                                                            pedirComentarios();
+                                                        }
+                                                    });
+                                                }
+                                            });
+
+
+                                        } else {
+                                            controllerNoticiaFirebase.darReaccionAUnComentario("disLike", idNoticia, idComentario, new ResultListener<Boolean>() {
+                                                @Override
+                                                public void finish(Boolean resultado) {
+                                                    pedirComentarios();
+                                                }
+                                            });
+                                        }
+                                    }
+                                });
+                            }
+                        }
+                    });
+
+
+                } else {
+                    Helper.avisarNoEstasLogueado(getApplicationContext());
+
+
+                }
+            }
+
+            @Override
+            public void notificarTouchPublicarButton(String texto, String idComentario, Integer idNoticia) {
+                List<String> usuarios = new ArrayList<>();
+
+                Like like = new Like(usuarios);
+                DisLike disLike = new DisLike(usuarios);
+
+
+                Respuesta respuesta = new Respuesta(idNoticia, 0, user.getDisplayName(), user.getUid(), user.getPhotoUrl().toString(), like, disLike, texto, System.currentTimeMillis());
+
+                controllerNoticiaFirebase.publicarRespuestas(idNoticia, idComentario, respuesta, new ResultListener<Boolean>() {
+                    @Override
+                    public void finish(Boolean resultado) {
+                        if (resultado) {
+                            pedirComentarios();
+                        } else {
+                            FancyToast.makeText(getApplicationContext(), "a ocurrido un error por favor intente nuevamente", FancyToast.LENGTH_SHORT, FancyToast.SUCCESS, false).show();
+
+                        }
+                    }
+                });
+            }
+
+
         });
+
+        controllerNoticiaFirebase = new ControllerNoticiaFirebase(getApplicationContext());
+
+        pedirComentarios();
 
         recyclerViewListaDeComentariosDelUsuario = findViewById(R.id.recyclerViewListaDeComentariosDelUsuario_activitycomentariosdelusuario);
 
+        linearLayoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, true);
 
+        recyclerViewListaDeComentariosDelUsuario.setAdapter(listaDeComentariosAdapter);
+
+        recyclerViewListaDeComentariosDelUsuario.setLayoutManager(linearLayoutManager);
+
+
+    }
+
+    public void pedirComentarios() {
+        controllerNoticiaFirebase.pedirListaDeComentariosDeUnUsuario(new ResultListener<List<Comentario>>() {
+            @Override
+            public void finish(List<Comentario> resultado) {
+                listaDeComentariosAdapter.setListaDeComentarios(resultado);
+            }
+        });
     }
 
 

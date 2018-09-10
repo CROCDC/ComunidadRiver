@@ -1,11 +1,13 @@
 package com.river.comunidad.comunidadriver.View.Adapters;
 
 import android.content.Context;
+import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.river.comunidad.comunidadriver.Model.Models.Respuesta;
@@ -23,11 +25,14 @@ public class ListaDeRespuestasAdapter extends RecyclerView.Adapter {
     private List<Respuesta> listaDeRespuestas;
     private Context context;
     private RecyclerView recyclerView;
-    private NotificarClick NotificarClick;
+    private NotificadorHaciaListaDeComentariosAdapter notificadorHaciaListaDeComentariosAdapter;
 
-    public ListaDeRespuestasAdapter(NotificarClick NotificarClick) {
+    private long mLastClickTime;
+
+
+    public ListaDeRespuestasAdapter(NotificadorHaciaListaDeComentariosAdapter NotificadorHaciaListaDeComentariosAdapter) {
         listaDeRespuestas = new ArrayList<>();
-        this.NotificarClick = NotificarClick;
+        this.notificadorHaciaListaDeComentariosAdapter = NotificadorHaciaListaDeComentariosAdapter;
 
     }
 
@@ -59,7 +64,7 @@ public class ListaDeRespuestasAdapter extends RecyclerView.Adapter {
 
         respuestasViewHolder.cargarRespuesta(respuesta);
 
-        NotificarClick.notificar();
+
     }
 
     @Override
@@ -74,6 +79,11 @@ public class ListaDeRespuestasAdapter extends RecyclerView.Adapter {
         private TextView textViewContendioDelComentario;
         private TextView textViewCantidadDeLikes;
         private TextView textViewCantidadDeDisLikes;
+        private ImageView imageViewLikeButton;
+        private ImageView imageViewDisLikeButton;
+
+        private Integer cantLikes;
+        private Integer cantDisLikes;
 
 
         public RespuestasViewHolder(@NonNull View itemView) {
@@ -84,22 +94,66 @@ public class ListaDeRespuestasAdapter extends RecyclerView.Adapter {
             textViewContendioDelComentario = itemView.findViewById(R.id.textViewContenidoDelComentario_celdarespuesta);
             textViewCantidadDeLikes = itemView.findViewById(R.id.textViewCantidadDeLikesDelComentario_celdarespuesta);
             textViewCantidadDeDisLikes = itemView.findViewById(R.id.textViewCantidadDeDisLikes_celdarespuesta);
+            imageViewLikeButton = itemView.findViewById(R.id.imageViewButtonMeGusta_celdarespuesta);
+            imageViewDisLikeButton = itemView.findViewById(R.id.imageViewButtonNoMeGusta_celdarespuesta);
+
+
         }
 
-        public void cargarRespuesta(Respuesta respuesta) {
+        public void cargarRespuesta(final Respuesta respuesta) {
 
             Helper.cargarImagenes(circleImageViewUsuario, context, respuesta.getUrlImagen());
             textViewNombreDeUsuario.setText(respuesta.getUsuario());
             textViewFechaDePublicacionDelComentario.setText(MiRelojDeArena.getTimeAgo(respuesta.getFechaDePublicacion()).toString());
             textViewContendioDelComentario.setText(respuesta.getTexto());
-            textViewCantidadDeLikes.setText(respuesta.getLike().getCantLikes().toString());
-            textViewCantidadDeDisLikes.setText(respuesta.getDisLike().getCantDisLikes().toString());
 
+            try {
+                cantLikes = respuesta.getLike().getUsuarios().size();
+
+            } catch (Exception e) {
+                cantLikes = 0;
+            }
+
+            try {
+                cantDisLikes = respuesta.getDisLike().getUsuarios().size();
+            } catch (Exception e) {
+                cantDisLikes = 0;
+            }
+
+            textViewCantidadDeLikes.setText(cantLikes.toString());
+            textViewCantidadDeDisLikes.setText(cantDisLikes.toString());
+
+            imageViewLikeButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                        return;
+                    }
+                    mLastClickTime = SystemClock.elapsedRealtime();
+
+                    notificadorHaciaListaDeComentariosAdapter.notificarTouchLikeButton(getAdapterPosition());
+                }
+            });
+
+            imageViewDisLikeButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                        return;
+                    }
+                    mLastClickTime = SystemClock.elapsedRealtime();
+
+                    notificadorHaciaListaDeComentariosAdapter.notificarTouchDisLikeButton(getAdapterPosition());
+                }
+            });
 
         }
     }
 
-    public interface NotificarClick {
-        public void notificar();
+    public interface NotificadorHaciaListaDeComentariosAdapter {
+        public void notificarTouchLikeButton(Integer idRespuesta);
+
+        public void notificarTouchDisLikeButton(Integer idRespuesta);
+
     }
 }

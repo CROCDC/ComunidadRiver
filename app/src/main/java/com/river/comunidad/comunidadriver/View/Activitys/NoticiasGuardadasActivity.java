@@ -50,7 +50,7 @@ public class NoticiasGuardadasActivity extends AppCompatActivity {
             }
         });
 
-        controllerNoticiaFirebase.pedirListaDeNoticiasGuardadasDelUsuario(FirebaseAuth.getInstance().getCurrentUser().getUid(), new ResultListener<List<Noticia>>() {
+        controllerNoticiaFirebase.pedirListaDeNoticiasGuardadasDelUsuario( new ResultListener<List<Noticia>>() {
             @Override
             public void finish(List<Noticia> resultado) {
                 listaDeNoticiasEnVerticalAdapter.setListaDeNoticias(resultado);

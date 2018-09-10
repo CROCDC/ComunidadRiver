@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.river.comunidad.comunidadriver.Model.Models.Excerpt;
 import com.river.comunidad.comunidadriver.Model.Models.Noticia;
+import com.shashank.sony.fancytoastlib.FancyToast;
 import com.squareup.picasso.Picasso;
 
 import org.jsoup.Jsoup;
@@ -80,6 +81,11 @@ public class Helper {
         Glide.with(context)
                 .load(url)
                 .into(imageView);
+    }
+
+    public static void avisarNoEstasLogueado(Context context){
+        FancyToast.makeText(context, "debe estar logueado para acceder a esta funcion", FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
+
     }
 
 
