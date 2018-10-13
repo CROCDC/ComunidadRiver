@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.river.comunidad.comunidadriver.Model.Models.Noticia;
+import com.river.comunidad.comunidadriver.Model.API_REST.Noticia;
 import com.river.comunidad.comunidadriver.R;
 import com.river.comunidad.comunidadriver.Utils.Helper;
 

@@ -12,10 +12,10 @@ import android.widget.TextView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.river.comunidad.comunidadriver.Controller.ControllerNoticiaFirebase;
-import com.river.comunidad.comunidadriver.Model.Models.Comentario;
-import com.river.comunidad.comunidadriver.Model.Models.DisLike;
-import com.river.comunidad.comunidadriver.Model.Models.Like;
-import com.river.comunidad.comunidadriver.Model.Models.Respuesta;
+import com.river.comunidad.comunidadriver.Model.Firebase.Comentario;
+import com.river.comunidad.comunidadriver.Model.Firebase.DisLike;
+import com.river.comunidad.comunidadriver.Model.Firebase.Like;
+import com.river.comunidad.comunidadriver.Model.Firebase.Respuesta;
 import com.river.comunidad.comunidadriver.R;
 import com.river.comunidad.comunidadriver.Utils.Helper;
 import com.river.comunidad.comunidadriver.Utils.ResultListener;
@@ -256,10 +256,8 @@ public class ComentariosDelUsuarioActivity extends AppCompatActivity {
                     public void finish(Boolean resultado) {
                         if (resultado) {
                             pedirComentarios();
-                        } else {
+                        } else
                             FancyToast.makeText(getApplicationContext(), "a ocurrido un error por favor intente nuevamente", FancyToast.LENGTH_SHORT, FancyToast.SUCCESS, false).show();
-
-                        }
                     }
                 });
             }
@@ -286,7 +284,7 @@ public class ComentariosDelUsuarioActivity extends AppCompatActivity {
 
         switch (item.getItemId()) {
             case 16908332:
-               ComentariosDelUsuarioActivity.this.onBackPressed();
+                ComentariosDelUsuarioActivity.this.onBackPressed();
                 break;
 
         }
@@ -299,7 +297,7 @@ public class ComentariosDelUsuarioActivity extends AppCompatActivity {
             @Override
             public void finish(List<Comentario> resultado) {
                 listaDeComentariosAdapter.setListaDeComentarios(resultado);
-                if (resultado.size() == 0){
+                if (resultado.size() == 0) {
                     textViewFijoAdvertencia.setVisibility(View.VISIBLE);
                     recyclerViewListaDeComentariosDelUsuario.setVisibility(View.GONE);
                 }

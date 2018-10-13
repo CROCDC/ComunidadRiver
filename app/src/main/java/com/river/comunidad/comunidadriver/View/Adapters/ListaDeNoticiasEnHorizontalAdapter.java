@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.river.comunidad.comunidadriver.Model.Models.Noticia;
+import com.river.comunidad.comunidadriver.Model.API_REST.Noticia;
 import com.river.comunidad.comunidadriver.R;
 import com.river.comunidad.comunidadriver.Utils.Helper;
 
@@ -62,16 +62,16 @@ public class ListaDeNoticiasEnHorizontalAdapter extends RecyclerView.Adapter {
 
     public class NoticiasViewHolder extends RecyclerView.ViewHolder {
         private ImageView imageViewDeLaNoticia;
-        private TextView webViewTituloDeLaNoticia;
-        private TextView webViewCopeteDeLaNoticia;
+        private TextView textViewTituloDeLaNoticia;
+        private TextView textViewCopeteDeLaNoticia;
 
 
         public NoticiasViewHolder(View itemView) {
             super(itemView);
 
             imageViewDeLaNoticia = itemView.findViewById(R.id.imageViewDeLaNoticia_celdanoticiahorizontal);
-            webViewTituloDeLaNoticia = itemView.findViewById(R.id.textViewTituloDeLaNoticia_celdanoticiahorizontal);
-            webViewCopeteDeLaNoticia = itemView.findViewById(R.id.textViewCopeteDeLaNoticias_celdanoticiahorizontal);
+            textViewTituloDeLaNoticia = itemView.findViewById(R.id.textViewTituloDeLaNoticia_celdanoticiahorizontal);
+            textViewCopeteDeLaNoticia = itemView.findViewById(R.id.textViewCopeteDeLaNoticias_celdanoticiahorizontal);
 
 
         }
@@ -79,8 +79,8 @@ public class ListaDeNoticiasEnHorizontalAdapter extends RecyclerView.Adapter {
         public void cargarNoticia(Noticia noticia) {
 
             try {
-                webViewTituloDeLaNoticia.setText(Html.fromHtml(noticia.getTitle().getRendered()));
-                webViewCopeteDeLaNoticia.setText(Html.fromHtml(noticia.getExcerpt().getRendered()));
+                textViewTituloDeLaNoticia.setText(Html.fromHtml(noticia.getTitle().getRendered()));
+                textViewCopeteDeLaNoticia.setText(Html.fromHtml(noticia.getExcerpt().getRendered()));
                 Helper.cargarImagenes(imageViewDeLaNoticia, context, noticia.getEmbedded().getListaDeImagenes().get(0).getMedia_details().getSizes().getMedium_Large().getSource_url());
 
 

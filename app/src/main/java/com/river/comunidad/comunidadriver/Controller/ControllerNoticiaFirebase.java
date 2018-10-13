@@ -3,9 +3,9 @@ package com.river.comunidad.comunidadriver.Controller;
 import android.content.Context;
 
 import com.river.comunidad.comunidadriver.DAO.DAONoticiaFirebase;
-import com.river.comunidad.comunidadriver.Model.Models.Comentario;
-import com.river.comunidad.comunidadriver.Model.Models.Noticia;
-import com.river.comunidad.comunidadriver.Model.Models.Respuesta;
+import com.river.comunidad.comunidadriver.Model.API_REST.Noticia;
+import com.river.comunidad.comunidadriver.Model.Firebase.Comentario;
+import com.river.comunidad.comunidadriver.Model.Firebase.Respuesta;
 import com.river.comunidad.comunidadriver.Utils.ResultListener;
 
 import java.util.List;

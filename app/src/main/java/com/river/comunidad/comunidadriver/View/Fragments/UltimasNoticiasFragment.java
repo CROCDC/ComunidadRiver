@@ -10,8 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.river.comunidad.comunidadriver.Model.Models.ListadoDeNoticias;
-import com.river.comunidad.comunidadriver.Model.Models.Noticia;
+import com.river.comunidad.comunidadriver.Model.API_REST.ListadoDeNoticias;
+import com.river.comunidad.comunidadriver.Model.API_REST.Noticia;
 import com.river.comunidad.comunidadriver.R;
 import com.river.comunidad.comunidadriver.View.Adapters.ListaDeNoticiasEnHorizontalAdapter;
 

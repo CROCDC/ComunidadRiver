@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.river.comunidad.comunidadriver.DAO.DAONoticiaRetrofit;
 
-import com.river.comunidad.comunidadriver.Model.Models.Noticia;
+import com.river.comunidad.comunidadriver.Model.API_REST.Noticia;
 import com.river.comunidad.comunidadriver.Utils.Helper;
 import com.river.comunidad.comunidadriver.Utils.ResultListener;
 

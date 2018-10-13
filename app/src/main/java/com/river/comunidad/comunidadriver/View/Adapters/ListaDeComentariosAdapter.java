@@ -15,7 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.river.comunidad.comunidadriver.Model.Models.Comentario;
+import com.river.comunidad.comunidadriver.Model.Firebase.Comentario;
 import com.river.comunidad.comunidadriver.R;
 import com.river.comunidad.comunidadriver.Utils.Helper;
 import com.river.comunidad.comunidadriver.Utils.MiRelojDeArena;

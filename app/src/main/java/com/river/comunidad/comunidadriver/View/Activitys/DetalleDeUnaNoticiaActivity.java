@@ -17,7 +17,7 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.river.comunidad.comunidadriver.Controller.ControllerNoticiaFirebase;
-import com.river.comunidad.comunidadriver.Model.Models.ListadoDeNoticias;
+import com.river.comunidad.comunidadriver.Model.API_REST.ListadoDeNoticias;
 import com.river.comunidad.comunidadriver.R;
 import com.river.comunidad.comunidadriver.Utils.CubeTransformer;
 import com.river.comunidad.comunidadriver.Utils.ResultListener;

@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.river.comunidad.comunidadriver.Model.Models.Respuesta;
+import com.river.comunidad.comunidadriver.Model.Firebase.Respuesta;
 import com.river.comunidad.comunidadriver.R;
 import com.river.comunidad.comunidadriver.Utils.Helper;
 import com.river.comunidad.comunidadriver.Utils.MiRelojDeArena;

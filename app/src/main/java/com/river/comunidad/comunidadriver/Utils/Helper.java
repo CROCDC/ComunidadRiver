@@ -8,8 +8,8 @@ import android.content.Context;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
-import com.river.comunidad.comunidadriver.Model.Models.Excerpt;
-import com.river.comunidad.comunidadriver.Model.Models.Noticia;
+import com.river.comunidad.comunidadriver.Model.API_REST.Excerpt;
+import com.river.comunidad.comunidadriver.Model.API_REST.Noticia;
 import com.shashank.sony.fancytoastlib.FancyToast;
 import com.squareup.picasso.Picasso;
 

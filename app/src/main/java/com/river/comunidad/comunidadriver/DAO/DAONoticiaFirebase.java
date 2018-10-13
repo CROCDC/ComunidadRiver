@@ -10,9 +10,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.river.comunidad.comunidadriver.Model.Models.Comentario;
-import com.river.comunidad.comunidadriver.Model.Models.Noticia;
-import com.river.comunidad.comunidadriver.Model.Models.Respuesta;
+import com.river.comunidad.comunidadriver.Model.API_REST.Noticia;
+
+import com.river.comunidad.comunidadriver.Model.Firebase.Comentario;
+import com.river.comunidad.comunidadriver.Model.Firebase.Respuesta;
 import com.river.comunidad.comunidadriver.Utils.Helper;
 import com.river.comunidad.comunidadriver.Utils.ResultListener;
 import com.shashank.sony.fancytoastlib.FancyToast;

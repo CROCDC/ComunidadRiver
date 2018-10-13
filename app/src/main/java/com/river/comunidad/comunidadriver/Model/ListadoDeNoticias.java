@@ -1,4 +1,4 @@
-package com.river.comunidad.comunidadriver.Model.Models;
+package com.river.comunidad.comunidadriver.Model.API_REST;
 
 import java.io.Serializable;
 import java.util.List;

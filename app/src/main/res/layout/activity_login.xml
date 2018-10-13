@@ -2,31 +2,27 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
     android:id="@+id/linearLayoutContenedorFragmentLoginNativo_activitylogin"
-
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/negrito"
     android:orientation="vertical"
     tools:context=".View.Activitys.LoginActivity">
 
     <LinearLayout
+        android:layout_marginTop="20dp"
+        android:layout_alignParentTop="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <include
-            layout="@layout/toolbar"
-            />
+        <include layout="@layout/toolbar" />
 
         <android.support.v7.widget.CardView
             android:id="@+id/cardViewButtonIniciarSesiom_activitylogin"
             android:layout_width="300dp"
             android:layout_height="80dp"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
             android:layout_gravity="center"
-            android:layout_marginTop="49dp"
             app:cardBackgroundColor="@color/rojo"
             app:cardCornerRadius="4dp"
             app:cardElevation="10dp"
@@ -69,10 +65,9 @@
 
 
     <LinearLayout
+        android:layout_centerInParent="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
         android:orientation="horizontal">
 
 
@@ -108,11 +103,11 @@
 
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="39dp"
+
         android:orientation="vertical">
 
         <com.twitter.sdk.android.core.identity.TwitterLoginButton

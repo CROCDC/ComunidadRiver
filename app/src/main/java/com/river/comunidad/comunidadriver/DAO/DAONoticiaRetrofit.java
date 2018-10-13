@@ -8,7 +8,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Handler;
 
-import com.river.comunidad.comunidadriver.Model.Models.Noticia;
+import com.river.comunidad.comunidadriver.Model.API_REST.Noticia;
 import com.river.comunidad.comunidadriver.Utils.Helper;
 import com.river.comunidad.comunidadriver.Utils.ResultListener;
 import com.river.comunidad.comunidadriver.Utils.ServiceNoticia;
