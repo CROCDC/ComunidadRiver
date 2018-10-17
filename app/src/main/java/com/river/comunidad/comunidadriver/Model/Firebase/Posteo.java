@@ -1,14 +1,15 @@
 package com.river.comunidad.comunidadriver.Model.Firebase;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Posteo {
+public class Posteo implements Serializable {
     private String nombreDeUsuario;
-    private String fechaDePublicacion;
-    private String elementoMultimedial;
+    private long fechaDePublicacion;
+    private Integer tipoDePosteo;
     private String imagenDelUsuario;
     private String usuarioUID;
-    private String titulo;
+    private String elementoMultimedial;
     private String texto;
     private Like like;
     private DisLike disLike;
@@ -19,6 +20,18 @@ public class Posteo {
     public Posteo() {
     }
 
+    public Posteo(String nombreDeUsuario, long fechaDePublicacion, Integer tipoDePosteo, String imagenDelUsuario, String usuarioUID, String texto, Like like, DisLike disLike, List<Comentario> comentarios) {
+        this.nombreDeUsuario = nombreDeUsuario;
+        this.fechaDePublicacion = fechaDePublicacion;
+        this.tipoDePosteo = tipoDePosteo;
+        this.imagenDelUsuario = imagenDelUsuario;
+        this.usuarioUID = usuarioUID;
+        this.texto = texto;
+        this.like = like;
+        this.disLike = disLike;
+        this.comentarios = comentarios;
+    }
+
     public String getNombreDeUsuario() {
         return nombreDeUsuario;
     }
@@ -27,21 +40,41 @@ public class Posteo {
         this.nombreDeUsuario = nombreDeUsuario;
     }
 
-    public String getFechaDePublicacion() {
+
+    public long getFechaDePublicacion() {
         return fechaDePublicacion;
     }
 
-    public void setFechaDePublicacion(String fechaDePublicacion) {
+    public void setFechaDePublicacion(long fechaDePublicacion) {
         this.fechaDePublicacion = fechaDePublicacion;
     }
 
-    public String getElementoMultimedial() {
-        return elementoMultimedial;
+    public Integer getTipoDePosteo() {
+        return tipoDePosteo;
     }
 
-    public void setElementoMultimedial(String elementoMultimedial) {
-        this.elementoMultimedial = elementoMultimedial;
+    public void setTipoDePosteo(Integer tipoDePosteo) {
+        this.tipoDePosteo = tipoDePosteo;
     }
+
+
+    public String getImagenDelUsuario() {
+        return imagenDelUsuario;
+    }
+
+    public void setImagenDelUsuario(String imagenDelUsuario) {
+        this.imagenDelUsuario = imagenDelUsuario;
+    }
+
+    public String getUsuarioUID() {
+        return usuarioUID;
+    }
+
+    public void setUsuarioUID(String usuarioUID) {
+        this.usuarioUID = usuarioUID;
+    }
+
+
 
     public String getTexto() {
         return texto;
@@ -75,11 +108,11 @@ public class Posteo {
         this.comentarios = comentarios;
     }
 
-    public String getTitulo() {
-        return titulo;
+    public String getElementoMultimedial() {
+        return elementoMultimedial;
     }
 
-    public void setTitulo(String titulo) {
-        this.titulo = titulo;
+    public void setElementoMultimedial(String elementoMultimedial) {
+        this.elementoMultimedial = elementoMultimedial;
     }
 }

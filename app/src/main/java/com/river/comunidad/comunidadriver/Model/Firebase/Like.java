@@ -1,8 +1,9 @@
 package com.river.comunidad.comunidadriver.Model.Firebase;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Like {
+public class Like implements Serializable {
     private List<String> usuarios;
 
     public Like() {

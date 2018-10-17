@@ -33,6 +33,7 @@ public class AccountActivity extends AppCompatActivity {
     private CardView cardViewButtonIniciarSesion;
     private CardView cardViewButtonGuardado;
     private CardView cardViewButtonComentarios;
+    private CardView cardViewButtonPosteos;
 
     private Toolbar toolbar;
 
@@ -58,6 +59,8 @@ public class AccountActivity extends AppCompatActivity {
         cardViewButtonIniciarSesion = findViewById(R.id.cardViewButtonIniciarSesion_activityaccount);
         cardViewButtonGuardado = findViewById(R.id.cardViewButtonGuardado_activityaccount);
         cardViewButtonComentarios = findViewById(R.id.cardViewButtonComentarios_activityaccount);
+        cardViewButtonPosteos = findViewById(R.id.cardViewButtonPosteos_activityaccount);
+
 
         if (FirebaseAuth.getInstance().getCurrentUser() != null) {
 
@@ -93,6 +96,7 @@ public class AccountActivity extends AppCompatActivity {
         touchCardViewButtonIniciarSesion();
         touchCardViewButtonGuardado();
         touchCardViewButtonComentarios();
+        touchCardViewButtonPosteos();
 
         //BlurImage.with(getApplicationContext()).load(R.drawable.cancha).intensity(40).Async(true).into(imageViewBackgroundMenu);
 
@@ -150,6 +154,15 @@ public class AccountActivity extends AppCompatActivity {
                     FancyToast.makeText(getApplicationContext(), "Debes estas logueado para acceder a esta funcion ", Toast.LENGTH_LONG, FancyToast.ERROR, false).show();
 
                 }
+            }
+        });
+    }
+
+    public void touchCardViewButtonPosteos(){
+        cardViewButtonPosteos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(AccountActivity.this,PosteosDeLosUsuariosActivity.class));
             }
         });
     }

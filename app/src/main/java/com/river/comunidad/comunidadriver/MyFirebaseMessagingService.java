@@ -144,12 +144,19 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
                     pendingIntent = PendingIntent.getActivity(MyFirebaseMessagingService.this, 0, notificationIntent, PendingIntent.FLAG_ONE_SHOT);
 
-                    try {
-                        url = noticia.getEmbedded().getListaDeImagenes().get(0).getMedia_details().getSizes().getMedium_Large().getSource_url();
 
-                    } catch (Exception e) {
-                        url = noticia.getEmbedded().getListaDeImagenes().get(0).getsource_url();
+                    try {
+                        url = noticia.getEmbedded().getListaDeImagenes().get(0).getMedia_details().getSizes().getThumbnail().getSource_url();
+                    } catch (Exception e1) {
+                        try {
+                            url = noticia.getEmbedded().getListaDeImagenes().get(0).getMedia_details().getSizes().getMedium_Large().getSource_url();
+
+                        } catch (Exception e2) {
+                            url = noticia.getEmbedded().getListaDeImagenes().get(0).getsource_url();
+                        }
+
                     }
+
 
                     titulo = noticia.getTitle().getRendered();
                     descripcion = noticia.getExcerpt().getRendered();

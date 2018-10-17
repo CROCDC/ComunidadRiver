@@ -1,8 +1,9 @@
 package com.river.comunidad.comunidadriver.Model.Firebase;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Comentario {
+public class Comentario implements Serializable {
     private Integer idNoticia;
     private String usuario;
     private String usuarioUID;

@@ -5,6 +5,8 @@ package com.river.comunidad.comunidadriver.Utils;
 
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -15,6 +17,7 @@ import com.squareup.picasso.Picasso;
 
 import org.jsoup.Jsoup;
 
+import java.io.File;
 import java.util.List;
 
 public class Helper {
@@ -85,6 +88,13 @@ public class Helper {
 
     public static void avisarNoEstasLogueado(Context context){
         FancyToast.makeText(context, "debe estar logueado para acceder a esta funcion", FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
+
+    }
+
+    public static Bitmap fileToBitmap(File file){
+        String filePath = file.getPath();
+        Bitmap bitmap = BitmapFactory.decodeFile(filePath);
+        return bitmap;
 
     }
 
