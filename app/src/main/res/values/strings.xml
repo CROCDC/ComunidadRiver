@@ -41,6 +41,8 @@
     <string name="foto">Subir Fotos/Videos</string>
     <string name="subir_videos">Subir Videos</string>
     <string name="sacar_fotos">Cámara</string>
+    <string name="channel_name">Comunidad River</string>
+    <string name="channel_description">Comunidad</string>
 
 
 </resources>

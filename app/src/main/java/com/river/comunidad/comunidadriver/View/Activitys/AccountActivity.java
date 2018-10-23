@@ -16,7 +16,6 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
-import com.jackandphantom.blurimage.BlurImage;
 import com.river.comunidad.comunidadriver.R;
 import com.shashank.sony.fancytoastlib.FancyToast;
 

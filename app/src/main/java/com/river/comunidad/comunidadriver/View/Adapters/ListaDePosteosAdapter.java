@@ -16,6 +16,7 @@ import com.river.comunidad.comunidadriver.Model.Firebase.PosteoConImagen;
 import com.river.comunidad.comunidadriver.Model.Firebase.PosteoConTexto;
 import com.river.comunidad.comunidadriver.Model.Firebase.PosteoConVideo;
 import com.river.comunidad.comunidadriver.R;
+import com.river.comunidad.comunidadriver.Utils.MiRelojDeArena;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +30,9 @@ public class ListaDePosteosAdapter extends RecyclerView.Adapter {
     private static final Integer TIPO_CON_IMAGEN = 1;
     private static final Integer TIPO_CON_VIDEO = 2;
     private static final Integer TIPO_CON_TEXTO = 3;
+
+    private Integer cantDislikes;
+    private Integer cantLikes;
 
     public ListaDePosteosAdapter() {
         listaDePosteos = new ArrayList<>();
@@ -58,6 +62,7 @@ public class ListaDePosteosAdapter extends RecyclerView.Adapter {
         } else if (viewType == 3) {
             View viewDeLaCelda = layoutInflater.inflate(R.layout.celda_posteo_solo_texto, viewGroup, false);
 
+            return new PosteoSoloTextoViewHolder(viewDeLaCelda);
 
         }
 
@@ -106,7 +111,6 @@ public class ListaDePosteosAdapter extends RecyclerView.Adapter {
             return 0;
         }
 
-
     }
 
     @Override
@@ -146,15 +150,28 @@ public class ListaDePosteosAdapter extends RecyclerView.Adapter {
                     .load(posteo.getImagenDelUsuario())
                     .into(circleImageViewDeUsuario);
             textViewNombreDelUsuario.setText(posteo.getNombreDeUsuario());
-            textViewFechaDePublicacion.setText((int) posteo.getFechaDePublicacion());
+
+            textViewFechaDePublicacion.setText(MiRelojDeArena.getTimeAgo(posteo.getFechaDePublicacion()));
             textViewDelPosteo.setText(posteo.getTexto());
 
             Glide.with(context)
                     .load(posteo.getElementoMultimedial())
                     .into(imageViewDelPosteo);
 
-            Integer cantDislikes = posteo.getDisLike().getUsuarios().size();
-            Integer cantLikes = posteo.getLike().getUsuarios().size();
+            try {
+                cantDislikes = posteo.getDisLike().getUsuarios().size();
+
+            } catch (Exception e) {
+                cantDislikes = 0;
+            }
+
+            try {
+                cantLikes = posteo.getLike().getUsuarios().size();
+
+            } catch (Exception e) {
+                cantLikes = 0;
+            }
+
 
             textViewCantLikes.setText(cantLikes.toString());
             textViewCantDisLikes.setText(cantDislikes.toString());
@@ -191,13 +208,24 @@ public class ListaDePosteosAdapter extends RecyclerView.Adapter {
                     .load(posteo.getImagenDelUsuario())
                     .into(circleImageViewDeUsuario);
             textViewNombreDelUsuario.setText(posteo.getNombreDeUsuario());
-            textViewFechaDePublicacion.setText((int) posteo.getFechaDePublicacion());
+            textViewFechaDePublicacion.setText(MiRelojDeArena.getTimeAgo(posteo.getFechaDePublicacion()));
             textViewDelPosteo.setText(posteo.getTexto());
 
             videoViewDelPosteo.setVideoPath(posteo.getElementoMultimedial());
 
-            Integer cantDislikes = posteo.getDisLike().getUsuarios().size();
-            Integer cantLikes = posteo.getLike().getUsuarios().size();
+            try {
+                cantDislikes = posteo.getDisLike().getUsuarios().size();
+
+            } catch (Exception e) {
+                cantDislikes = 0;
+            }
+
+            try {
+                cantLikes = posteo.getLike().getUsuarios().size();
+
+            } catch (Exception e) {
+                cantLikes = 0;
+            }
 
             textViewCantLikes.setText(cantLikes.toString());
             textViewCantDisLikes.setText(cantDislikes.toString());
@@ -232,12 +260,24 @@ public class ListaDePosteosAdapter extends RecyclerView.Adapter {
                     .load(posteo.getImagenDelUsuario())
                     .into(circleImageViewDeUsuario);
             textViewNombreDelUsuario.setText(posteo.getNombreDeUsuario());
-            textViewFechaDePublicacion.setText((int) posteo.getFechaDePublicacion());
+            textViewFechaDePublicacion.setText(MiRelojDeArena.getTimeAgo(posteo.getFechaDePublicacion()));
             textViewDelPosteo.setText(posteo.getTexto());
 
 
-            Integer cantDislikes = posteo.getDisLike().getUsuarios().size();
-            Integer cantLikes = posteo.getLike().getUsuarios().size();
+            try {
+                cantDislikes = posteo.getDisLike().getUsuarios().size();
+
+            } catch (Exception e) {
+                cantDislikes = 0;
+            }
+
+            try {
+                cantLikes = posteo.getLike().getUsuarios().size();
+
+            } catch (Exception e) {
+                cantLikes = 0;
+            }
+
 
             textViewCantLikes.setText(cantLikes.toString());
             textViewCantDisLikes.setText(cantDislikes.toString());

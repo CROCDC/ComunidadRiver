@@ -14,6 +14,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.river.comunidad.comunidadriver.Model.Firebase.Posteo;
@@ -22,6 +23,7 @@ import com.river.comunidad.comunidadriver.Utils.ResultListener;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class DAOPosteosFirebase {
     private Context context;
@@ -41,6 +43,8 @@ public class DAOPosteosFirebase {
         databaseReference = firebaseDatabase.getReference().child("Posteos");
 
         databaseReference.push().setValue(posteo);
+
+        escuchadorDelController.finish(true);
     }
 
     public void obtenerPosteosDeLosUsuarios(final ResultListener<List<Posteo>> escuchadorDelController){
@@ -65,15 +69,35 @@ public class DAOPosteosFirebase {
 
     }
 
-    public void subirImagenDelPosteoAFireStorage(File file,final ResultListener<String> escuchadorDelController){
-        UploadTask uploadTask = storageReference.child("Fotos").child("image.jpg").putFile(Uri.fromFile(file));
+    public void subirImagenDelPosteoAFireStorage(File file,final ResultListener<String> escuchadorDelController ,final ResultListener<Integer> escuchadorDelProceso){
+        String nombreDeLaImagen = UUID.randomUUID().toString();
+        UploadTask progressListener = storageReference.child("Fotos").child(nombreDeLaImagen).putFile(Uri.fromFile(file));
 
-        uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+        progressListener.addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
             @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                escuchadorDelController.finish(taskSnapshot.toString());
+            public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                storageReference.child("Fotos").child(nombreDeLaImagen).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        escuchadorDelController.finish(uri.toString());
+
+
+                    }
+                });
             }
         });
+
+        progressListener.addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                Double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
+                escuchadorDelProceso.finish(progress.intValue());
+
+            }
+        });
+
+
+
 
     }
 
