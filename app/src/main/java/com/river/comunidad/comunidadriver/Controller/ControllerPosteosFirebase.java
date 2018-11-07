@@ -96,8 +96,22 @@ public class ControllerPosteosFirebase {
         });
     }
 
-    public void subirFileDelPosteoAFireStorage(File file, final ResultListener<String> escuchadorDeLaVista, final ResultListener<Integer> escuchadorDelProgreso) {
-        daoPosteosFirebase.subirImagenDelPosteoAFireStorage(file, new ResultListener<String>() {
+    public void subirImageFileDelPosteoAFireStorage(File file, final ResultListener<String> escuchadorDeLaVista, final ResultListener<Integer> escuchadorDelProgreso) {
+        daoPosteosFirebase.subirImageFileDelPosteoAFireStorage(file, new ResultListener<String>() {
+            @Override
+            public void finish(String resultado) {
+                escuchadorDeLaVista.finish(resultado);
+            }
+        }, new ResultListener<Integer>() {
+            @Override
+            public void finish(Integer resultado) {
+                escuchadorDelProgreso.finish(resultado);
+            }
+        });
+    }
+
+    public void subirVideoFileDelPosteoAFireStorage(File file, final ResultListener<String> escuchadorDeLaVista, final ResultListener<Integer> escuchadorDelProgreso) {
+        daoPosteosFirebase.subirVideoDelPosteoAFireStorage(file, new ResultListener<String>() {
             @Override
             public void finish(String resultado) {
                 escuchadorDeLaVista.finish(resultado);

@@ -20,9 +20,9 @@
 
             <ImageView
                 android:foregroundGravity="center_horizontal"
-                android:scaleType="centerCrop"
+                android:adjustViewBounds="true"
                 android:id="@+id/imageViewDeLaNoticia_celdanoticiavertical"
-                android:layout_height="260dp"
+                android:layout_height="wrap_content"
                 android:layout_width="match_parent" />
 
             <TextView

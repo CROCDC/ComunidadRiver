@@ -15,6 +15,7 @@ import retrofit2.http.Query;
 
 public interface ServiceNoticia {
 
+
     @GET("wp/v2/posts?_embed")
     Call<List<Noticia>> pedirListaDeNoticias(
             @Query("page") int pagina,

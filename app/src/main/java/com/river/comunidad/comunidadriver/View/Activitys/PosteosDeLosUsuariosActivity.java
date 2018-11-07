@@ -99,20 +99,20 @@ public class PosteosDeLosUsuariosActivity extends AppCompatActivity {
 
                 File imageFile = (File) bundle.getSerializable(CLAVE_FILE_IMAGE);
 
-                subirPosteoConFile(posteo, imageFile);
-            }else if (resultCode ==2){
+                subirPosteoConImageFile(posteo, imageFile);
+            } else if (resultCode == 2) {
                 Intent intentRecibido = data;
 
                 Bundle bundle = intentRecibido.getExtras();
 
                 Posteo posteo = (Posteo) bundle.getSerializable(CLAVE_POSTEO);
 
-                File videoFile = (File) bundle.getSerializable(CLAVE_FILE_IMAGE);
+                File videoFile = (File) bundle.getSerializable(CLAVE_FILE_VIDEO);
 
-                subirPosteoConFile(posteo, videoFile);
+                subirPosteoConVideoFile(videoFile, posteo);
 
 
-            }else if (resultCode == 3) {
+            } else if (resultCode == 3) {
 
                 Intent intentRecibido = data;
 
@@ -129,13 +129,12 @@ public class PosteosDeLosUsuariosActivity extends AppCompatActivity {
     }
 
 
-    public void subirPosteoConFile(Posteo posteo, File imageFile) {
+    public void subirPosteoConImageFile(Posteo posteo, File imageFile) {
 
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, ADMIN_CHANNEL_ID)
                 .setSmallIcon(R.drawable.logofondonegropequeno)
-                .setContentTitle("Subiendo contenido")
-
-                .setProgress(100,progress,false)
+                .setContentTitle("Subiendo Imagen")
+                .setProgress(100, progress, false)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT);
 
 
@@ -146,8 +145,7 @@ public class PosteosDeLosUsuariosActivity extends AppCompatActivity {
         notificationManager.notify(1, mBuilder.build());
 
 
-
-        controllerPosteosFirebase.subirFileDelPosteoAFireStorage(imageFile, new ResultListener<String>() {
+        controllerPosteosFirebase.subirImageFileDelPosteoAFireStorage(imageFile, new ResultListener<String>() {
             @Override
             public void finish(String resultado) {
                 posteo.setElementoMultimedial(resultado);
@@ -173,6 +171,44 @@ public class PosteosDeLosUsuariosActivity extends AppCompatActivity {
         });
     }
 
+    private void subirPosteoConVideoFile(File videoFile, Posteo posteo) {
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, ADMIN_CHANNEL_ID)
+                .setSmallIcon(R.drawable.logofondonegropequeno)
+                .setContentTitle("Subiendo Video")
+
+                .setProgress(100, progress, false)
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+
+
+        createNotificationChannel();
+
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+
+        notificationManager.notify(1, mBuilder.build());
+
+        controllerPosteosFirebase.subirVideoFileDelPosteoAFireStorage(videoFile, new ResultListener<String>() {
+            @Override
+            public void finish(String resultado) {
+                posteo.setElementoMultimedial(resultado);
+                controllerPosteosFirebase.publicarPosteo(posteo, new ResultListener<Boolean>() {
+                    @Override
+                    public void finish(Boolean resultado) {
+                        pedirListaDePosteos();
+                        notificationManager.cancel(1);
+                    }
+                });
+
+
+            }
+        }, new ResultListener<Integer>() {
+            @Override
+            public void finish(Integer resultado) {
+                actualizarProgreso(resultado);
+
+            }
+        });
+    }
+
     public void subirPosteoConTexto(Posteo posteo) {
         controllerPosteosFirebase.publicarPosteo(posteo, new ResultListener<Boolean>() {
             @Override
@@ -194,7 +230,7 @@ public class PosteosDeLosUsuariosActivity extends AppCompatActivity {
         }
     }
 
-    public void actualizarProgreso(Integer progreso){
+    public void actualizarProgreso(Integer progreso) {
         progress += progreso;
     }
 }

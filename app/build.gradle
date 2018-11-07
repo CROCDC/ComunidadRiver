@@ -106,6 +106,10 @@ dependencies {
     //IMAGENES FACILES
     implementation 'net.alhazmy13.MediaPicker:libary:2.4.4'
 
+    //VIDEO PLAYER
+    implementation 'cn.jzvd:jiaozivideoplayer:6.3.1'
+
+
 
 
 

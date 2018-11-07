@@ -27,10 +27,10 @@ import com.river.comunidad.comunidadriver.Model.Firebase.Like;
 import com.river.comunidad.comunidadriver.Model.Firebase.Posteo;
 import com.river.comunidad.comunidadriver.R;
 
+import net.alhazmy13.mediapicker.Image.ImagePicker;
 import net.alhazmy13.mediapicker.Video.VideoPicker;
 
 import java.io.File;
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,7 +44,8 @@ public class CrearPosteoActivity extends AppCompatActivity {
     private EditText editTextDelPosteo;
     private ImageView imageViewPreview;
     private VideoView videoViewPreview;
-    private LinearLayout linearLayoutContenedorOpcionGaleria;
+    private LinearLayout linearLayoutContenedorOpcionGaleriaFotos;
+    private LinearLayout linearLayoutContenedorOpcionGaleriaVideo;
     private LinearLayout linearLayoutContenedorOpcionCamara;
     private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     private File videoFile;
@@ -64,7 +65,8 @@ public class CrearPosteoActivity extends AppCompatActivity {
         editTextDelPosteo = findViewById(R.id.editTextDelPosteo_crearposteoactivity);
         imageViewPreview = findViewById(R.id.imageViewPreview_crearposteoactivity);
         videoViewPreview = findViewById(R.id.videoViewPreview_crearposteoactivity);
-        linearLayoutContenedorOpcionGaleria = findViewById(R.id.linearLayoutContenedorOpcionAbrirGaleria_crearposteoacivity);
+        linearLayoutContenedorOpcionGaleriaVideo = findViewById(R.id.linearLayoutContenedorOpcionAbrirGaleriaVideos_crearposteoacivity);
+        linearLayoutContenedorOpcionGaleriaFotos = findViewById(R.id.linearLayoutContenedorOpcionAbrirGaleriaFotos_crearposteoacivity);
         linearLayoutContenedorOpcionCamara = findViewById(R.id.linearLayoutContenedorOpcionAbrirCamara_crearposteoactivity);
 
         controllerPosteosFirebase = new ControllerPosteosFirebase();
@@ -79,18 +81,30 @@ public class CrearPosteoActivity extends AppCompatActivity {
         textViewNombreDelUsuario.setText(user.getDisplayName());
 
 
-        linearLayoutContenedorOpcionGaleria.setOnClickListener(new TouchLinearLayoutContenedorOpcionVideo());
+        linearLayoutContenedorOpcionGaleriaVideo.setOnClickListener(new TouchLinearLayoutContenedorOpcionVideo());
+        linearLayoutContenedorOpcionGaleriaFotos.setOnClickListener(new TouchLinearLayoutContenedorOpcionFotos());
         linearLayoutContenedorOpcionCamara.setOnClickListener(new TouchLinearLayoutContenedorOpcionCamara());
+
 
 
     }
 
+    private class TouchLinearLayoutContenedorOpcionFotos implements View.OnClickListener{
+        @Override
+        public void onClick(View v) {
+            new ImagePicker.Builder(CrearPosteoActivity.this)
+                    .mode(ImagePicker.Mode.GALLERY)
+                    .directory(ImagePicker.Directory.DEFAULT)
+                    .enableDebuggingMode(true)
+                    .build();
+        }
+    }
 
     private class TouchLinearLayoutContenedorOpcionVideo implements View.OnClickListener {
         @Override
         public void onClick(View v) {
             new VideoPicker.Builder(CrearPosteoActivity.this)
-                    .mode(VideoPicker.Mode.CAMERA_AND_GALLERY)
+                    .mode(VideoPicker.Mode.GALLERY)
                     .directory(VideoPicker.Directory.DEFAULT)
                     .extension(VideoPicker.Extension.MP4)
                     .enableDebuggingMode(true)
@@ -98,14 +112,8 @@ public class CrearPosteoActivity extends AppCompatActivity {
         }
     }
 
-    public class TouchLinearLayoutContenedorOpcionGaleria implements View.OnClickListener {
-        @Override
-        public void onClick(View v) {
 
-        }
-    }
-
-    public class TouchLinearLayoutContenedorOpcionCamara implements View.OnClickListener {
+    private class TouchLinearLayoutContenedorOpcionCamara implements View.OnClickListener {
 
         @Override
         public void onClick(View v) {
@@ -116,21 +124,25 @@ public class CrearPosteoActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if (requestCode == VideoPicker.VIDEO_PICKER_REQUEST_CODE ){
-            List<String> paths = data.getStringArrayListExtra(VideoPicker.EXTRA_VIDEO_PATH);
-            videoViewPreview.setVisibility(View.VISIBLE);
-            videoViewPreview.setVideoPath(paths.get(0));
-            videoViewPreview.start();
+        if (requestCode == VideoPicker.VIDEO_PICKER_REQUEST_CODE) {
+            if (resultCode == -1) {
 
-
-
-            videoFile = new File(paths.get(0));
-
+                List<String> paths = data.getStringArrayListExtra(VideoPicker.EXTRA_VIDEO_PATH);
+                videoViewPreview.setVisibility(View.VISIBLE);
+                videoViewPreview.setVideoPath(paths.get(0));
+                videoViewPreview.start();
+                videoFile = new File(paths.get(0));
+            }
         }
 
-
-
-
+        if (requestCode == ImagePicker.IMAGE_PICKER_REQUEST_CODE){
+            if (resultCode == -1 ){
+                List<String> paths = data.getStringArrayListExtra(ImagePicker.EXTRA_IMAGE_PATH);
+                imageViewPreview.setVisibility(View.VISIBLE);
+                imageViewPreview.setImageURI(Uri.parse(paths.get(0)));
+                imageFile = new File(paths.get(0));
+            }
+        }
 
 
     }
@@ -150,10 +162,10 @@ public class CrearPosteoActivity extends AppCompatActivity {
 
 
         if (imageFile != null) {
-            subirPosteoConImagen( imageFile);
-        } else if (videoFile !=null){
+            subirPosteoConImagen(imageFile);
+        } else if (videoFile != null) {
             subirPosteoConVideo(videoFile);
-        }else {
+        } else {
             subirPosteoConTexto();
         }
 
@@ -196,7 +208,7 @@ public class CrearPosteoActivity extends AppCompatActivity {
 
     }
 
-    private void subirPosteoConVideo(File videoFile){
+    private void subirPosteoConVideo(File videoFile) {
         final Posteo posteo = new Posteo(user.getDisplayName(),
                 System.currentTimeMillis(),
                 2,
@@ -246,8 +258,6 @@ public class CrearPosteoActivity extends AppCompatActivity {
 
         finish();
     }
-
-
 
 
 }

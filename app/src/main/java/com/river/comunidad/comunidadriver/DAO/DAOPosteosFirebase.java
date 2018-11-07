@@ -32,14 +32,12 @@ public class DAOPosteosFirebase {
     private StorageReference storageReference;
 
 
-
-
     public DAOPosteosFirebase() {
         firebaseDatabase = FirebaseDatabase.getInstance();
         storageReference = FirebaseStorage.getInstance().getReference();
     }
 
-    public void publicarPosteo(Posteo posteo , final ResultListener<Boolean> escuchadorDelController){
+    public void publicarPosteo(Posteo posteo, final ResultListener<Boolean> escuchadorDelController) {
         databaseReference = firebaseDatabase.getReference().child("Posteos");
 
         databaseReference.push().setValue(posteo);
@@ -47,14 +45,14 @@ public class DAOPosteosFirebase {
         escuchadorDelController.finish(true);
     }
 
-    public void obtenerPosteosDeLosUsuarios(final ResultListener<List<Posteo>> escuchadorDelController){
+    public void obtenerPosteosDeLosUsuarios(final ResultListener<List<Posteo>> escuchadorDelController) {
         databaseReference = firebaseDatabase.getReference().child("Posteos");
 
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 List<Posteo> listaDePosteos = new ArrayList<>();
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
 
                     listaDePosteos.add((Posteo) snapshot.getValue(Posteo.class));
                 }
@@ -69,7 +67,7 @@ public class DAOPosteosFirebase {
 
     }
 
-    public void subirImagenDelPosteoAFireStorage(File file,final ResultListener<String> escuchadorDelController ,final ResultListener<Integer> escuchadorDelProceso){
+    public void subirImageFileDelPosteoAFireStorage(File file, final ResultListener<String> escuchadorDelController, final ResultListener<Integer> escuchadorDelProceso) {
         String nombreDeLaImagen = UUID.randomUUID().toString();
         UploadTask progressListener = storageReference.child("Fotos").child(nombreDeLaImagen).putFile(Uri.fromFile(file));
 
@@ -96,7 +94,32 @@ public class DAOPosteosFirebase {
             }
         });
 
+    }
 
+    public void subirVideoDelPosteoAFireStorage(File file, final ResultListener<String> escuchadorDelController, final ResultListener<Integer> escuchadorDelProgreso) {
+        String nombreDelVideo = UUID.randomUUID().toString();
+        UploadTask progressListener = storageReference.child("videos").child(nombreDelVideo).putFile(Uri.fromFile(file));
+
+        progressListener.addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                storageReference.child("videos").child(nombreDelVideo).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        escuchadorDelController.finish(uri.toString());
+                    }
+                });
+
+            }
+        });
+
+        progressListener.addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                Double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
+                escuchadorDelProgreso.finish(progress.intValue());
+            }
+        });
 
 
     }

@@ -52,6 +52,7 @@
             tools:ignore="InefficientWeight" />
 
         <ImageView
+            android:adjustViewBounds="true"
             android:id="@+id/imageViewPreview_crearposteoactivity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -60,11 +61,11 @@
             android:visibility="gone" />
 
         <VideoView
-            android:layout_gravity="center_horizontal"
-            android:layout_margin="10dp"
             android:id="@+id/videoViewPreview_crearposteoactivity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="10dp"
             android:visibility="gone" />
 
         <LinearLayout
@@ -73,13 +74,9 @@
             android:layout_margin="5dp"
             android:orientation="vertical">
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/negro" />
 
             <LinearLayout
-                android:id="@+id/linearLayoutContenedorOpcionAbrirGaleria_crearposteoacivity"
+                android:id="@+id/linearLayoutContenedorOpcionAbrirGaleriaFotos_crearposteoacivity"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
@@ -95,12 +92,42 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="3dp"
-                    android:text="@string/foto"
+                    android:text="@string/subir_fotos"
                     android:textColor="@color/negro"
                     android:textSize="20sp" />
 
 
             </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/negro" />
+
+            <LinearLayout
+                android:id="@+id/linearLayoutContenedorOpcionAbrirGaleriaVideos_crearposteoacivity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:src="@drawable/videos" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="3dp"
+                    android:text="@string/subir_videos"
+                    android:textColor="@color/negro"
+                    android:textSize="20sp" />
+
+
+            </LinearLayout>
+
 
             <View
                 android:layout_width="match_parent"
